@@ -1,0 +1,23 @@
+nav(class="navbar navbar-expand-lg navbar-light bg-light")
+
+    div(class="offset-md-1 col-md-11 container-fluid")
+        a(class="navbar-brand" href="/") EasyTicket
+
+        button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation")
+            span(class="navbar-toggler-icon")
+        div(class="collapse navbar-collapse" id="navbarNavAltMarkup")
+            div(class="navbar-nav")
+                a(class="nav-link active" aria-current="page" href="/") Search Bus
+                a(class="nav-link" href="/routes") Routes
+                a(class="nav-link" href="/about") About
+                a(class="nav-link disabled" href="#") Avail Promo!
+
+            if loggedIn
+                .d-flex(style="margin-left:auto;")
+                    a(class="btn btn-outline-success my-2 my-sm-0" type="submit" href="/profile")
+                        = FirstName
+                    a(class="btn btn-outline-danger my-2 my-sm-0" style="margin-left:5%" type="submit" onclick='logout(this)') Logout
+            else
+                .d-flex(style="margin-left:auto;")
+                    a(class="btn btn-outline-primary my-2 my-sm-0" type="submit" href="/signin") Login
+                    a(class="btn btn-outline-success my-2 my-sm-0" style="margin-left:5%" type="submit" href="/signup") Signup

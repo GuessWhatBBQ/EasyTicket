@@ -1,0 +1,35 @@
+doctype html
+
+html
+    head
+        title Login
+        include includes/headers
+        include css/signin_signupCSS
+        script(defer type="text/javascript" src="js/userauth.js")
+    body
+        include includes/navbar
+
+        main.login-form
+            .container
+                .row.justify-content-center
+                    .col-md-8
+                        .card
+                            .card-header Login
+                            .card-body
+                                form(action="/api/login" method="POST" id="signin-form")
+                                    .form-label.row
+                                        label(for="email" class="col-md-4 col-form-label text-md-end") Email Address
+                                        .col-md-6
+                                            input(type="text" id="email" class="form-control" name="email" required autofocus)
+
+                                    .form-label.row
+                                        label(for="password" class="col-md-4 col-form-label text-md-end") Password
+                                        .col-md-6
+                                            input(type="password" id="password" class="form-control" name="password" required)
+                                    .form-label.row
+                                        .col-md-6.offset-md-4
+                                            .checkbox
+                                    #errorPara
+                                    .col-md-6.offset-md-4
+                                        button(type="submit" class="btn btn-primary") Login
+        include includes/footers

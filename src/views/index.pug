@@ -1,0 +1,44 @@
+mixin dropdown(locationList)
+    each location in locationList
+        option(value=location)= location
+
+doctype html
+
+html
+    head
+        title EasyTicket
+        include includes/headers
+        include css/style
+
+    body
+        include includes/navbar
+
+        - const locations = ['Dhaka', 'Sylhet', 'Cox\'s Bazaar', 'Rajshahi', 'Rangpur', 'Chittagong', 'Madaripur', 'Khulna', 'Chandpur'];
+        .container#mainContent
+            .row.justify-content-center.center_sentence
+                h1.col-8
+                    |Easy Solution to your bus booking hassle
+            .row.justify-content-center.center_sentence
+                h3.col-6.col-md-3
+                    if loggedIn
+                    else
+                        a#signupanchor(href="signup")
+                            |Signup
+                        |for free now!
+            form(action="/routesearch" method="POST")
+                .row.justify-content-center.g-1
+                    .col-6.col-md-4
+                        select(class="form-control" name="pickup")
+                            option(value="" disabled selected hidden) Choose pickup location
+                            +dropdown(locations)
+                    .col-6.col-md-4
+                        select(class="form-control" name="destination")
+                            option(value="" disabled selected hidden) Choose destination
+                            +dropdown(locations)
+                .row.justify-content-center.g-1
+                    .row.justify-content-center.col-6.col-md-3(style="margin-top:2%")
+                        label(for="start" style="padding:0") Date of Journey:
+                        input(type="date" id="start" name="starting_date")
+                .row.justify-content-center
+                    button.btn.btn-outline-warning#searchRouteButton(type="submit") Search routes
+        include includes/footers

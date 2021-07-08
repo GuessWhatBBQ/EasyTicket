@@ -1,0 +1,5 @@
+src/.env
+src/node_modules/
+src/views/pug_renders/
+.tern-project
+./.vscode

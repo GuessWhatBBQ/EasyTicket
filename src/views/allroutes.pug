@@ -1,0 +1,29 @@
+mixin viewRoutes(routeList)
+    .card.col-md-3
+        .card-body
+            .row
+                p.col-6 FROM:
+                p.col-6(class="card-text")
+                    = routeList.pickup
+            .row
+                p.col-6 TO:
+                p.col-6(class="card-text")
+                    = routeList.destination
+
+doctype html
+
+html
+    head
+        title All Bus Routes
+        include includes/headers
+        include css/allroutesCSS
+
+    body
+        include includes/navbar
+        //- - const list = [{ pickup: 'Dhaka', destination: 'Sylhet' },{ pickup: 'Dhaka', destination: 'Sylhet' }, { pickup: 'Chittagong', destination: 'Rajshahi' }, { pickup: 'Barisal', destination: 'Khulna' }, { pickup: 'Barisal', destination: 'Khulna' }]
+        -const list = allRoutes
+        .container
+            .row.justify-content-start
+                each location in list
+                    +viewRoutes(location)
+        include includes/footers

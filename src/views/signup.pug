@@ -1,0 +1,43 @@
+doctype html
+
+html
+    head
+        title Sign Up
+        include includes/headers
+        include css/signin_signupCSS
+        script(defer type="text/javascript" src="js/userauth.js")
+    body
+        include includes/navbar
+
+        main.login-form
+            .container
+                .row.justify-content-center
+                    .col-md-8
+                        .card
+                            .card-header Register
+                            .card-body
+                                form(action="/api/register" method="POST" id="signup-form")
+                                    .form-label.row
+                                        label(for="firstname" class="col-md-4 col-form-label text-md-end") First Name
+                                        .col-md-6
+                                            input(type="text" id="first-name" class="form-control" name="firstname" required)
+                                    .form-label.row
+                                        label(for="lastname" class="col-md-4 col-form-label text-md-end") Last Name
+                                        .col-md-6
+                                            input(type="text" id="last-name" class="form-control" name="lastname" required)
+                                    .form-label.row
+                                        label(for="email" class="col-md-4 col-form-label text-md-end") Email Address
+                                        .col-md-6
+                                            input(type="text" id="email" class="form-control" name="email" required)
+                                    .form-label.row
+                                        label(for="phoneno" class="col-md-4 col-form-label text-md-end") Phone Number
+                                        .col-md-6
+                                            input(type="text" id="phoneno" class="form-control" name="phoneno" required)
+                                    .form-label.row
+                                        label(for="password" class="col-md-4 col-form-label text-md-end") Password
+                                        .col-md-6
+                                            input(type="password" id="password" class="form-control" name="password" required)
+                                    #errorPara
+                                    .col-md-6.offset-md-4
+                                        button(type="submit" class="btn btn-primary") Register
+        include includes/footers

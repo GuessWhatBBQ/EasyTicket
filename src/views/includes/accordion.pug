@@ -1,0 +1,8 @@
+include booking
+mixin accordionMaker(data)
+    .accordion.accordion-flush#accordionFlushExample
+        .accordion-item.accordion-item-style
+            button.accordion-button.accordion-button-style.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne")
+            #flush-collapseOne.accordion-collapse.collapse(aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample")
+                .accordion-body
+                    +booking(data)

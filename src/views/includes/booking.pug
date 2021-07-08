@@ -1,0 +1,32 @@
+mixin booking(bookingData)
+    .card-group
+        h5(class="card-title")
+                = bookingData.bus_id
+        .card
+            .card-body
+                    .row
+                        p.col-6 PICKUP:
+                        p.col-6(class="card-text")
+                            = bookingData.pickup
+                    .row
+                        p.col-6 START DATE:
+                        p.col-6(class="card-text")
+                            = bookingData.starting_date
+                    .row
+                        p.col-6 START TIME:
+                        p.col-6(class="card-text")
+                            = bookingData.starting_time
+        .card
+            .card-body
+                .row
+                    p.col-6 DESTINATION:
+                    p.col-6(class="card-text")
+                        = bookingData.destination
+                .row
+                    p.col-6 ARRIVAL DATE:
+                    p.col-6(class="card-text")
+                        = bookingData.arrival_date
+                .row
+                    p.col-6 ARRIVAL TIME:
+                    p.col-6(class="card-text")
+                        = bookingData.arrival_time

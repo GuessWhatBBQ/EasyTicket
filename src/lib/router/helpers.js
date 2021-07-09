@@ -1,5 +1,4 @@
 exports.goUpURL = goUpURL
-exports.setupCallbacks = setupCallbacks
 exports.processRequestBody = processRequestBody
 
 exports.parseCookie = parseCookie
@@ -14,11 +13,6 @@ function goUpURL(url) {
         url = '/'
     }
     return url
-}
-
-function setupCallbacks(routes, processors) {
-    routes = processors
-    routes.callbackfn = routes.pop()
 }
 
 function getBodyChunks(request) {

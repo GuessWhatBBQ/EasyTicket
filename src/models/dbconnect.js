@@ -9,6 +9,13 @@ const dbclient = new Client({
     password: process.env.DB_PASSWORD
 });
 
-dbclient.connect();
+dbclient.connect()
+    .catch((reason) => {
+        console.log(reason)
+        if (reason.code === 'ECONNREFUSED') {
+            console.log("Did you forget to start the database again ? Silly you :{");
+        }
+        process.exit(1)
+    })
 
 exports.dbclient = dbclient;

@@ -1,12 +1,25 @@
 const http = require("http")
-const path = require("path")
-const fs = require("fs")
 
 const { goUpURL } = require("./helpers")
 const { injectResponseHelpers } = require("./injector")
 const { injectRequestHelpers } = require("./injector")
 
 function Router() {
+    this.methods = ['delete', 'get', 'post', 'put']
+    this.routeTable = new Object()
+
+    this.methods.forEach((method) => {
+        this.routeTable[method] = {}
+        this[method] = (route, ...requestProcessors) => {
+            if (typeof route === 'function') {
+                requestProcessors = route
+                route = ''
+            }
+            this.routeTable[method][route] = requestProcessors
+            this.routeTable[method][route].callbackfn = this.routeTable[method][route].pop()
+        }
+    })
+
     this.start = (port) => {
         const server = http.createServer(this.processRequest)
         server.listen(port, () => {
@@ -14,33 +27,16 @@ function Router() {
         })
     }
 
-    this.routeTable = {
-        getRoutes: {},
-        postRoutes: {}
-    }
-
-    this.get = (route, ...requestProcessors) => {
-        this.routeTable.getRoutes[route] = requestProcessors
-        this.routeTable.getRoutes[route].callbackfn = this.routeTable.getRoutes[route].pop()
-    }
-
-    this.post = (route, ...requestProcessors) => {
-        this.routeTable.postRoutes[route] = requestProcessors
-        this.routeTable.postRoutes[route].callbackfn = this.routeTable.postRoutes[route].pop()
+    this.use = (route, ...requestProcessors) => {
+        console.log(route);
     }
 
     this.processRequest = async (request, response) => {
         injectResponseHelpers(response)
         await injectRequestHelpers(request)
         try {
-            if (request.method === 'GET') {
-                getRoutes = this.routeTable.getRoutes
-                this.processRoute(request, response, getRoutes)
-            }
-            if (request.method === 'POST') {
-                postRoutes = this.routeTable.postRoutes
-                this.processRoute(request, response, postRoutes)
-            }
+            routes = this.routeTable[request.method.toLowerCase()]
+            this.processRoute(request, response, routes)
         } catch (error) {
             console.log(error)
         }
@@ -58,9 +54,14 @@ function Router() {
     }
 
     this.processMiddleware = (middleware, request, response) => {
-        return new Promise((resolve) => {
-            middleware(request, response, () => {
-                resolve(true)
+        return new Promise((resolve, reject) => {
+            middleware(request, response, (errorMsg) => {
+                if (errorMsg) {
+                    reject(errorMsg)
+                }
+                else {
+                    resolve(true)
+                }
             })
         })
     }

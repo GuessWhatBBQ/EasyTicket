@@ -1,8 +1,8 @@
-function addDOM(ID, message){
-    if(document.getElementById('errorParaSet')){
-        return
+function addDOM(ID, message) {
+    if (document.getElementById('errorParaSet')) {
+        return;
     }
-    let errorParagraph = document.createElement('p');
+    const errorParagraph = document.createElement('p');
     errorParagraph.setAttribute('id', 'errorParaSet');
     errorParagraph.innerText = message;
     errorParagraph.style.color = 'red';
@@ -10,60 +10,52 @@ function addDOM(ID, message){
     errorParagraph.style.fontSize = 'smaller';
     errorParagraph.style.fontWeight = '600';
 
-    //the ID is required to set a location for the errorParagrapgh to pop up
+    // the ID is required to set a location for the errorParagrapgh to pop up
     const node = document.getElementById(`${ID}`);
-    node.parentNode.insertBefore(errorParagraph,node);
+    node.parentNode.insertBefore(errorParagraph, node);
 }
 
-function checkValidUser(ID, status, message)
-{
-    if (status == true){
-        console.log("HIHO");
-        console.log(message);
-        window.location.replace("/profile")
-    }
-    else{
-        console.log(message);
-        addDOM(ID, message)
+function checkValidUser(ID, status, message) {
+    if (status === true) {
+        window.location.replace('/profile');
+    } else {
+        addDOM(ID, message);
     }
 }
 
-const form = document.getElementById("signup-form") || document.getElementById("signin-form") || document.getElementById("update-form")
-form.addEventListener("submit", fetchJWT)
+const form = document.getElementById('signup-form') || document.getElementById('signin-form') || document.getElementById('update-form');
 
 async function fetchJWT(event) {
-    event.preventDefault()
+    event.preventDefault();
 
-    let inputs = form.getElementsByTagName("input")
-    let path = form.getAttribute("action")
+    const inputs = form.getElementsByTagName('input');
+    const path = form.getAttribute('action');
 
-    payload = {
-        method: "POST",
+    const payload = {
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: {}
+        body: {},
+    };
+    for (const input of inputs) {
+        payload.body[input.name] = input.value;
     }
-    for(var input of inputs) {
-        payload.body[input.name] = input.value
-    }
-    payload.body = JSON.stringify(payload.body)
+    payload.body = JSON.stringify(payload.body);
 
-    response = await fetch(path, payload)
-                .then((res) => {
-                    return res.json()
-                })
+    const response = await fetch(path, payload)
+        .then((res) => res.json());
 
-    let id = "errorPara"
-    if(response.token) {
+    const id = 'errorPara';
+    if (response.token) {
         localStorage.setItem('auth-token', response.token);
-        window.document.cookie = "auth-token" + "=" + (response.token) + "; path=/;" + "SameSite=Strict";
-        checkValidUser(id,true);
-    }
-    else if (response.status === "Password Verification Failed"){
+        window.document.cookie = `${'auth-token' + '='}${response.token}; path=/;` + 'SameSite=Strict';
+        checkValidUser(id, true);
+    } else if (response.status === 'Password Verification Failed') {
         checkValidUser(id, false, "Credentials don't match.");
-    }
-    else if (response.status === "Update Failed"){
-        checkValidUser(id, false, "Update Failed");
+    } else if (response.status === 'Update Failed') {
+        checkValidUser(id, false, 'Update Failed');
     }
 }
+
+form.addEventListener('submit', fetchJWT);

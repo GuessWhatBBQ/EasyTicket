@@ -1,79 +1,79 @@
-exports.goUpURL = goUpURL
-exports.processRequestBody = processRequestBody
-
-exports.parseCookie = parseCookie
-
 function goUpURL(url) {
-    temp = url.split("/")
-    if(temp.pop() === '') {
-        temp.pop()
+    const temp = url.split('/');
+    if (temp.pop() === '') {
+        temp.pop();
     }
-    url = temp.join("/")
+    url = temp.join('/');
     if (url === '') {
-        url = '/'
+        url = '/';
     }
-    return url
+    return url;
 }
 
 function getBodyChunks(request) {
-    body = []
+    const body = [];
     return new Promise((resolve) => {
         request
-            .on("data", (chunk) => {
-                body.push(chunk)
+            .on('data', (chunk) => {
+                body.push(chunk);
             })
-            .on("end", () => {
-                resolve(body)
-            })
-    })
+            .on('end', () => {
+                resolve(body);
+            });
+    });
+}
+
+function parseURLForm(stream) {
+    stream = Buffer.concat(stream).toString();
+    const formdata = {};
+    stream.split('&').forEach((item) => {
+        const pair = item.split('=');
+        formdata[pair[0]] = decodeURIComponent(pair[1]);
+    });
+    return formdata;
 }
 
 async function processRequestBody(request) {
-    body = await getBodyChunks(request)
-    if (request.headers['content-type']==="application/x-www-form-urlencoded") {
-        formdata = await parseBody(body)
+    let formdata;
+    const body = await getBodyChunks(request);
+    if (request.headers['content-type'] === 'application/x-www-form-urlencoded') {
+        formdata = parseURLForm(body);
+    } else if (request.headers['content-type'] === 'application/json' && body.length > 0) {
+        formdata = parseJSON(body);
     }
-    else if (request.headers['content-type']==="application/json" && body.length > 0) {
-        try {
-            formdata = JSON.parse(Buffer.concat(body).toString())
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    else {
-        return undefined
-    }
-    return formdata
+    return formdata;
 }
 
-function parseBody(stream) {
-    stream = Buffer.concat(stream).toString();
-    formdata = {}
-    stream.split("&").forEach((item, index) => {
-        pair = item.split("=")
-        formdata[pair[0]] = decodeURIComponent(pair[1])
-    })
-    return formdata
+function parseJSON(stream) {
+    return JSON.parse(
+        decodeURIComponent(
+            Buffer.concat(stream).toString(),
+        ),
+    );
 }
 
 function parseCookie(request) {
-    let rawCookie = request.headers.cookie
+    const rawCookie = decodeURIComponent(request.headers.cookie);
     if (rawCookie) {
-        let cookies = rawCookie.split(" ")
+        const cookies = rawCookie.split(' ');
         cookies.forEach((item, index, array) => {
-            let temp
-            if (item.slice(-1) === ";") {
-                temp = array[index].split("")
-                temp.pop()
-                array[index] = temp.join("")
+            let temp;
+            if (item.slice(-1) === ';') {
+                temp = array[index].split('');
+                temp.pop();
+                array[index] = temp.join('');
             }
-        })
-        let processedCookie = {}
-        cookies.forEach((item, index, array) => {
-            let pair = item.split("=")
-            processedCookie[pair[0]] = pair[1]
-        })
-        return processedCookie
+        });
+        const processedCookie = {};
+        cookies.forEach((item) => {
+            const pair = item.split('=');
+            processedCookie[pair[0]] = pair[1];
+        });
+        return processedCookie;
     }
-    else return undefined
+    return undefined;
 }
+
+exports.goUpURL = goUpURL;
+exports.processRequestBody = processRequestBody;
+exports.parseCookie = parseCookie;

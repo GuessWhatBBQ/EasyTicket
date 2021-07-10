@@ -1,30 +1,30 @@
-const { dbclient } = require("./dbconnect")
+const { dbclient } = require('./dbconnect');
 
 async function exists(email) {
     const querystr = `
     SELECT * FROM useraccounts
         WHERE email = '${email}';
     `;
-    exists = false
+    let userExists = false;
     await dbclient
         .query(querystr)
         .then((result) => {
             if (result.rowCount >= 1) {
-                exists = true
+                userExists = true;
             }
         })
         .catch((error) => {
-            console.log(error)
-        })
-    return exists
+            console.log(error);
+        });
+    return userExists;
 }
 
-async function create(email, password_hash, firstname, lastname, phone_number) {
+async function create(email, passwordHash, firstname, lastname, phoneNumber) {
     const querystr = `
-    INSERT INTO useraccounts (email, password, first_name, last_name, phone_number ) VALUES ($1, $2, $3, $4, $5);
+    INSERT INTO useraccounts (email, password, firstName, lastName, phoneNumber ) VALUES ($1, $2, $3, $4, $5);
     `;
     await dbclient
-        .query(querystr, [email, password_hash, firstname, lastname, phone_number])
+        .query(querystr, [email, passwordHash, firstname, lastname, phoneNumber]);
 }
 
 async function getInfo(email) {
@@ -32,41 +32,39 @@ async function getInfo(email) {
     SELECT * FROM useraccounts
         WHERE email = $1;
     `;
-    let result = await dbclient.query(querystr, [email])
+    const result = await dbclient.query(querystr, [email]);
     if (result.rowCount === 1) {
-        let userInfo = result.rows[0]
-        return userInfo
+        const userInfo = result.rows[0];
+        return userInfo;
     }
-    else {
-        return undefined
-    }
+
+    return undefined;
 }
 
-async function updateInfo(email, first_name, last_name, phone_number) {
-    let currentInfo = await getInfo(email)
-    let updatedInfo = {}
-    if (!first_name) {
-        first_name = currentInfo.first_name
+async function updateInfo(email, firstName, lastName, phoneNumber) {
+    const currentInfo = await getInfo(email);
+    if (!firstName) {
+        firstName = currentInfo.firstName;
     }
-    if (!last_name) {
-        last_name = currentInfo.last_name
+    if (!lastName) {
+        lastName = currentInfo.lastName;
     }
-    if (!phone_number) {
-        phone_number = currentInfo.phone_number
+    if (!phoneNumber) {
+        phoneNumber = currentInfo.phoneNumber;
     }
     const querystr = `
     UPDATE useraccounts
-    SET first_name = $2, last_name = $3, phone_number = $4
+    SET firstName = $2, lastName = $3, phoneNumber = $4
             WHERE email = $1
     RETURNING *;
-    `
-    await dbclient.query(querystr, [email, first_name, last_name, phone_number])
+    `;
+    await dbclient.query(querystr, [email, firstName, lastName, phoneNumber])
         .catch((error) => {
-            console.log(error)
-        })
+            console.log(error);
+        });
 }
 
-exports.create = create
-exports.exists = exists
-exports.getInfo = getInfo
-exports.updateInfo = updateInfo
+exports.create = create;
+exports.exists = exists;
+exports.getInfo = getInfo;
+exports.updateInfo = updateInfo;

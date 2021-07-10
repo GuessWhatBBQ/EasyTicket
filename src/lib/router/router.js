@@ -1,72 +1,68 @@
-const http = require("http")
+const http = require('http');
 
-const { goUpURL } = require("./helpers")
-const { injectResponseHelpers } = require("./injector")
-const { injectRequestHelpers } = require("./injector")
+const { goUpURL } = require('./helpers');
+const { parseRoute } = require('./helpers');
+const { injectResponseHelpers } = require('./injector');
+const { injectRequestHelpers } = require('./injector');
 
 function Router() {
-    this.methods = ['delete', 'get', 'post', 'put']
-    this.routeTable = new Object()
+    this.routeTable = {};
 
-    this.methods.forEach((method) => {
-        this.routeTable[method] = {}
+    http.METHODS.forEach((method) => {
+        method = method.toLowerCase();
+        this.routeTable[method] = {};
         this[method] = (route, ...requestProcessors) => {
-            if (typeof route === 'function') {
-                requestProcessors = route
-                route = ''
-            }
-            this.routeTable[method][route] = requestProcessors
-            this.routeTable[method][route].callbackfn = this.routeTable[method][route].pop()
-        }
-    })
+            this.routeTable[method][route] = requestProcessors;
+            this.routeTable[method][route].callbackfn = this.routeTable[method][route].pop();
+        };
+    });
 
     this.start = (port) => {
-        const server = http.createServer(this.processRequest)
+        const server = http.createServer(this.processRequest);
         server.listen(port, () => {
             console.log(`Server has been started on port ${port}`);
-        })
-    }
+        });
+    };
 
     this.use = (route, ...requestProcessors) => {
-        console.log(route);
-    }
+        if (typeof route === 'function') {
+            requestProcessors = [route];
+            route = '/';
+        }
+        route = parseRoute();
+    };
 
     this.processRequest = async (request, response) => {
-        injectResponseHelpers(response)
-        await injectRequestHelpers(request)
+        injectResponseHelpers(response);
+        await injectRequestHelpers(request);
         try {
-            routes = this.routeTable[request.method.toLowerCase()]
-            this.processRoute(request, response, routes)
+            const routes = this.routeTable[request.method.toLowerCase()];
+            this.processRoute(request, response, routes);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
     this.processRoute = async function processRoute(request, response, routes) {
-        base_route = request.url
-        while (!routes[base_route]) {
-            base_route = goUpURL(base_route)
+        let baseRoute = request.url;
+        while (!routes[baseRoute]) {
+            baseRoute = goUpURL(baseRoute);
         }
-        for (var middleware of routes[base_route]) {
-            await this.processMiddleware(middleware, request, response)
+        for (const middleware of routes[baseRoute]) {
+            await this.processMiddleware(middleware, request, response);
         }
-        await routes[base_route].callbackfn(request, response)
-    }
+        await routes[baseRoute].callbackfn(request, response);
+    };
 
-    this.processMiddleware = (middleware, request, response) => {
-        return new Promise((resolve, reject) => {
-            middleware(request, response, (errorMsg) => {
-                if (errorMsg) {
-                    reject(errorMsg)
-                }
-                else {
-                    resolve(true)
-                }
-            })
-        })
-    }
-
+    this.processMiddleware = (middleware, request, response) => new Promise((resolve, reject) => {
+        middleware(request, response, (errorMsg) => {
+            if (errorMsg) {
+                reject(errorMsg);
+            } else {
+                resolve(true);
+            }
+        });
+    });
 }
 
-
-exports.Router = Router
+exports.Router = Router;

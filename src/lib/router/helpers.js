@@ -1,13 +1,21 @@
-function goUpURL(url) {
-    const temp = url.split('/');
-    if (temp.pop() === '') {
-        temp.pop();
+function parseRouteToRegex(routeURL, exclusive) {
+    if (routeURL.slice(-1) === '/' && routeURL.length > 1) {
+        routeURL = routeURL.split('');
+        routeURL.pop();
+        routeURL = routeURL.join('');
     }
-    url = temp.join('/');
-    if (url === '') {
-        url = '/';
+    let regexMatch = routeURL.split('/');
+    const regexSeperator = '\\/';
+    regexMatch = regexMatch.join(regexSeperator);
+    if (exclusive) {
+        regexMatch += '$';
+    } else {
+        regexMatch += '(\\/|$)';
     }
-    return url;
+    regexMatch = regexMatch.split('');
+    regexMatch.unshift('^');
+    regexMatch = regexMatch.join('');
+    return new RegExp(regexMatch);
 }
 
 function getBodyChunks(request) {
@@ -33,6 +41,14 @@ function parseURLForm(stream) {
     return formdata;
 }
 
+function parseJSON(stream) {
+    return JSON.parse(
+        decodeURIComponent(
+            Buffer.concat(stream).toString(),
+        ),
+    );
+}
+
 async function processRequestBody(request) {
     let formdata;
     const body = await getBodyChunks(request);
@@ -42,14 +58,6 @@ async function processRequestBody(request) {
         formdata = parseJSON(body);
     }
     return formdata;
-}
-
-function parseJSON(stream) {
-    return JSON.parse(
-        decodeURIComponent(
-            Buffer.concat(stream).toString(),
-        ),
-    );
 }
 
 function parseCookie(request) {
@@ -74,6 +82,6 @@ function parseCookie(request) {
     return undefined;
 }
 
-exports.goUpURL = goUpURL;
 exports.processRequestBody = processRequestBody;
 exports.parseCookie = parseCookie;
+exports.parseRouteToRegex = parseRouteToRegex;

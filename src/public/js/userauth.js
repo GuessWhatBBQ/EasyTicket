@@ -51,10 +51,8 @@ async function fetchJWT(event) {
         localStorage.setItem('auth-token', response.token);
         window.document.cookie = `${'auth-token' + '='}${response.token}; path=/;` + 'SameSite=Strict';
         checkValidUser(id, true);
-    } else if (response.status === 'Password Verification Failed') {
-        checkValidUser(id, false, "Credentials don't match.");
-    } else if (response.status === 'Update Failed') {
-        checkValidUser(id, false, 'Update Failed');
+    } else {
+        checkValidUser(id, false, response.statusMsg);
     }
 }
 

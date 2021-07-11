@@ -5,13 +5,13 @@ async function exists(email) {
     SELECT * FROM useraccounts
         WHERE email = '${email}';
     `;
-    let userExists = false;
-    await dbclient
+    const userExists = await dbclient
         .query(querystr)
         .then((result) => {
             if (result.rowCount >= 1) {
-                userExists = true;
+                return true;
             }
+            return false;
         })
         .catch((error) => {
             console.log(error);
@@ -19,12 +19,12 @@ async function exists(email) {
     return userExists;
 }
 
-async function create(email, passwordHash, firstname, lastname, phoneNumber) {
+async function create(email, passwordHash, firstName, lastName, phoneNumber) {
     const querystr = `
-    INSERT INTO useraccounts (email, password, firstName, lastName, phoneNumber ) VALUES ($1, $2, $3, $4, $5);
+    INSERT INTO useraccounts (email, password, first_name, last_name, phone_number ) VALUES ($1, $2, $3, $4, $5);
     `;
     await dbclient
-        .query(querystr, [email, passwordHash, firstname, lastname, phoneNumber]);
+        .query(querystr, [email, passwordHash, firstName, lastName, phoneNumber]);
 }
 
 async function getInfo(email) {
@@ -44,17 +44,17 @@ async function getInfo(email) {
 async function updateInfo(email, firstName, lastName, phoneNumber) {
     const currentInfo = await getInfo(email);
     if (!firstName) {
-        firstName = currentInfo.firstName;
+        firstName = currentInfo.first_name;
     }
     if (!lastName) {
-        lastName = currentInfo.lastName;
+        lastName = currentInfo.last_name;
     }
     if (!phoneNumber) {
-        phoneNumber = currentInfo.phoneNumber;
+        phoneNumber = currentInfo.phone_number;
     }
     const querystr = `
     UPDATE useraccounts
-    SET firstName = $2, lastName = $3, phoneNumber = $4
+    SET first_name = $2, last_name = $3, phone_number = $4
             WHERE email = $1
     RETURNING *;
     `;

@@ -15,7 +15,6 @@ const { getBookings } = require('./bookticket');
 
 const { fetchBusRoutes } = require('./busroutes');
 
-const { getStaticResource } = require('./utils');
 const { getRenderedTemplate } = require('./utils');
 const { updateNavbar } = require('./utils');
 
@@ -23,29 +22,36 @@ const router = new Router();
 
 const Bus = require('../models/bus');
 
-router.get('/', verifyJWT, updateNavbar, getRenderedTemplate, getStaticResource);
-router.post('/', (request, response) => {
-    response.end();
+router.use(verifyJWT, updateNavbar, getRenderedTemplate);
+// router.post('/', (request, response) => {
+//     response.end();
+// });
+
+router.use('/hudu', (request, response, next) => {
+    console.log('I work');
+    next();
 });
 
-router.get('/profile', verifyJWT, (request, response, next) => {
+router.get('/profile', async (request, response, next) => {
     if (!request.decodedToken) {
         response.redirect('/signin');
     } else {
         next();
     }
-}, updateNavbar, getBookings, getProfile);
+}, getBookings, getProfile, async (request, response) => {
+    response.render('views/profile.pug');
+});
 
 router.post('/api/login', verifyPassword, sendJWT);
 router.post('/api/register', verifyAvailable, registerNewUser, sendJWT);
-router.post('/api/updateprofile', verifyJWT, verifyPassword, updateProfile, sendJWT);
+router.post('/api/updateprofile', verifyPassword, updateProfile, sendJWT);
 
-router.get('/routes', verifyJWT, updateNavbar, async (request, response) => {
+router.get('/routes', async (request, response) => {
     const routes = await Bus.getPickupAndDestination();
     response.renderAppend({ allRoutes: routes });
     response.render('views/allroutes.pug');
 });
-router.post('/routesearch', verifyJWT, updateNavbar, fetchBusRoutes);
-router.post('/api/bookticket', verifyJWT, bookTicket);
+router.post('/routesearch', fetchBusRoutes);
+router.post('/api/bookticket', bookTicket);
 
 exports.router = router;

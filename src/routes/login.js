@@ -18,7 +18,8 @@ async function verifyPassword(request, response, next) {
         next();
     } else {
         const payload = {
-            status: 'Password Verification Failed',
+            status: 'CREDSFAIL',
+            statusMsg: 'Credentials don\'t match',
         };
         response.json(payload);
     }

@@ -1,18 +1,22 @@
 const User = require('../models/user');
 
-async function getProfile(request, response) {
+async function getProfile(request, response, next) {
     const dbQueryUserInfo = await User.getInfo(request.decodedToken.email);
-    response.render('views/profile.pug', {
-        FirstName: dbQueryUserInfo.first_name,
-        LastName: dbQueryUserInfo.last_name,
-        PhoneNumber: dbQueryUserInfo.phone_number,
-        Email: dbQueryUserInfo.email,
-    });
+    if (dbQueryUserInfo) {
+        response.renderAppend({
+            FirstName: dbQueryUserInfo.first_name,
+            LastName: dbQueryUserInfo.last_name,
+            PhoneNumber: dbQueryUserInfo.phone_number,
+            Email: dbQueryUserInfo.email,
+        });
+        next();
+    }
 }
 
 async function updateProfile(request, response, next) {
     const payload = {
         status: 'ok',
+        statusMsg: 'Done',
     };
     try {
         await User.updateInfo(
@@ -24,7 +28,8 @@ async function updateProfile(request, response, next) {
         next();
     } catch (error) {
         console.log(error);
-        payload.status = 'Update Failed';
+        payload.status = 'UPDATEFAIL';
+        payload.statusMsg = 'Your account could not be updated at this time';
         const statusCode = 500;
         response.json(payload, statusCode);
     }

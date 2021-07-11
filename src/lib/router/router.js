@@ -1,19 +1,25 @@
 const http = require('http');
 
-const { goUpURL } = require('./helpers');
-const { parseRoute } = require('./helpers');
+const { parseRouteToRegex } = require('./helpers');
 const { injectResponseHelpers } = require('./injector');
 const { injectRequestHelpers } = require('./injector');
+const { getStaticResouce } = require('./middleware');
 
 function Router() {
-    this.routeTable = {};
+    this.routeTable = { use: [] };
 
     http.METHODS.forEach((method) => {
         method = method.toLowerCase();
-        this.routeTable[method] = {};
+        this.routeTable[method] = [];
+
         this[method] = (route, ...requestProcessors) => {
-            this.routeTable[method][route] = requestProcessors;
-            this.routeTable[method][route].callbackfn = this.routeTable[method][route].pop();
+            if (typeof route === 'function') {
+                requestProcessors = [route, requestProcessors].flat(Infinity);
+                route = '';
+            }
+            const routeRegex = parseRouteToRegex(route, true);
+            const layer = { route, routeRegex, requestProcessors };
+            this.routeTable[method].push(layer);
         };
     });
 
@@ -26,38 +32,50 @@ function Router() {
 
     this.use = (route, ...requestProcessors) => {
         if (typeof route === 'function') {
-            requestProcessors = [route];
-            route = '/';
+            requestProcessors = [route, requestProcessors].flat(Infinity);
+            route = '';
         }
-        route = parseRoute();
+        const routeRegex = parseRouteToRegex(route, false);
+        const layer = { route, routeRegex, requestProcessors };
+        this.routeTable.use.push(layer);
     };
+
+    this.use(getStaticResouce);
 
     this.processRequest = async (request, response) => {
         injectResponseHelpers(response);
         await injectRequestHelpers(request);
-        try {
-            const routes = this.routeTable[request.method.toLowerCase()];
-            this.processRoute(request, response, routes);
-        } catch (error) {
-            console.log(error);
-        }
+        const routes = this.routeTable[request.method.toLowerCase()];
+
+        await this.processRoute(request, response, [this.routeTable.use, routes].flat(Infinity))
+            .catch((reason) => {
+                console.log(reason);
+            });
     };
 
-    this.processRoute = async function processRoute(request, response, routes) {
-        let baseRoute = request.url;
-        while (!routes[baseRoute]) {
-            baseRoute = goUpURL(baseRoute);
-        }
-        for (const middleware of routes[baseRoute]) {
-            await this.processMiddleware(middleware, request, response);
-        }
-        await routes[baseRoute].callbackfn(request, response);
+    this.processRoute = function processRoute(request, response, routes) {
+        return new Promise((resolve, reject) => {
+            routes.reduce(async (promise, route) => {
+                await promise;
+                if (route.routeRegex.test(request.url)) {
+                    await route.requestProcessors.reduce(async (promise2, handler) => {
+                        await promise2;
+                        await this.processMiddleware(handler, request, response)
+                            .catch((reason) => {
+                                console.log(reason);
+                                reject(reason);
+                            });
+                    }, Promise.resolve());
+                }
+            }, Promise.resolve());
+            resolve();
+        });
     };
 
     this.processMiddleware = (middleware, request, response) => new Promise((resolve, reject) => {
-        middleware(request, response, (errorMsg) => {
-            if (errorMsg) {
-                reject(errorMsg);
+        middleware(request, response, (error) => {
+            if (error) {
+                reject(error);
             } else {
                 resolve(true);
             }

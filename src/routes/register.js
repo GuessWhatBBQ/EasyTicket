@@ -8,7 +8,8 @@ async function verifyAvailable(request, response, next) {
         next();
     } else {
         const payload = {
-            status: 'Password Verification Failed',
+            status: 'ACCOUNTEXISTS',
+            statusMsg: 'An account with that email already exists',
         };
         response.json(payload);
     }

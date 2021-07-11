@@ -3,9 +3,6 @@ const pug = require('pug');
 const { processRequestBody } = require('./helpers');
 const { parseCookie } = require('./helpers');
 
-exports.injectResponseHelpers = injectResponseHelpers;
-exports.injectRequestHelpers = injectRequestHelpers;
-
 function injectResponseHelpers(response) {
     response.redirect = (route, statuscode = 301) => {
         response.writeHead(statuscode, { Location: route });
@@ -31,13 +28,8 @@ function injectResponseHelpers(response) {
             ...response.renderlocals,
             ...locals,
         };
-        try {
-            htmlcontent = pug.renderFile(pugfile, locals);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            response.send(htmlcontent, httpcode, 'text/html', headers);
-        }
+        htmlcontent = pug.renderFile(pugfile, locals);
+        response.send(htmlcontent, httpcode, 'text/html', headers);
     };
 
     response.renderlocals = {};
@@ -54,3 +46,6 @@ async function injectRequestHelpers(request) {
     request.body = await processRequestBody(request);
     request.cookie = await parseCookie(request);
 }
+
+exports.injectResponseHelpers = injectResponseHelpers;
+exports.injectRequestHelpers = injectRequestHelpers;

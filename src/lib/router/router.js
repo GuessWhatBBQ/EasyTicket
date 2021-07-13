@@ -4,6 +4,7 @@ const { parseRouteToRegex } = require('./helpers');
 const { injectResponseHelpers } = require('./injector');
 const { injectRequestHelpers } = require('./injector');
 const { getStaticResouce } = require('./middleware');
+const { ignoreReq } = require('./middleware');
 
 function Router() {
     this.routeTable = { use: [] };
@@ -16,6 +17,8 @@ function Router() {
             if (typeof route === 'function') {
                 requestProcessors = [route, requestProcessors].flat(Infinity);
                 route = '';
+            } else {
+                requestProcessors = [requestProcessors].flat(Infinity);
             }
             const routeRegex = parseRouteToRegex(route, true);
             const layer = { route, routeRegex, requestProcessors };
@@ -34,6 +37,8 @@ function Router() {
         if (typeof route === 'function') {
             requestProcessors = [route, requestProcessors].flat(Infinity);
             route = '';
+        } else {
+            requestProcessors = [requestProcessors].flat(Infinity);
         }
         const routeRegex = parseRouteToRegex(route, false);
         const layer = { route, routeRegex, requestProcessors };
@@ -47,7 +52,9 @@ function Router() {
         await injectRequestHelpers(request);
         const routes = this.routeTable[request.method.toLowerCase()];
 
-        await this.processRoute(request, response, [this.routeTable.use, routes].flat(Infinity))
+        this.processRoute(request, response, this.routeTable.use)
+            .then(() => this.processRoute(request, response, routes))
+            .then(() => this.processRoute(request, response, [{ route: '', routeRegex: new RegExp(''), requestProcessors: [ignoreReq] }]))
             .catch((reason) => {
                 console.log(reason);
             });
@@ -55,11 +62,12 @@ function Router() {
 
     this.processRoute = function processRoute(request, response, routes) {
         return new Promise((resolve, reject) => {
-            routes.reduce(async (promise, route) => {
+            resolve(routes.reduce(async (promise, route) => {
                 await promise;
                 if (route.routeRegex.test(request.url)) {
                     await route.requestProcessors.reduce(async (promise2, handler) => {
                         await promise2;
+                        // console.log('Start:', handler);
                         await this.processMiddleware(handler, request, response)
                             .catch((reason) => {
                                 console.log(reason);
@@ -67,8 +75,7 @@ function Router() {
                             });
                     }, Promise.resolve());
                 }
-            }, Promise.resolve());
-            resolve();
+            }, Promise.resolve()));
         });
     };
 
@@ -77,6 +84,7 @@ function Router() {
             if (error) {
                 reject(error);
             } else {
+                // console.log('Done:', middleware);
                 resolve(true);
             }
         });

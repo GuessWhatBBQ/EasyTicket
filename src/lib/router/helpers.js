@@ -1,10 +1,11 @@
 function parseRouteToRegex(routeURL, exclusive) {
+    let regexMatch = routeURL;
     if (routeURL.slice(-1) === '/' && routeURL.length > 1) {
-        routeURL = routeURL.split('');
-        routeURL.pop();
-        routeURL = routeURL.join('');
+        regexMatch = regexMatch.split('');
+        regexMatch.pop();
+        regexMatch = regexMatch.join('');
     }
-    let regexMatch = routeURL.split('/');
+    regexMatch = regexMatch.split('/');
     const regexSeperator = '\\/';
     regexMatch = regexMatch.join(regexSeperator);
     if (exclusive) {
@@ -31,20 +32,16 @@ function getBodyChunks(request) {
     });
 }
 
-function parseURLForm(stream) {
-    stream = Buffer.concat(stream).toString();
-    const formdata = {};
-    stream.split('&').forEach((item) => {
-        const pair = item.split('=');
-        formdata[pair[0]] = decodeURIComponent(pair[1]);
-    });
+function parseURLForm(buffer) {
+    const textStream = decodeURIComponent(Buffer.concat(buffer).toString());
+    const formdata = Object.fromEntries(textStream.split('&').map((string) => string.split('=')));
     return formdata;
 }
 
-function parseJSON(stream) {
+function parseJSON(buffer) {
     return JSON.parse(
         decodeURIComponent(
-            Buffer.concat(stream).toString(),
+            Buffer.concat(buffer).toString(),
         ),
     );
 }
@@ -72,11 +69,7 @@ function parseCookie(request) {
                 array[index] = temp.join('');
             }
         });
-        const processedCookie = {};
-        cookies.forEach((item) => {
-            const pair = item.split('=');
-            processedCookie[pair[0]] = pair[1];
-        });
+        const processedCookie = Object.fromEntries(cookies.map((string) => string.split('=')));
         return processedCookie;
     }
     return undefined;

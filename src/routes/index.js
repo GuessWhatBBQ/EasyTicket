@@ -23,14 +23,6 @@ const router = new Router();
 const Bus = require('../models/bus');
 
 router.use(verifyJWT, updateNavbar, getRenderedTemplate);
-// router.post('/', (request, response) => {
-//     response.end();
-// });
-
-router.use('/hudu', (request, response, next) => {
-    console.log('I work');
-    next();
-});
 
 router.get('/profile', async (request, response, next) => {
     if (!request.decodedToken) {

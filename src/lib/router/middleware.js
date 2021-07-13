@@ -21,4 +21,9 @@ async function getStaticResouce(request, response, next) {
     });
 }
 
+async function ignoreReq(request, response) {
+    response.redirect('/pagenotfound');
+}
+
 exports.getStaticResouce = getStaticResouce;
+exports.ignoreReq = ignoreReq;

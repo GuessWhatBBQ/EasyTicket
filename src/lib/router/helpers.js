@@ -1,6 +1,11 @@
+function sanitizeURI(string) {
+    const plusToSpace = string.replace(/\+/g, ' ');
+    return decodeURIComponent(plusToSpace);
+}
+
 function parseRouteToRegex(routeURL, exclusive) {
     let regexMatch = routeURL;
-    if (routeURL.slice(-1) === '/' && routeURL.length > 1) {
+    if (regexMatch.slice(-1) === '/' && regexMatch.length > 1) {
         regexMatch = regexMatch.split('');
         regexMatch.pop();
         regexMatch = regexMatch.join('');
@@ -8,7 +13,7 @@ function parseRouteToRegex(routeURL, exclusive) {
     regexMatch = regexMatch.split('/');
     const regexSeperator = '\\/';
     regexMatch = regexMatch.join(regexSeperator);
-    if (exclusive) {
+    if (exclusive && regexMatch.length > 0) {
         regexMatch += '$';
     } else {
         regexMatch += '(\\/|$)';
@@ -33,14 +38,14 @@ function getBodyChunks(request) {
 }
 
 function parseURLForm(buffer) {
-    const textStream = decodeURIComponent(Buffer.concat(buffer).toString());
+    const textStream = sanitizeURI(Buffer.concat(buffer).toString());
     const formdata = Object.fromEntries(textStream.split('&').map((string) => string.split('=')));
     return formdata;
 }
 
 function parseJSON(buffer) {
     return JSON.parse(
-        decodeURIComponent(
+        sanitizeURI(
             Buffer.concat(buffer).toString(),
         ),
     );
@@ -49,6 +54,9 @@ function parseJSON(buffer) {
 async function processRequestBody(request) {
     let formdata;
     const body = await getBodyChunks(request);
+    if (!body) {
+        return formdata;
+    }
     if (request.headers['content-type'] === 'application/x-www-form-urlencoded') {
         formdata = parseURLForm(body);
     } else if (request.headers['content-type'] === 'application/json' && body.length > 0) {
@@ -58,21 +66,25 @@ async function processRequestBody(request) {
 }
 
 function parseCookie(request) {
-    const rawCookie = decodeURIComponent(request.headers.cookie);
-    if (rawCookie) {
-        const cookies = rawCookie.split(' ');
-        cookies.forEach((item, index, array) => {
-            let temp;
-            if (item.slice(-1) === ';') {
-                temp = array[index].split('');
-                temp.pop();
-                array[index] = temp.join('');
-            }
-        });
-        const processedCookie = Object.fromEntries(cookies.map((string) => string.split('=')));
+    let processedCookie;
+    if (!request.headers.cookie) {
         return processedCookie;
     }
-    return undefined;
+    const rawCookie = sanitizeURI(request.headers.cookie);
+    if (rawCookie) {
+        let cookies = rawCookie.split(' ');
+        cookies = cookies.map((cookie) => {
+            let formattedCookie = cookie;
+            if (cookie.slice(-1) === ';') {
+                formattedCookie = formattedCookie.split('');
+                formattedCookie.pop();
+                formattedCookie = formattedCookie.join('');
+            }
+            return formattedCookie;
+        });
+        processedCookie = Object.fromEntries(cookies.map((string) => string.split('=')));
+    }
+    return processedCookie;
 }
 
 exports.processRequestBody = processRequestBody;

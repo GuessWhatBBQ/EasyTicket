@@ -28,17 +28,16 @@ async function create(email, passwordHash, firstName, lastName, phoneNumber) {
 }
 
 async function getInfo(email) {
+    let userInfo;
     const querystr = `
     SELECT * FROM useraccounts
         WHERE email = $1;
     `;
     const result = await dbclient.query(querystr, [email]);
     if (result.rowCount === 1) {
-        const userInfo = result.rows[0];
-        return userInfo;
+        [userInfo] = result.rows;
     }
-
-    return undefined;
+    return userInfo;
 }
 
 async function updateInfo(email, firstName, lastName, phoneNumber) {

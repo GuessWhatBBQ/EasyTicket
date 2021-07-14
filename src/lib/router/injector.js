@@ -9,10 +9,10 @@ function injectResponseHelpers(response) {
         response.end();
     };
 
-    response.send = (content, httpcode = 200, contentType = 'text/html', headers) => {
-        for (const header in headers) {
-            response.setHeader(header, headers[header]);
-        }
+    response.send = (content, httpcode = 200, contentType = 'text/html', headers = {}) => {
+        Object.entries(headers).forEach(([headerName, headerValue]) => {
+            response.setHeader(headerName, headerValue);
+        });
         response.writeHead(httpcode, { 'Content-Type': contentType });
         response.write(content, 'utf8');
         response.end();

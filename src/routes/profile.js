@@ -18,21 +18,22 @@ async function updateProfile(request, response, next) {
         status: 'ok',
         statusMsg: 'Done',
     };
-    try {
-        await User.updateInfo(
-            request.decodedToken.email,
-            request.body.firstname,
-            request.body.lastname,
-            request.body.phoneno,
-        );
-        next();
-    } catch (error) {
-        console.log(error);
-        payload.status = 'UPDATEFAIL';
-        payload.statusMsg = 'Your account could not be updated at this time';
-        const statusCode = 500;
-        response.json(payload, statusCode);
-    }
+    await User.updateInfo(
+        request.decodedToken.email,
+        request.body.firstname,
+        request.body.lastname,
+        request.body.phoneno,
+    )
+        .then(() => {
+            next();
+        })
+        .catch((error) => {
+            console.log(error);
+            payload.status = 'UPDATEFAIL';
+            payload.statusMsg = 'Your account could not be updated at this time';
+            const statusCode = 500;
+            response.json(payload, statusCode);
+        });
 }
 
 exports.getProfile = getProfile;

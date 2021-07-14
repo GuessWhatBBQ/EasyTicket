@@ -1,9 +1,10 @@
+/* global swal */
+
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function bookTicket(busID) {
-    event.preventDefault();
     const payload = {
         method: 'POST',
         headers: {
@@ -42,3 +43,5 @@ function confirmBookingMessage(busID) {
             }
         });
 }
+
+window.confirmBookingMessage = confirmBookingMessage;

@@ -14,13 +14,15 @@ async function bookTicket(request, response) {
 }
 
 async function getBookings(request, response, next) {
-    const currentBookings = await Booking.getBookingInfo(request.decodedToken.email);
+    let currentBookings = await Booking.getBookingInfo(request.decodedToken.email);
     const options = {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     };
-    currentBookings.forEach((item, index, array) => {
-        array[index].starting_date = item.starting_date.toLocaleDateString('en-US', options);
-        array[index].arrival_date = item.arrival_date.toLocaleDateString('en-US', options);
+    currentBookings = currentBookings.map((booking) => {
+        const formattedBooking = booking;
+        formattedBooking.starting_date = booking.starting_date.toLocaleDateString('en-US', options);
+        formattedBooking.arrival_date = booking.arrival_date.toLocaleDateString('en-US', options);
+        return formattedBooking;
     });
 
     response.renderAppend({ currentBookings });

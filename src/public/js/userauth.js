@@ -38,9 +38,9 @@ async function fetchJWT(event) {
         },
         body: {},
     };
-    for (const input of inputs) {
-        payload.body[input.name] = input.value;
-    }
+    Array.from(inputs).forEach((input) => {
+        payload.body = { ...payload.body, [input.name]: input.value };
+    });
     payload.body = JSON.stringify(payload.body);
 
     const response = await fetch(path, payload)
@@ -49,7 +49,7 @@ async function fetchJWT(event) {
     const id = 'errorPara';
     if (response.token) {
         localStorage.setItem('auth-token', response.token);
-        window.document.cookie = `${'auth-token' + '='}${response.token}; path=/;` + 'SameSite=Strict';
+        window.document.cookie = `auth-token=${response.token}; path=/; + SameSite=Strict`;
         checkValidUser(id, true);
     } else {
         checkValidUser(id, false, response.statusMsg);

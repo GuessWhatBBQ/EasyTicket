@@ -51,7 +51,6 @@ function Router() {
         injectResponseHelpers(response);
         await injectRequestHelpers(request);
         const routes = this.routeTable[request.method.toLowerCase()];
-
         this.processRoute(request, response, this.routeTable.use)
             .then(() => this.processRoute(request, response, routes))
             .then(() => this.processRoute(request, response, [{ route: '', routeRegex: new RegExp(''), requestProcessors: [ignoreReq] }]))
@@ -62,12 +61,11 @@ function Router() {
 
     this.processRoute = function processRoute(request, response, routes) {
         return new Promise((resolve, reject) => {
-            resolve(routes.reduce(async (promise, route) => {
-                await promise;
+            resolve(routes.reduce(async (routePromise, route) => {
+                await routePromise;
                 if (route.routeRegex.test(request.url)) {
-                    await route.requestProcessors.reduce(async (promise2, handler) => {
-                        await promise2;
-                        // console.log('Start:', handler);
+                    await route.requestProcessors.reduce(async (middlewarePromise, handler) => {
+                        await middlewarePromise;
                         await this.processMiddleware(handler, request, response)
                             .catch((reason) => {
                                 console.log(reason);
@@ -82,9 +80,9 @@ function Router() {
     this.processMiddleware = (middleware, request, response) => new Promise((resolve, reject) => {
         middleware(request, response, (error) => {
             if (error) {
+                console.log(error);
                 reject(error);
             } else {
-                // console.log('Done:', middleware);
                 resolve(true);
             }
         });

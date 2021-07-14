@@ -1,18 +1,16 @@
 const { dbclient } = require('./dbconnect');
 
 async function getBusRoutes(pickup, destination, startingDate) {
-    let routes;
+    let routes = [];
     if (!pickup || !destination) {
-        return;
+        return routes;
     }
-
     if (!startingDate) {
         const querystr = `
         SELECT *
         FROM bus
         WHERE pickup = $1 AND destination = $2;
         `;
-
         routes = await dbclient.query(querystr, [pickup, destination])
             .then((result) => result.rows);
     } else {
@@ -24,7 +22,6 @@ async function getBusRoutes(pickup, destination, startingDate) {
         routes = await dbclient.query(querystr, [pickup, destination, startingDate])
             .then((result) => result.rows);
     }
-
     return routes;
 }
 

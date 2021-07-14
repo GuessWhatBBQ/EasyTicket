@@ -6,3 +6,4 @@ src/.eslintrc.json
 .tern-project
 
 ./.vscode
+.vscode/settings.json

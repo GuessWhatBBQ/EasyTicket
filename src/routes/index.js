@@ -31,7 +31,7 @@ router.get('/profile', async (request, response, next) => {
         next();
     }
 }, getBookings, getProfile, async (request, response) => {
-    response.render('views/profile.pug');
+    response.render('profile.pug');
 });
 
 router.post('/api/login', verifyPassword, sendJWT);
@@ -41,7 +41,7 @@ router.post('/api/updateprofile', verifyPassword, updateProfile, sendJWT);
 router.get('/routes', async (request, response) => {
     const routes = await Bus.getPickupAndDestination();
     response.renderAppend({ allRoutes: routes });
-    response.render('views/allroutes.pug');
+    response.render('allroutes.pug');
 });
 router.post('/routesearch', fetchBusRoutes);
 router.post('/api/bookticket', bookTicket);

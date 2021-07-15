@@ -19,7 +19,7 @@ async function getRenderedTemplate(request, response, next) {
             next();
         } else {
             try {
-                response.render(filePath);
+                response.render(request.url === '/' ? 'index.pug' : `${request.url}.pug`);
             } catch (e) {
                 next();
             }

@@ -1,4 +1,5 @@
 const pug = require('pug');
+const path = require('path');
 
 const { processRequestBody } = require('./helpers');
 const { parseCookie } = require('./helpers');
@@ -28,7 +29,8 @@ function injectResponseHelpers(response) {
             ...response.renderlocals,
             ...locals,
         };
-        htmlcontent = pug.renderFile(pugfile, locals);
+        const viewsPath = path.join(__dirname, '../../views', pugfile);
+        htmlcontent = pug.renderFile(viewsPath, locals);
         response.send(htmlcontent, httpcode, 'text/html', headers);
     };
 

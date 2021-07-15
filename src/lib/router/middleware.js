@@ -22,7 +22,7 @@ async function getStaticResouce(request, response, next) {
 }
 
 async function ignoreReq(request, response) {
-    response.redirect('/pagenotfound');
+    response.redirect('/pagenotfound', 307);
 }
 
 exports.getStaticResouce = getStaticResouce;

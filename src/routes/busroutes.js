@@ -20,7 +20,7 @@ async function fetchBusRoutes(request, response) {
         formattedRoute.arrival_date = route.arrival_date.toLocaleDateString('en-US', options);
         return formattedRoute;
     });
-    response.render('views/routes.pug', routes);
+    response.render('routes.pug', routes);
 }
 
 exports.fetchBusRoutes = fetchBusRoutes;

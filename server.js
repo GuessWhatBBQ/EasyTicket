@@ -1,4 +1,4 @@
-const { router } = require('./routes/index');
+const { router } = require('./src/routes/index');
 require('dotenv').config();
 
 if (!process.env.JWT_SECRET) {

@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "EasyTicket",
   "main": "server.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",

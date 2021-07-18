@@ -13,9 +13,7 @@ async function exists(email) {
             }
             return false;
         })
-        .catch((error) => {
-            console.log(error);
-        });
+        .catch(() => true); // In case of failure assume user already exists
     return userExists;
 }
 
@@ -57,10 +55,7 @@ async function updateInfo(email, firstName, lastName, phoneNumber) {
             WHERE email = $1
     RETURNING *;
     `;
-    await dbclient.query(querystr, [email, firstName, lastName, phoneNumber])
-        .catch((error) => {
-            console.log(error);
-        });
+    await dbclient.query(querystr, [email, firstName, lastName, phoneNumber]);
 }
 
 exports.create = create;

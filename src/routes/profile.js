@@ -14,10 +14,6 @@ async function getProfile(request, response, next) {
 }
 
 async function updateProfile(request, response, next) {
-    const payload = {
-        status: 'ok',
-        statusMsg: 'Done',
-    };
     await User.updateInfo(
         request.decodedToken.email,
         request.body.firstname,
@@ -27,8 +23,8 @@ async function updateProfile(request, response, next) {
         .then(() => {
             next();
         })
-        .catch((error) => {
-            console.log(error);
+        .catch(() => {
+            const payload = {};
             payload.status = 'UPDATEFAIL';
             payload.statusMsg = 'Your account could not be updated at this time';
             const statusCode = 500;

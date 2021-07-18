@@ -1,0 +1,53 @@
+include includes/accordion
+
+doctype html
+
+html
+    head
+        title Admin Panel
+        include includes/headers
+        include css/profileCSS
+        include css/accordionCSS
+        include css/routesCSS
+    body
+        include includes/navbar
+        .container#user-profile
+            .row
+                .col-md-4
+                    .profile-img
+                        img(src="img/dp.png" alt="")
+                .col-md-6.col-12
+                    #profile-head
+                        h5= FirstName+' '+LastName
+                        h6 Administrator
+                .col-md-2
+                    a(class="btn btn-primary my-2 my-sm-0" type="submit" style= "margin-left:auto;" href="/updateprofile") Edit Routes
+            .row
+                .col-md-6.offset-md-4
+                    #profile-tab(role="tabpanel" aria-labelledby="home-tab")
+                        .row
+                            .col-md-6
+                                label Name
+                            .col-md-6
+                                p= FirstName+' '+LastName
+                        .row
+                            .col-md-6
+                                label Email Address
+                            .col-md-6
+                                p= Email
+                        .row
+                            .col-md-6
+                                label Phone number
+                            .col-md-6
+                                p= PhoneNumber
+                .col-md-2
+                    a(class="btn btn-primary my-2 my-sm-0" type="submit" style= "margin-left:auto;" href="/updateprofile") Edit Trips
+        .container#bottom-container-style
+            h3(style= "padding-left: 2%;") Click to view all your Routes:
+            - const dataList = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00" }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00" }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00" }]
+            //- - const dataList = currentBookings
+            +accordionMaker(dataList)
+            h3(style= "margin-top: 2%; padding-left: 2%;") Click to view all your Buses:
+            +accordionMaker(dataList)
+
+        include includes/footers

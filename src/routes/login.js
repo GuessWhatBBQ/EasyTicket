@@ -1,61 +1,64 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
-require('dotenv').config()
+require('dotenv').config();
 
-const User = require("../models/user")
+const User = require('../models/user');
 
 async function verifyPassword(request, response, next) {
-    let email = request.body.email || request.decodedToken.email
-    let userInfo = await User.getInfo(email)
+    const email = request.body.email || request.decodedToken.email;
+    const userInfo = await User.getInfo(email);
     if (!userInfo) {
-        return
+        const payload = {
+            status: 'CREDSFAIL',
+            statusMsg: 'Credentials don\'t match',
+        };
+        response.json(payload);
+        return;
     }
 
-    let match = await bcrypt.compare(request.body.password, userInfo.password)
+    const match = await bcrypt.compare(request.body.password, userInfo.password);
     if (match) {
-        response.dbQueryUserInfo = userInfo
-        next()
-    }
-    else {
-        let payload = {
-            status: 'Password Verification Failed'
-        }
-        response.json(payload)
+        response.dbQueryUserInfo = userInfo;
+        next();
+    } else {
+        const payload = {
+            status: 'CREDSFAIL',
+            statusMsg: 'Credentials don\'t match',
+        };
+        response.json(payload);
     }
 }
 
 async function sendJWT(request, response) {
-    let token_secret = process.env.JWT_SECRET
-    let token_payload = {
+    const tokenSecret = process.env.JWT_SECRET;
+    const tokenPayload = {
         firstname: response.dbQueryUserInfo.first_name,
         email: response.dbQueryUserInfo.email,
-    }
-    let token = await jwt.sign(token_payload, token_secret, { expiresIn: 60*60*24*7 })
-    payload = {
+    };
+    const token = await jwt.sign(tokenPayload, tokenSecret, { expiresIn: 60 * 60 * 24 * 7 });
+    const payload = {
         status: 'ok',
-        token: token
-    }
-    response.json(payload)
+        token,
+    };
+    response.json(payload);
 }
 
 async function verifyJWT(request, response, next) {
     if (request.cookie && request.cookie['auth-token']) {
         jwt.verify(request.cookie['auth-token'], process.env.JWT_SECRET, (error, decoded) => {
-            if(error) {
-                response.redirect("/login")
+            if (error) {
+                response.redirect('/login');
+            } else {
+                request.decodedToken = decoded;
+                next();
             }
-            else {
-                request.decodedToken = decoded
-                next()
-            }
-        })
-    }
-    else {
-        next()
+        });
+    } else {
+        next();
     }
 }
 
-exports.verifyPassword = verifyPassword
-exports.sendJWT = sendJWT
-exports.verifyJWT = verifyJWT
+exports.verifyPassword = verifyPassword;
+exports.sendJWT = sendJWT;
+exports.verifyJWT = verifyJWT;

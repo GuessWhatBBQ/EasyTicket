@@ -1,85 +1,92 @@
-exports.goUpURL = goUpURL
-exports.setupCallbacks = setupCallbacks
-exports.processRequestBody = processRequestBody
-
-exports.parseCookie = parseCookie
-
-function goUpURL(url) {
-    temp = url.split("/")
-    if(temp.pop() === '') {
-        temp.pop()
-    }
-    url = temp.join("/")
-    if (url === '') {
-        url = '/'
-    }
-    return url
+function sanitizeURI(string) {
+    const plusToSpace = string.replace(/\+/g, ' ');
+    return decodeURIComponent(plusToSpace);
 }
 
-function setupCallbacks(routes, processors) {
-    routes = processors
-    routes.callbackfn = routes.pop()
+function parseRouteToRegex(routeURL, exclusive) {
+    let regexMatch = routeURL;
+    if (regexMatch.slice(-1) === '/' && regexMatch.length > 1) {
+        regexMatch = regexMatch.split('');
+        regexMatch.pop();
+        regexMatch = regexMatch.join('');
+    }
+    regexMatch = regexMatch.split('/');
+    const regexSeperator = '\\/';
+    regexMatch = regexMatch.join(regexSeperator);
+    if (exclusive && regexMatch.length > 0) {
+        regexMatch += '$';
+    } else {
+        regexMatch += '(\\/|$)';
+    }
+    regexMatch = regexMatch.split('');
+    regexMatch.unshift('^');
+    regexMatch = regexMatch.join('');
+    return new RegExp(regexMatch);
 }
 
 function getBodyChunks(request) {
-    body = []
+    const body = [];
     return new Promise((resolve) => {
         request
-            .on("data", (chunk) => {
-                body.push(chunk)
+            .on('data', (chunk) => {
+                body.push(chunk);
             })
-            .on("end", () => {
-                resolve(body)
-            })
-    })
+            .on('end', () => {
+                resolve(body);
+            });
+    });
+}
+
+function parseURLForm(buffer) {
+    const textStream = sanitizeURI(Buffer.concat(buffer).toString());
+    const formdata = Object.fromEntries(textStream.split('&').map((string) => string.split('=')));
+    return formdata;
+}
+
+function parseJSON(buffer) {
+    return JSON.parse(
+        sanitizeURI(
+            Buffer.concat(buffer).toString(),
+        ),
+    );
 }
 
 async function processRequestBody(request) {
-    body = await getBodyChunks(request)
-    if (request.headers['content-type']==="application/x-www-form-urlencoded") {
-        formdata = await parseBody(body)
+    let formdata;
+    const body = await getBodyChunks(request);
+    if (!body) {
+        return formdata;
     }
-    else if (request.headers['content-type']==="application/json" && body.length > 0) {
-        try {
-            formdata = JSON.parse(Buffer.concat(body).toString())
-        } catch (error) {
-            console.log(error);
-        }
+    if (request.headers['content-type'] === 'application/x-www-form-urlencoded') {
+        formdata = parseURLForm(body);
+    } else if (request.headers['content-type'] === 'application/json' && body.length > 0) {
+        formdata = parseJSON(body);
     }
-    else {
-        return undefined
-    }
-    return formdata
-}
-
-function parseBody(stream) {
-    stream = Buffer.concat(stream).toString();
-    formdata = {}
-    stream.split("&").forEach((item, index) => {
-        pair = item.split("=")
-        formdata[pair[0]] = decodeURIComponent(pair[1])
-    })
-    return formdata
+    return formdata;
 }
 
 function parseCookie(request) {
-    let rawCookie = request.headers.cookie
-    if (rawCookie) {
-        let cookies = rawCookie.split(" ")
-        cookies.forEach((item, index, array) => {
-            let temp
-            if (item.slice(-1) === ";") {
-                temp = array[index].split("")
-                temp.pop()
-                array[index] = temp.join("")
-            }
-        })
-        let processedCookie = {}
-        cookies.forEach((item, index, array) => {
-            let pair = item.split("=")
-            processedCookie[pair[0]] = pair[1]
-        })
-        return processedCookie
+    let processedCookie;
+    if (!request.headers.cookie) {
+        return processedCookie;
     }
-    else return undefined
+    const rawCookie = sanitizeURI(request.headers.cookie);
+    if (rawCookie) {
+        let cookies = rawCookie.split(' ');
+        cookies = cookies.map((cookie) => {
+            let formattedCookie = cookie;
+            if (cookie.slice(-1) === ';') {
+                formattedCookie = formattedCookie.split('');
+                formattedCookie.pop();
+                formattedCookie = formattedCookie.join('');
+            }
+            return formattedCookie;
+        });
+        processedCookie = Object.fromEntries(cookies.map((string) => string.split('=')));
+    }
+    return processedCookie;
 }
+
+exports.processRequestBody = processRequestBody;
+exports.parseCookie = parseCookie;
+exports.parseRouteToRegex = parseRouteToRegex;

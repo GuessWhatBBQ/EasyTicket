@@ -1,24 +1,26 @@
-const Bus = require("../models/bus")
-
-exports.fetchBusRoutes = fetchBusRoutes
+const Bus = require('../models/bus');
 
 async function fetchBusRoutes(request, response) {
-    let routes = {}
+    const routes = {};
     if (request.body && request.body.pickup && request.body.destination) {
-        if (request.body.starting_date) {
-            routes.searchRoutes = await Bus.getBusRoutes(request.body.pickup, request.body.destination, request.body.starting_date)
-        }
-        else {
-            routes.searchRoutes = await Bus.getBusRoutes(request.body.pickup, request.body.destination)
-        }
+        routes.searchRoutes = await Bus.getBusRoutes(
+            request.body.pickup,
+            request.body.destination,
+            request.body.starting_date,
+        );
+    } else {
+        routes.searchRoutes = await Bus.getAllBusRoutes();
     }
-    else {
-        routes.searchRoutes = await Bus.getAllBusRoutes()
-    }
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-    routes.searchRoutes.forEach((item, index, array) => {
-        array[index].starting_date = item.starting_date.toLocaleDateString("en-US", options)
-        array[index].arrival_date = item.arrival_date.toLocaleDateString("en-US", options)
-    })
-    response.render("views/routes.pug", routes)
+    const options = {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+    };
+    routes.searchRoutes = routes.searchRoutes.map((route) => {
+        const formattedRoute = route;
+        formattedRoute.starting_date = route.starting_date.toLocaleDateString('en-US', options);
+        formattedRoute.arrival_date = route.arrival_date.toLocaleDateString('en-US', options);
+        return formattedRoute;
+    });
+    response.render('routes.pug', routes);
 }
+
+exports.fetchBusRoutes = fetchBusRoutes;

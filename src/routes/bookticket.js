@@ -1,29 +1,33 @@
-const Booking = require("../models/booking")
-
-exports.bookTicket = bookTicket
-exports.getBookings = getBookings
+const Booking = require('../models/booking');
 
 async function bookTicket(request, response) {
-    payload = {
-        status: "ok"
-    }
+    const payload = {
+        status: 'ok',
+    };
     try {
-        await Booking.insertBookingData(request.decodedToken.email, request.body.bus_id)
+        await Booking.insertBookingData(request.decodedToken.email, request.body.bus_id);
     } catch (error) {
-        payload.status = "failed"
+        payload.status = 'failed';
     } finally {
-        response.json(payload)
+        response.json(payload);
     }
 }
 
 async function getBookings(request, response, next) {
-    let currentBookings = await Booking.getBookingInfo(request.decodedToken.email)
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-    currentBookings.forEach((item, index, array) => {
-        array[index].starting_date = item.starting_date.toLocaleDateString("en-US", options)
-        array[index].arrival_date = item.arrival_date.toLocaleDateString("en-US", options)
-    })
+    let currentBookings = await Booking.getBookingInfo(request.decodedToken.email);
+    const options = {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+    };
+    currentBookings = currentBookings.map((booking) => {
+        const formattedBooking = booking;
+        formattedBooking.starting_date = booking.starting_date.toLocaleDateString('en-US', options);
+        formattedBooking.arrival_date = booking.arrival_date.toLocaleDateString('en-US', options);
+        return formattedBooking;
+    });
 
-    response.renderAppend({currentBookings: currentBookings})
-    next()
+    response.renderAppend({ currentBookings });
+    next();
 }
+
+exports.bookTicket = bookTicket;
+exports.getBookings = getBookings;

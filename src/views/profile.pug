@@ -41,9 +41,9 @@ html
                                 .col-md-6
                                     p= PhoneNumber
         .container#bottom-container-style
-            h3(style= "padding-left: 5%; color:whitesmoke;") Your Booking History:
+            h3(style= "padding-left: 2%;") Click to view your Booking History:
             //- - const dataList = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00" }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00" }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00" }]
             - const dataList = currentBookings
-            each data in dataList
-                +accordionMaker(data)
+            +accordionMaker(dataList)
+
         include includes/footers

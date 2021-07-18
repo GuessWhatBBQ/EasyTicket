@@ -61,26 +61,29 @@ function Router() {
 
     this.processRoute = function processRoute(request, response, routes) {
         return new Promise((resolve, reject) => {
-            resolve(routes.reduce(async (routePromise, route) => {
+            const routesCompleted = routes.reduce(async (routePromise, route) => {
                 await routePromise;
                 if (route.routeRegex.test(request.url)) {
                     await route.requestProcessors.reduce(async (middlewarePromise, handler) => {
                         await middlewarePromise;
                         await this.processMiddleware(handler, request, response)
                             .catch((reason) => {
-                                console.log(reason);
                                 reject(reason);
                             });
                     }, Promise.resolve());
                 }
-            }, Promise.resolve()));
+            }, Promise.resolve());
+
+            routesCompleted
+                .then((routesPromise) => {
+                    resolve(routesPromise);
+                });
         });
     };
 
     this.processMiddleware = (middleware, request, response) => new Promise((resolve, reject) => {
         middleware(request, response, (error) => {
             if (error) {
-                console.log(error);
                 reject(error);
             } else {
                 resolve(true);

@@ -6,12 +6,14 @@ html
     head
         title Admin Panel
         include includes/headers
+        include includes/routecard
+        include css/adminPanelCSS
         include css/profileCSS
         include css/accordionCSS
         include css/routesCSS
     body
         include includes/navbar
-        .container#user-profile
+        #user-profile
             .row
                 .col-md-4
                     .profile-img
@@ -21,38 +23,45 @@ html
                         h5= FirstName+' '+LastName
                         h6 Administrator
                 .col-md-2
-                    a(class="btn btn-primary my-2 my-sm-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style= "margin-left:auto;") Edit Routes
+                    a(id ="button-one" class="btn btn-primary my-2 my-sm-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style= "margin-left:auto;") Edit Routes
                     ul.dropdown-menu
                         li
                             a.dropdown-item(href="#") Add Route
                         li
                             a.dropdown-item(href="#") Delete Route
-            .row
+            .row#second-row
                 .col-md-6.offset-md-4
                     #profile-tab(role="tabpanel" aria-labelledby="home-tab")
                         .row
-                            .col-md-6
+                            .col-sm-6
                                 label Name
-                            .col-md-6
+                            .col-sm-6
                                 p= FirstName+' '+LastName
                         .row
-                            .col-md-6
+                            .col-sm-6
                                 label Email Address
-                            .col-md-6
+                            .col-sm-6
                                 p= Email
                         .row
-                            .col-md-6
+                            .col-sm-6
                                 label Phone number
-                            .col-md-6
+                            .col-sm-6
                                 p= PhoneNumber
                 .col-md-2
-                    a(class="btn btn-primary my-2 my-sm-0" type="submit" style= "margin-left:auto;") Edit Trips
-        .container#bottom-container-style
-            h3(style= "padding-left: 2%;") Click to view all your Routes:
-            - const dataList = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00" }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00" }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00" }]
-            //- - const dataList = currentBookings
-            +accordionMaker(dataList,'flush-collapseOne')
-            h3(style= "margin-top: 2%; padding-left: 2%;") Click to view all your Buses:
-            +accordionMaker(dataList,'flush-collapseTwo')
+                    a(id ="button-two" class="btn btn-primary my-2 my-sm-0" type="submit" style= "margin-left:auto;") Edit Trips
+        #bottom-container-style
+            .row
+                .col-md-8
+                    #TripHeading
+                        h3 All your active Trips:
+                        button.btn.btn-primary
+                            |View All
+                    //- - const dataList = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 800 }]
+                    - const dataList = currentBookings
+                    each data in dataList
+                        +routeCard(data)
+                .col-md-4
+                    h3 Click to view all your Buses:
+                    +accordionMaker(dataList,'flush-collapseTwo')
 
         include includes/footers

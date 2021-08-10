@@ -40,3 +40,16 @@ style.
     #view-all-button:focus{
         box-shadow:none;
     }
+    .toBeHidden{
+        display:none;
+    }
+    .displayCard{
+        display: flex;
+        flex-flow: row wrap;
+        animation-delay: 5s;
+    }
+    @media (max-width: 576px){
+        .displayCard {
+            display: block;
+        }
+    }

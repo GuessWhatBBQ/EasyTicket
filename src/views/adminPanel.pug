@@ -11,6 +11,7 @@ html
         include css/profileCSS
         include css/accordionCSS
         include css/routesCSS
+        script(src="js/viewAllAdmin.js" defer)
     body
         include includes/navbar
         #user-profile
@@ -54,12 +55,12 @@ html
                 .col-lg-8
                     #TripHeading
                         h3 All your active Trips:
-                        button.btn.btn-primary#view-all-button
+                        button.btn.btn-primary#view-all-button(onclick="viewAll(this.id)")
                             |View All
-                    //- - const dataList = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 800 }]
-                    - const dataList = currentBookings
-                    each data in dataList
-                        +routeCard(data)
+                    - const dataList = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 800 }]
+                    //- - const dataList = currentBookings
+                    each data,index in dataList
+                        +routeCard(data,index)
                 .col-lg-4
                     h3 Click to view all your Buses:
                     +accordionMaker(dataList,'flush-collapseTwo')

@@ -77,6 +77,9 @@ function Router() {
             routesCompleted
                 .then((routesPromise) => {
                     resolve(routesPromise);
+                })
+                .catch((error) => {
+                    reject(error);
                 });
         });
     };
@@ -88,7 +91,10 @@ function Router() {
             } else {
                 resolve(true);
             }
-        });
+        })
+            .catch((error) => {
+                reject(error);
+            });
     });
 }
 

@@ -1,6 +1,5 @@
 mixin routeCard(routeData, index)
-    if index <= 0
-        .card-group
+    .card-group
             h5(class="card-title" style="display:none") 
                 = routeData.bus_id
             .card
@@ -45,54 +44,144 @@ mixin routeCard(routeData, index)
                         p.col-6 FARE:
                         p.col-6(class="card-text") 
                             = routeData.seat_fare
-            button.btn.btn-styles.bookTicket(id=routeData.bus_id type="button" onclick='confirmBookingMessage(this.id)') Book ticket
-    
+            button.btn.btn-styles.bookTicket(type="button" id=`b${routeData.bus_id}` onclick='viewSeats(this.id)') View Seats
 
-    else
-        .card-group.toBeHidden
-            h5(class="card-title" style="display:none") 
-                = routeData.bus_id
-            .card
-                .card-body
-                    .row
-                        p.col-6 PICKUP:
-                        p.col-6(class="card-text")
-                            = routeData.pickup
-                    .row        
-                        p.col-6 START DATE: 
-                        p.col-6(class="card-text")
-                            = routeData.starting_date
-                    .row    
-                        p.col-6 START TIME: 
-                        p.col-6(class="card-text")
-                            = routeData.starting_time
-            .card
-                .card-body
-                    .row
-                        p.col-6 DESTINATION:
-                        p.col-6(class="card-text")
-                            = routeData.destination
-                    .row        
-                        p.col-6 ARRIVAL DATE:
-                        p.col-6(class="card-text")
-                            = routeData.arrival_date
-                    .row    
-                        p.col-6 ARRIVAL TIME:
-                        p.col-6(class="card-text")
-                            = routeData.arrival_time
-            .card 
-                .card-body
-                    .row
-                        p.col-6 TOTAL SEATS:
-                        p.col-6(class="card-text") 
-                            = routeData.total_seat
-                    .row        
-                        p.col-6 AVAILABLE SEATS:
-                        p.col-6(class="card-text") 
-                            = routeData.available_seat
-                    .row        
-                        p.col-6 FARE:
-                        p.col-6(class="card-text") 
-                            = routeData.seat_fare
-    
-        
+    .bus-layout.toBeHidden(id=`seat-b${routeData.bus_id}`)
+        .bus-seats.col-md-4.offset-md-1
+            .driver
+                ul 
+                ul
+                ul
+                ul 
+                ul
+                    li
+                        img(src="./steering-wheel.svg" style="height:30px; width:30px")
+                        |Driver seat
+            .passengers
+                ul
+                    li
+                        img(src="./seat.svg")
+                        |A1
+                    li
+                        img(src="./seat.svg")  
+                        |B1
+                    li
+                        img(src="./seat.svg")  
+                        |C1
+                    li
+                        img(src="./seat.svg")  
+                        |D1
+                    li
+                        img(src="./seat.svg")  
+                        |E1
+                    li
+                        img(src="./seat.svg")  
+                        |F1
+                    li
+                        img(src="./seat.svg")  
+                        |G1
+                    li
+                        img(src="./seat.svg")  
+                        |H1
+                    li
+                        img(src="./seat.svg")  
+                        |I1
+                    li
+                        img(src="./seat.svg")  
+                        |J1
+                ul
+                    li
+                        img(src="./seat.svg")  
+                        |A2
+                    li
+                        img(src="./seat.svg")  
+                        |B2
+                    li
+                        img(src="./seat.svg")  
+                        |C2
+                    li
+                        img(src="./seat.svg")  
+                        |D2
+                    li
+                        img(src="./seat.svg")  
+                        |E2
+                    li
+                        img(src="./seat.svg")  
+                        |F2
+                    li
+                        img(src="./seat.svg")  
+                        |G2
+                    li
+                        img(src="./seat.svg")  
+                        |H2
+                    li
+                        img(src="./seat.svg")  
+                        |I2
+                    li
+                        img(src="./seat.svg")  
+                        |J2
+                ul
+                ul
+                    li
+                        img(src="./seat.svg")  
+                        |A3
+                    li
+                        img(src="./seat.svg")  
+                        |B3
+                    li
+                        img(src="./seat.svg")  
+                        |C3
+                    li
+                        img(src="./seat.svg")  
+                        |D3
+                    li
+                        img(src="./seat.svg")  
+                        |E3
+                    li
+                        img(src="./seat.svg")  
+                        |F3
+                    li
+                        img(src="./seat.svg")  
+                        |G3
+                    li
+                        img(src="./seat.svg")  
+                        |H3
+                    li
+                        img(src="./seat.svg")  
+                        |I3
+                    li
+                        img(src="./seat.svg")  
+                        |J3
+                ul
+                    li
+                        img(src="./seat.svg")  
+                        |A4
+                    li
+                        img(src="./seat.svg")  
+                        |B4
+                    li
+                        img(src="./seat.svg")  
+                        |C4
+                    li
+                        img(src="./seat.svg")  
+                        |D4
+                    li
+                        img(src="./seat.svg")  
+                        |E4
+                    li
+                        img(src="./seat.svg")  
+                        |F4
+                    li
+                        img(src="./seat.svg")  
+                        |G4
+                    li
+                        img(src="./seat.svg")  
+                        |H4
+                    li
+                        img(src="./seat.svg")  
+                        |I4
+                    li
+                        img(src="./seat.svg")  
+                        |J4    
+        .bus-seat-description.col-md-7
+            button.btn.btn-primary(id=`${routeData.bus_id}` type="button" onclick='confirmBookingMessage(this.id)') Book Ticket

@@ -63,12 +63,11 @@ mixin routeCard(routeData, index)
                         if(val!=0)
                             each index in ['A','B','C','D','E','F','G','H','I','J']
                                 li
-                                    img(src="./seat.svg" onclick='changeSeatColor(this)')
+                                    img(src="./seat.svg" class=`img-${routeData.bus_id}` onclick='changeSeatColor(this)')
                                     =index + val
 
         .bus-seat-description
             div
-                #selected-seats Seats Selected:
-                #numberof-selected-seats Number of seats Selected:
+                div(class ="commonNumberClass" id=`numberof-selected-seats-${routeData.bus_id}`) Number of seats Selected:
                 #total-fare Total Fare:
             button.btn.btn-primary(id=`${routeData.bus_id}` type="button" onclick='confirmBookingMessage(this.id)') Book Ticket

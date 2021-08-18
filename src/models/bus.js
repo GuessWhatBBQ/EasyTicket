@@ -2,26 +2,28 @@ const { dbclient } = require('./dbconnect');
 
 async function getBusRoutes(pickup, destination, startingDate) {
     let routes = [];
-    if (!pickup || !destination) {
+    if (!pickup || !destination || !startingDate) {
         return routes;
     }
-    if (!startingDate) {
-        const querystr = `
-        SELECT *
-        FROM bus
-        WHERE pickup = $1 AND destination = $2;
-        `;
-        routes = await dbclient.query(querystr, [pickup, destination])
-            .then((result) => result.rows);
-    } else {
-        const querystr = `
-        SELECT *
-        FROM bus
-        WHERE pickup = $1 AND destination = $2 AND starting_date = $3::date;
-        `;
-        routes = await dbclient.query(querystr, [pickup, destination, startingDate])
-            .then((result) => result.rows);
-    }
+    const querystr = `
+    SELECT * FROM bus
+        WHERE
+            pickup = $1
+            AND
+            destination = $2
+            AND
+            starting_weekday = $3
+            AND
+            bus_id NOT IN (
+                SELECT bus_id FROM cancelled_trip
+                    WHERE
+                        cancelled_trip.bus_id = bus.bus_id
+                        AND
+                        cancelled_trip.cancelled_trip_date = $4
+            );
+    `;
+    routes = await dbclient.query(querystr, [pickup, destination, startingDate.toLocaleDateString('default', { weekday: 'long' }).toLowerCase(), startingDate])
+        .then((result) => result.rows);
     return routes;
 }
 

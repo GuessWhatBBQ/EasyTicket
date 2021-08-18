@@ -9,10 +9,7 @@ function viewSeats(buttonID){
         hideOthers();
         changeOthersInnerText();   
         
-        viewLayoutButton.innerText = "Hide Seats"    //changes the innerText of it's own 
-
-        resetGreenSeats();
-        resetNumberOfSelectedSeats();
+        viewLayoutButton.innerText = "Hide Seats"    //changes the innerText of it's own
     }
     else{
         viewLayoutButton.innerText = "View Seats";   

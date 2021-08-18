@@ -44,7 +44,7 @@ mixin routeCard(routeData, index)
                         p.col-6 FARE:
                         p.col-6(class="card-text") 
                             = routeData.seat_fare
-            button.btn.btn-styles.viewOrhide(type="button" id=`b${routeData.bus_id}` onclick='viewSeats(this.id)') View Seats
+            button.btn.btn-styles.viewOrhide(type="button" id=`b${routeData.bus_id}` onclick='viewSeats(this.id); resetViewSeats(this.id);') View Seats
 
     .bus-layout.toBeHidden(id=`layout-b${routeData.bus_id}`)
         .bus-seats.col-sm-6.col-md-4.offset-md-1
@@ -69,5 +69,5 @@ mixin routeCard(routeData, index)
         .bus-seat-description
             div
                 div(class ="commonNumberClass" id=`numberof-selected-seats-${routeData.bus_id}`) Number of seats Selected:
-                div(id=`total-fare-${routeData.bus_id}`) Total Fare:
+                div(class = "commonFareClass" id=`total-fare-${routeData.bus_id}`) Total Fare:
             button.btn.btn-primary(id=`${routeData.bus_id}` type="button" onclick='confirmBookingMessage(this.id)') Book Ticket

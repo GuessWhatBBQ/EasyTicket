@@ -1,23 +1,37 @@
 function viewSeats(buttonID){
-    console.log("viewALl button clicked. ID of the button is",buttonID);
     
-    var card = document.getElementById(`seat-${buttonID}`);
-    console.log(card);
-
-    card.classList.toggle("displayCard");
-        
+    const viewSeatsButton = document.getElementById(`${buttonID}`); //this is the button that is clicked to view/hide seats
     
-
-    // const viewAllButton = document.querySelector(buttonID);
-    const viewSeatsButton = document.getElementById(`${buttonID}`);
-
     if(viewSeatsButton.innerText === 'View Seats')
-    {
-        viewSeatsButton.innerText = "Hide Seats"
+    {   
+        var toBeRemoved = document.getElementsByClassName("displayCard");   
+        for(var i=0; i<toBeRemoved.length; i++){
+            toBeRemoved[i].classList.remove("displayCard");     //removes the display of all other seat layouts
+        }
+
+        var bookTicketButtons = document.getElementsByClassName("bookTicket");  
+        for (var i = 0; i<bookTicketButtons.length;i ++){
+            bookTicketButtons[i].innerText = "View Seats";  //changes the innerText of all other .bookTicket buttons 
+        }
+        
+        viewSeatsButton.innerText = "Hide Seats"    //changes the innerText of it's own 
     }
     else{
-        viewSeatsButton.innerText = "View Seats"
+        viewSeatsButton.innerText = "View Seats";
     }
+
+    var card = document.getElementById(`layout-${buttonID}`);   //the default display is set to 'none'
+    card.classList.toggle("displayCard");   //displayCard will have display:block
+    
 }
 //to be hidden will have display:none;
-//displayCard will have display:block;
+
+function numberOfSelectedSeats(){
+    var number = document.querySelectorAll('.filter-green').length;
+    document.querySelector('#numberof-selected-seats').innerText = `Number of seats Selected: ${number}`;
+    console.log(number);
+}
+function changeSeatColor(element){
+    element.classList.toggle('filter-green');
+    numberOfSelectedSeats();
+}

@@ -47,14 +47,25 @@ style.
             margin-bottom:15px;
         }
     }
-    .bus-seats{
+    .toBeHidden{
+        display:none;
+    }
+    .displayCard{
+        display: flex;
+        flex-flow: row wrap;
+        animation-delay: 5s;
+    }
+    .bus-layout{
         margin-top:3%;
+        position: relative;
+        border: 1px solid red;
     }
     .driver{
         display:flex;
     }
     .driver >ul{
         padding-left:32px;
+        width:max-content;
     }
     .passengers{
         display:flex;
@@ -65,12 +76,27 @@ style.
     li{
         font-size:1.2rem;
     }
-    .toBeHidden{
-        display:none;
+    .bus-seat-description{
+        margin: 0;
+        position: absolute;
+        top: 40%;
+        left: 60%;
+        transform: translate(-50%, -50%);
     }
-    .displayCard{
-        display: flex;
-        flex-flow: row wrap;
-        animation-delay: 5s;
+    .bus-seat-description >div{
+        font-size:1.2rem;
+    }
+    .bus-seat-description >button{
+        margin-top:25px;
+        width:max-content;
+    }
+
+    @media screen and (max-width:688px){
+        .bus-seat-description{
+            left:80%;
+        }
     }
     
+    .filter-green{
+        filter: invert(48%) sepia(79%) saturate(2001%) hue-rotate(86deg) brightness(118%) contrast(119%);
+    }

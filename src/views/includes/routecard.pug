@@ -46,8 +46,8 @@ mixin routeCard(routeData, index)
                             = routeData.seat_fare
             button.btn.btn-styles.bookTicket(type="button" id=`b${routeData.bus_id}` onclick='viewSeats(this.id)') View Seats
 
-    .bus-layout.toBeHidden(id=`seat-b${routeData.bus_id}`)
-        .bus-seats.col-md-4.offset-md-1
+    .bus-layout.toBeHidden(id=`layout-b${routeData.bus_id}`)
+        .bus-seats.col-sm-6.col-md-4.offset-md-1
             .driver
                 ul 
                 ul
@@ -63,8 +63,12 @@ mixin routeCard(routeData, index)
                         if(val!=0)
                             each index in ['A','B','C','D','E','F','G','H','I','J']
                                 li
-                                    img(src="./seat.svg")
+                                    img(src="./seat.svg" onclick='changeSeatColor(this)')
                                     =index + val
 
-        .bus-seat-description.col-md-7
+        .bus-seat-description
+            div
+                #selected-seats Seats Selected:
+                #numberof-selected-seats Number of seats Selected:
+                #total-fare Total Fare:
             button.btn.btn-primary(id=`${routeData.bus_id}` type="button" onclick='confirmBookingMessage(this.id)') Book Ticket

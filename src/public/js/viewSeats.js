@@ -1,5 +1,5 @@
 function viewSeats(buttonID){
-    // console.log("View Seats button is clicked. ID of the button is",buttonID);
+    console.log("View Seats button is clicked. ID of the button is",buttonID,"(called from viewSeats.js)");
     
     const viewLayoutButton = document.getElementById(`${buttonID}`); //this is the button that is clicked to view/hide seats
     
@@ -10,6 +10,9 @@ function viewSeats(buttonID){
         changeOthersInnerText();   
         
         viewLayoutButton.innerText = "Hide Seats"    //changes the innerText of it's own
+
+        resetNumberOfSelectedSeats();
+        resetGreenSeats();
     }
     else{
         viewLayoutButton.innerText = "View Seats";   
@@ -32,4 +35,21 @@ function changeOthersInnerText(){           //changes the innerText of all other
         for (var i = 0; i<viewOrhideButtons.length;i ++){
             viewOrhideButtons[i].innerText = "View Seats";   
         }
+}
+
+function resetNumberOfSelectedSeats(){          //sets default innerText of
+    var commonNumberClass = document.getElementsByClassName("commonNumberClass");
+    var commonFareClass = document.getElementsByClassName("commonFareClass");
+    for(i=0; i<commonNumberClass.length; i++){
+        commonNumberClass[i].innerText = "Number of seats Selected: 0"; //'number of seats selected' div
+        commonFareClass[i].innerText = "Total Fare: 0";     //and 'total fare' div
+    }
+}
+
+function resetGreenSeats(){             //clears all selected seats
+    var greenSeats = document.querySelectorAll('.filter-green');
+    for(var i = 0; i<greenSeats.length; i++){
+        greenSeats[i].classList.remove("filter-green");
+    }
+    // console.log('All greenSeats are reset');
 }

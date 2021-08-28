@@ -4,7 +4,21 @@ function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function findSeatsSelected(){
+    var greenSeats = document.querySelectorAll('.filter-green');
+    var greenSeatsArray = [];
+
+    greenSeats.forEach(seat => {
+        var parent = seat.parentNode;
+        greenSeatsArray.push(parent.textContent.slice(0,2));
+    });
+    // console.log(greenSeatsArray);
+    return greenSeatsArray;
+}
+
 async function bookTicket(busID) {
+    const selectedSeats = findSeatsSelected();
+    console.log(selectedSeats);
     const payload = {
         method: 'POST',
         headers: {
@@ -43,5 +57,6 @@ function confirmBookingMessage(busID) {
             }
         });
 }
+
 
 window.confirmBookingMessage = confirmBookingMessage;

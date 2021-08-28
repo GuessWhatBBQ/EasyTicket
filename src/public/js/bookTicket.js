@@ -18,7 +18,7 @@ function findSeatsSelected(){
 
 async function bookTicket(busID) {
     const selectedSeats = findSeatsSelected();
-    console.log(selectedSeats);
+    // console.log(selectedSeats);
     const payload = {
         method: 'POST',
         headers: {

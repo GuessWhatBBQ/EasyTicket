@@ -1,4 +1,4 @@
-const Bus = require('../models/bus');
+const Bus = require('../models/trip');
 
 async function fetchBusRoutes(request, response) {
     const routes = {};
@@ -23,4 +23,11 @@ async function fetchBusRoutes(request, response) {
     response.render('routes.pug', routes);
 }
 
+async function showAllBusRoutes(request, response) {
+    const routes = await Bus.getPickupAndDestination();
+    response.renderAppend({ allRoutes: routes });
+    response.render('allroutes.pug');
+}
+
+exports.showAllBusRoutes = showAllBusRoutes;
 exports.fetchBusRoutes = fetchBusRoutes;

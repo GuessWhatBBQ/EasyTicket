@@ -14,13 +14,12 @@ const { bookTicket } = require('./bookticket');
 const { getBookings } = require('./bookticket');
 
 const { fetchBusRoutes } = require('./busroutes');
+const { showAllBusRoutes } = require('./busroutes');
 
 const { getRenderedTemplate } = require('./utils');
 const { updateNavbar } = require('./utils');
 
 const router = new Router();
-
-const Bus = require('../models/bus');
 
 router.use(verifyJWT, updateNavbar, getRenderedTemplate);
 
@@ -38,11 +37,7 @@ router.post('/api/login', verifyPassword, sendJWT);
 router.post('/api/register', verifyAvailable, registerNewUser, sendJWT);
 router.post('/api/updateprofile', verifyPassword, updateProfile, sendJWT);
 
-router.get('/routes', async (request, response) => {
-    const routes = await Bus.getPickupAndDestination();
-    response.renderAppend({ allRoutes: routes });
-    response.render('allroutes.pug');
-});
+router.get('/routes', showAllBusRoutes);
 router.post('/routesearch', fetchBusRoutes);
 router.post('/api/bookticket', bookTicket);
 

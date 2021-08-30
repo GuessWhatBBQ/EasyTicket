@@ -8,20 +8,13 @@ const User = require('../models/user');
 async function verifyPassword(request, response, next) {
     const email = request.body.email || request.decodedToken.email;
     const userInfo = await User.getInfo(email);
-    if (!userInfo) {
-        const payload = {
-            status: 'CREDSFAIL',
-            statusMsg: 'Credentials don\'t match',
-        };
-        response.json(payload);
-        return;
-    }
-
-    const match = await bcrypt.compare(request.body.password, userInfo.password);
-    if (match) {
-        response.dbQueryUserInfo = userInfo;
-        next();
-    } else {
+    try {
+        const match = await bcrypt.compare(request.body.password, userInfo.password);
+        if (match) {
+            response.dbQueryUserInfo = userInfo;
+            next();
+        }
+    } catch {
         const payload = {
             status: 'CREDSFAIL',
             statusMsg: 'Credentials don\'t match',

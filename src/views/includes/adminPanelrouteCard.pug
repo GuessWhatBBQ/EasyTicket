@@ -1,0 +1,42 @@
+mixin adminrouteCard(routeData)
+        .card-group.toBeHidden
+            h5(class="card-title" style="display:none") 
+                = routeData.bus_id
+            .card
+                .card-body
+                    .row
+                        p.col-6 PICKUP:
+                        p.col-6(class="card-text")
+                            = routeData.pickup
+                    .row        
+                        p.col-6 START DATE: 
+                        p.col-6(class="card-text")
+                            = routeData.starting_date
+                    .row    
+                        p.col-6 START TIME: 
+                        p.col-6(class="card-text")
+                            = routeData.starting_time
+            .card
+                .card-body
+                    .row
+                        p.col-6 DESTINATION:
+                        p.col-6(class="card-text")
+                            = routeData.destination
+                    .row        
+                        p.col-6 ARRIVAL DATE:
+                        p.col-6(class="card-text")
+                            = routeData.arrival_date
+                    .row    
+                        p.col-6 ARRIVAL TIME:
+                        p.col-6(class="card-text")
+                            = routeData.arrival_time
+            .card 
+                .card-body
+                    .row
+                        p.col-6 TOTAL SEATS:
+                        p.col-6(class="card-text") 
+                            = routeData.total_seat
+                    .row        
+                        p.col-6 AVAILABLE SEATS:
+                        p.col-6(class="card-text") 
+                            = routeData.available_seat

@@ -16,7 +16,7 @@ html
     body
         include includes/adminNav
         - const locations = ['Dhaka', 'Sylhet', 'Cox\'s Bazaar', 'Rajshahi', 'Rangpur', 'Chittagong', 'Madaripur', 'Khulna', 'Chandpur'];
-        form(action="/routesearch" method="POST")
+        form(action="/trips" method="POST")
                 .row.justify-content-center.g-1
                     .col-6.col-md-4
                         select(class="form-control" name="pickup")
@@ -31,7 +31,7 @@ html
                         label(for="start" style="padding:0") Date of Journey:
                         input(type="date" id="start" name="starting_date")
                 .row.justify-content-center
-                    button.btn.btn-styles#searchRouteButton(type="submit") Search routes
+                    button.btn.btn-styles#searchRouteButton(type="submit") Search Trips
                     
         #trip-container
             .row

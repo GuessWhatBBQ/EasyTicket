@@ -4,9 +4,9 @@ function createNewSeatingArrangement(columns, rows) {
     const seatingArrangement = {};
 
     // Creates an array of numbers from 1 -> rows
-    const numbers = [...Array(rows).keys()].map((i) => i + 1);
+    const numbers = [...Array(columns).keys()].map((i) => i + 1);
     // Creates an array of letters from A -> char(columns)
-    const letters = [...String.fromCharCode(...[...Array(columns).keys()].map((number) => number + 'A'.charCodeAt(0)))];
+    const letters = [...String.fromCharCode(...[...Array(rows).keys()].map((number) => number + 'A'.charCodeAt(0)))];
 
     letters.forEach((letter) => {
         numbers.forEach((number) => {

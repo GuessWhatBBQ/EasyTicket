@@ -1,5 +1,5 @@
 mixin routeCard(routeData)
-    .card-group
+    .card-group(id=`trip-${routeData.bus_id}`)
             h5(class="card-title" style="display:none") 
                 = routeData.bus_id
             .card

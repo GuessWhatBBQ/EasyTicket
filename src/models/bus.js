@@ -22,7 +22,9 @@ async function getBusRoutes(pickup, destination, startingDate) {
                         cancelled_trip.cancelled_trip_date = $4
             );
     `;
-    routes = await dbclient.query(querystr, [pickup, destination, startingDate.toLocaleDateString('default', { weekday: 'long' }).toLowerCase(), startingDate])
+    startingDate = new Date(startingDate);
+    const weekday = startingDate.toLocaleDateString('default', { weekday: 'long' }).toLowerCase();
+    routes = await dbclient.query(querystr, [pickup, destination, weekday, startingDate])
         .then((result) => result.rows);
     return routes;
 }

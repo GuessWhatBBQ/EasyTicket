@@ -2,7 +2,7 @@ const { dbclient } = require('./dbconnect');
 
 async function exists(email) {
     const querystr = `
-    SELECT * FROM useraccounts
+    SELECT * FROM user_account
         WHERE email = '${email}';
     `;
     const userExists = await dbclient
@@ -19,7 +19,7 @@ async function exists(email) {
 
 async function create(email, passwordHash, firstName, lastName, phoneNumber) {
     const querystr = `
-    INSERT INTO useraccounts (email, password, first_name, last_name, phone_number ) VALUES ($1, $2, $3, $4, $5);
+    INSERT INTO user_account (email, password, first_name, last_name, phone_number ) VALUES ($1, $2, $3, $4, $5);
     `;
     await dbclient
         .query(querystr, [email, passwordHash, firstName, lastName, phoneNumber]);
@@ -28,7 +28,7 @@ async function create(email, passwordHash, firstName, lastName, phoneNumber) {
 async function getInfo(email) {
     let userInfo;
     const querystr = `
-    SELECT * FROM useraccounts
+    SELECT * FROM user_account
         WHERE email = $1;
     `;
     const result = await dbclient.query(querystr, [email]);
@@ -50,7 +50,7 @@ async function updateInfo(email, firstName, lastName, phoneNumber) {
         phoneNumber = currentInfo.phone_number;
     }
     const querystr = `
-    UPDATE useraccounts
+    UPDATE user_account
     SET first_name = $2, last_name = $3, phone_number = $4
             WHERE email = $1
     RETURNING *;

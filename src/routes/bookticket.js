@@ -4,13 +4,23 @@ async function bookTicket(request, response) {
     const payload = {
         status: 'ok',
     };
-    try {
-        await Booking.insertBookingData(request.decodedToken.email, request.body.bus_id);
-    } catch (error) {
-        payload.status = 'failed';
-    } finally {
-        response.json(payload);
-    }
+    const { seats } = request.body;
+    const bookingCompleted = seats.reduce(async (bookingPromise, seat) => {
+        await bookingPromise;
+        await Booking.insertBookingData(
+            request.decodedToken.email,
+            request.body.bus_id,
+            seat,
+            request.body.starting_date,
+        );
+    }, Promise.resolve());
+    bookingCompleted
+        .catch(() => {
+            payload.status = 'failed';
+        })
+        .finally(() => {
+            response.json(payload);
+        });
 }
 
 async function getBookings(request, response, next) {
@@ -20,8 +30,10 @@ async function getBookings(request, response, next) {
     };
     currentBookings = currentBookings.map((booking) => {
         const formattedBooking = booking;
-        formattedBooking.starting_date = booking.starting_date.toLocaleDateString('en-US', options);
-        formattedBooking.arrival_date = booking.arrival_date.toLocaleDateString('en-US', options);
+        // formattedBooking.starting_date = booking.starting_date.toLocaleDateString('en-US', options);
+        // formattedBooking.arrival_date = booking.arrival_date.toLocaleDateString('en-US', options);
+        formattedBooking.arrival_date = {};
+        formattedBooking.starting_date = {};
         return formattedBooking;
     });
 

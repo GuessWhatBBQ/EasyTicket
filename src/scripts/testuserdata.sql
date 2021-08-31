@@ -7,3 +7,4 @@ INSERT INTO user_account (first_name, last_name, email, phone_number, password, 
 
 INSERT INTO supervisor (user_id) VALUES (2);
 INSERT INTO supervisor (user_id) VALUES (3);
+INSERT INTO admin (user_id) VALUES ((SELECT user_id FROM user_account WHERE email = 'samin@gmail.com'));

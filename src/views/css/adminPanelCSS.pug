@@ -1,0 +1,55 @@
+style.
+    #TripHeading {
+        display: flex;
+        justify-content:space-between;
+        margin-bottom: 10px;
+    }
+    .bookTicket{
+        display : none;
+    }
+    #bottom-container-style{
+        margin-left:5%;
+        width:90%;
+    }
+    
+    @media (max-width:767px) {
+        #second-row{
+            position:relative;
+        }
+        #button-one{
+            margin-top:2%!important;
+            margin-bottom:2%!important;
+            margin-left:21%!important;           
+        }
+        #button-two{
+            position: absolute;
+            bottom:100%;
+            left:61%;
+            margin-top:2%!important;
+            margin-bottom:2%!important;
+        }
+    }
+    @media screen and (max-width:576px) {
+        .card{
+            margin: 0!important;
+        }
+        .card-group{
+            margin-bottom :.75rem;
+        }
+    }
+    #view-all-button:focus{
+        box-shadow:none;
+    }
+    .toBeHidden{
+        display:none;
+    }
+    .displayCard{
+        display: flex;
+        flex-flow: row wrap;
+        animation-delay: 5s;
+    }
+    @media (max-width: 576px){
+        .displayCard {
+            display: block;
+        }
+    }

@@ -1,5 +1,5 @@
-mixin routeCard(routeData)
-    .card-group
+mixin adminrouteCard(routeData)
+        .card-group.toBeHidden
             h5(class="card-title" style="display:none") 
                 = routeData.bus_id
             .card
@@ -40,34 +40,3 @@ mixin routeCard(routeData)
                         p.col-6 AVAILABLE SEATS:
                         p.col-6(class="card-text") 
                             = routeData.available_seat
-                    .row        
-                        p.col-6 FARE:
-                        p.col-6(class="card-text") 
-                            = routeData.seat_fare
-            button.btn.btn-styles.viewOrhide(type="button" id=`b${routeData.bus_id}` onclick='viewSeats(this.id)') View Seats
-
-    .bus-layout.toBeHidden(id=`layout-b${routeData.bus_id}`)
-        .bus-seats.col-sm-6.col-md-4.offset-md-1
-            .driver
-                ul 
-                ul
-                ul
-                ul 
-                ul
-                    li
-                        img(src="./steering-wheel.svg" style="height:30px; width:30px")
-                        |Driver seat
-            .passengers
-                each val in [1,2,0,3,4]
-                    ul
-                        if(val!=0)
-                            each index in ['A','B','C','D','E','F','G','H','I','J']
-                                li
-                                    img(src="./seat.svg" class=`img-${routeData.bus_id}` onclick='selectSeat(this)')
-                                    =index + val
-
-        .bus-seat-description
-            div
-                div(class ="commonNumberClass" id=`numberof-selected-seats-${routeData.bus_id}`) Number of seats Selected:
-                div(class = "commonFareClass" id=`total-fare-${routeData.bus_id}`) Total Fare:
-            button.btn.btn-primary(id=`${routeData.bus_id}` type="button" onclick='confirmBookingMessage(this.id)') Book Ticket

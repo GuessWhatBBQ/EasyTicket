@@ -21,12 +21,25 @@ async function createNewTrip(busID, startingDate) {
     const columns = 4;
     const rows = 10;
 
+    // Total seats
+    const availableSeats = 40;
+
     const querystr = `
-        INSERT INTO trip (bus_id, starting_date, seating_arrangement)
-            VALUES ($1, $2, $3);
+        INSERT INTO trip (bus_id, starting_date, available_seats, seating_arrangement)
+            VALUES ($1, $2, $3, $4);
     `;
     const seatingArrangement = createNewSeatingArrangement(columns, rows);
-    await dbclient.query(querystr, [busID, startingDate, seatingArrangement]);
+    await dbclient.query(querystr, [busID, startingDate, availableSeats, seatingArrangement]);
+}
+
+async function decrementAvailSeat(tripID) {
+    const querystr = `
+    UPDATE trip
+    SET available_seats = available_seats - 1
+    WHERE trip_id = $1
+    `;
+
+    await dbclient.query(querystr, [tripID]);
 }
 
 async function updateTrip(tripID, seatNumber) {
@@ -37,18 +50,8 @@ async function updateTrip(tripID, seatNumber) {
                 WHERE trip_id = $1;
     `;
     await dbclient.query(querystr, [tripID, seatNumber]);
-}
-
-async function decrementAvailSeat(tripID) {
-    const querystr = `
-    UPDATE trip
-    SET available_seat = available_seat - 1
-    WHERE trip_id = $1
-    `;
-
-    await dbclient.query(querystr, [tripID]);
+    await decrementAvailSeat(tripID);
 }
 
 exports.createNewTrip = createNewTrip;
 exports.updateTrip = updateTrip;
-exports.decrementAvailSeat = decrementAvailSeat;

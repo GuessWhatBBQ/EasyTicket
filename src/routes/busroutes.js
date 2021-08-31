@@ -1,4 +1,4 @@
-const Bus = require('../models/trip');
+const Bus = require('../models/bus');
 
 async function fetchBusRoutes(request, response) {
     const routes = {};
@@ -14,10 +14,22 @@ async function fetchBusRoutes(request, response) {
     const options = {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     };
+    const weekdays = {
+        sunday: 0,
+        monday: 1,
+        tuesday: 2,
+        wednesday: 3,
+        thursday: 4,
+        friday: 5,
+        saturday: 6,
+    };
     routes.searchRoutes = routes.searchRoutes.map((route) => {
         const formattedRoute = route;
-        formattedRoute.starting_date = route.starting_date.toLocaleDateString('en-US', options);
-        formattedRoute.arrival_date = route.arrival_date.toLocaleDateString('en-US', options);
+        const date = new Date(request.body.starting_date);
+        formattedRoute.starting_date = date.toLocaleDateString('en-US', options);
+
+        date.setDate(date.getDate() + weekdays[route.arrival_weekday] - weekdays[route.starting_weekday]);
+        formattedRoute.arrival_date = date.toLocaleDateString('en-US', options);
         return formattedRoute;
     });
     response.render('routes.pug', routes);

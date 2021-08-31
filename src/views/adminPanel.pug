@@ -1,4 +1,6 @@
+include includes/locationsDropdown
 include includes/accordion
+include includes/adminPanelroutecard
 
 doctype html
 
@@ -6,64 +8,42 @@ html
     head
         title Admin Panel
         include includes/headers
-        include includes/adminPanelroutecard
         include css/adminPanelCSS
         include css/profileCSS
         include css/accordionCSS
         include css/routesCSS
-        script(src="js/viewAllAdmin.js" defer)
+        script(src="../../public/js/addTrips.js" defer)
     body
-        include includes/navbar
-        #user-profile
+        include includes/adminNav
+        - const locations = ['Dhaka', 'Sylhet', 'Cox\'s Bazaar', 'Rajshahi', 'Rangpur', 'Chittagong', 'Madaripur', 'Khulna', 'Chandpur'];
+        form(action="/routesearch" method="POST")
+                .row.justify-content-center.g-1
+                    .col-6.col-md-4
+                        select(class="form-control" name="pickup")
+                            option(value="" disabled selected hidden) Choose pickup location
+                            +dropdown(locations)
+                    .col-6.col-md-4
+                        select(class="form-control" name="destination")
+                            option(value="" disabled selected hidden) Choose destination
+                            +dropdown(locations)
+                .row.justify-content-center.g-1
+                    .row.justify-content-center.col-6.col-md-3(style="margin-top:2%")
+                        label(for="start" style="padding:0") Date of Journey:
+                        input(type="date" id="start" name="starting_date")
+                .row.justify-content-center
+                    button.btn.btn-styles#searchRouteButton(type="submit") Search routes
+                    
+        #trip-container
             .row
-                .col-md-4
-                    .profile-img
-                        img(src="img/dp.png" alt="")
-                .col-md-6.col-12
-                    #profile-head
-                        h5= FirstName+' '+LastName
-                        h6 Administrator
-                .col-md-2
-                    a(id ="button-one" class="btn btn-primary my-2 my-sm-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style= "margin-left:auto;") Edit Routes
-                    ul.dropdown-menu
-                        li
-                            a.dropdown-item(href="#") Add Route
-                        li
-                            a.dropdown-item(href="#") Delete Route
-            .row#second-row
-                .col-md-6.offset-md-4
-                    #profile-tab(role="tabpanel" aria-labelledby="home-tab")
-                        .row
-                            .col-sm-6
-                                label Name
-                            .col-sm-6
-                                p= FirstName+' '+LastName
-                        .row
-                            .col-sm-6
-                                label Email Address
-                            .col-sm-6
-                                p= Email
-                        .row
-                            .col-sm-6
-                                label Phone number
-                            .col-sm-6
-                                p= PhoneNumber
-                .col-md-2
-                    a(id ="button-two" class="btn btn-primary my-2 my-sm-0" type="submit" style= "margin-left:auto;") Edit Trips
-        #bottom-container-style
-            .row
-                .col-lg-8
+                .col-lg-10.offset-lg-1
                     #TripHeading
                         h3 All your active Trips:
-                        button.btn.btn-primary#view-all-button(onclick="viewAll(this.id)")
-                            |View All
-                    //- const dataList = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 800 }]
-                    - const dataList = currentBookings
-                    
+                        button.btn.btn-primary#add-trips(onclick="addTrips(this.id)")
+                            |Add Trips
+
+                    - const dataList = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 800 }]
+                    //- - const dataList = currentBookings
                     each data in dataList
-                        +adminrouteCard(data)
-                .col-lg-4
-                    h3 Click to view all your Buses:
-                    +accordionMaker(dataList,'flush-collapseTwo')
+                        +adminRoutecard(data)
 
         include includes/footers

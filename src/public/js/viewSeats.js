@@ -1,21 +1,21 @@
 function hideOthers() { // hides the display of all other seat layouts
-    const toBeRemoved = document.getElementsByClassName('displayCard');
-    for (let i = 0; i < toBeRemoved.length; i++) {
-        toBeRemoved[i].classList.remove('displayCard');
-    }
+    const toBeRemoved = document.querySelectorAll('.displayCard');
+    toBeRemoved.forEach((element) => {
+        element.classList.remove('displayCard');
+    });
 }
 
 function changeOthersInnerText() { // changes the innerText of all other 'Hide seats' buttons
-    const viewOrhideButtons = document.getElementsByClassName('viewOrhide');
-    for (let i = 0; i < viewOrhideButtons.length; i++) {
-        viewOrhideButtons[i].innerText = 'View Seats';
-    }
+    const viewOrhideButtons = document.querySelectorAll('.viewOrhide');
+    viewOrhideButtons.forEach((button) => {
+        button.innerText = 'View Seats';
+    });
 }
 
 function resetNumberOfSelectedSeats() { // sets default innerText of
     const commonNumberClass = document.getElementsByClassName('commonNumberClass');
     const commonFareClass = document.getElementsByClassName('commonFareClass');
-    for (i = 0; i < commonNumberClass.length; i++) {
+    for (let i = 0; i < commonNumberClass.length; i += 1) {
         commonNumberClass[i].innerText = 'Number of seats Selected: 0'; // 'number of seats selected' div
         commonFareClass[i].innerText = 'Total Fare: 0'; // and 'total fare' div
     }
@@ -23,17 +23,13 @@ function resetNumberOfSelectedSeats() { // sets default innerText of
 
 function resetGreenSeats() { // clears all selected seats
     const greenSeats = document.querySelectorAll('.filter-green');
-    for (let i = 0; i < greenSeats.length; i++) {
-        greenSeats[i].classList.remove('filter-green');
-    }
+    greenSeats.forEach((seat) => {
+        seat.classList.remove('filter-green');
+    });
     // console.log('All greenSeats are reset');
 }
 
-async function viewSeats(buttonID) {
-    const viewLayoutButton = document.getElementById(`${buttonID}`); // this is the button that is clicked to view/hide seats
-
-    const busID = buttonID.split('').slice(1).join('');
-    const startingDate = new Date(document.querySelector(`#trip-${busID}`).children[1].children[0].children[1].textContent.split(' ').slice(9).join(' '));
+async function fetchBookedSeats(busID, startingDate) {
     const payload = {
         method: 'POST',
         headers: {
@@ -55,6 +51,14 @@ async function viewSeats(buttonID) {
             });
         });
     }
+}
+
+async function viewSeats(buttonID) {
+    const viewLayoutButton = document.getElementById(`${buttonID}`); // this is the button that is clicked to view/hide seats
+
+    const busID = buttonID.split('').slice(1).join('');
+    const startingDate = new Date(document.querySelector(`#trip-${busID}`).children[1].children[0].children[1].textContent.split(' ').slice(9).join(' '));
+    await fetchBookedSeats(busID, startingDate);
 
     if (viewLayoutButton.innerText === 'View Seats') {
         // serial of function calls doesn't matter

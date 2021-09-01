@@ -1,4 +1,4 @@
-mixin adminActiveBus(routeData)
+mixin adminBusCard(routeData)
         .card-group
             h5(class="card-title" style="display:none") 
                 = routeData.bus_id
@@ -40,3 +40,9 @@ mixin adminActiveBus(routeData)
                         p.col-6 SEAT FARE:
                         p.col-6(class="card-text") 
                             = routeData.seat_fare
+                    .row
+                        p.col-6 SUPERVISOR: 
+                        p.col-6 Undefined   
+            label.switch
+                input(type="checkbox" id=`i-${routeData.bus_id}` onclick="deleteTrips(this.id)")
+                span(class="slider round")

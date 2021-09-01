@@ -14,7 +14,7 @@ async function getBusRoutes(pickup, destination, startingDate) {
             AND
             starting_weekday = $3
             AND
-            bus_id NOT IN (
+            bus.bus_id NOT IN (
                 SELECT bus_id FROM cancelled_trip
                     WHERE
                         cancelled_trip.bus_id = bus.bus_id

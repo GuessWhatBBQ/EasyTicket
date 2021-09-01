@@ -28,15 +28,25 @@ async function getBookings(request, response, next) {
     const options = {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     };
+    const weekdays = {
+        sunday: 0,
+        monday: 1,
+        tuesday: 2,
+        wednesday: 3,
+        thursday: 4,
+        friday: 5,
+        saturday: 6,
+    };
     currentBookings = currentBookings.map((booking) => {
         const formattedBooking = booking;
-        // formattedBooking.starting_date = booking.starting_date.toLocaleDateString('en-US', options);
-        // formattedBooking.arrival_date = booking.arrival_date.toLocaleDateString('en-US', options);
-        formattedBooking.arrival_date = {};
-        formattedBooking.starting_date = {};
+        formattedBooking.starting_date = booking.starting_date.toLocaleDateString('en-US', options);
+        const date = new Date(booking.starting_date);
+        let arrivalDate = date.getDate();
+        arrivalDate += weekdays[booking.arrival_weekday] - weekdays[booking.starting_weekday];
+        date.setDate(arrivalDate);
+        formattedBooking.arrival_date = date.toLocaleDateString('en-US', options);
         return formattedBooking;
     });
-
     response.renderAppend({ currentBookings });
     next();
 }

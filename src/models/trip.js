@@ -53,5 +53,15 @@ async function updateTrip(tripID, seatNumber) {
     await decrementAvailSeat(tripID);
 }
 
+async function getTripSeatingArrangement(tripID) {
+    const querystr = `
+        SELECT seating_arrangement FROM trip
+            WHERE trip_id = $1;
+    `;
+    const seatingArrangement = await dbclient.query(querystr, [tripID]);
+    return seatingArrangement;
+}
+
 exports.createNewTrip = createNewTrip;
 exports.updateTrip = updateTrip;
+exports.getTripSeatingArrangement = getTripSeatingArrangement;

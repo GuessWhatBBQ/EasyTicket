@@ -1,6 +1,8 @@
 include includes/locationsDropdown
 include includes/accordion
-include includes/adminPanelroutecard
+include includes/adminPanelTripscard
+include includes/adminPanelBus
+
 
 doctype html
 
@@ -12,11 +14,13 @@ html
         include css/profileCSS
         include css/accordionCSS
         include css/routesCSS
-        script(src="../../public/js/addTrips.js" defer)
+        script(src="./js/deleteTrip.js" defer)
+        script(src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" defer)
     body
         include includes/adminNav
         - const locations = ['Dhaka', 'Sylhet', 'Cox\'s Bazaar', 'Rajshahi', 'Rangpur', 'Chittagong', 'Madaripur', 'Khulna', 'Chandpur'];
-        form(action="/trips" method="POST")
+        .container    
+            form(action="/trips" method="POST")
                 .row.justify-content-center.g-1
                     .col-6.col-md-4
                         select(class="form-control" name="pickup")
@@ -38,12 +42,10 @@ html
                 .col-lg-10.offset-lg-1
                     #TripHeading
                         h3 All your active Trips:
-                        button.btn.btn-primary#add-trips(onclick="addTrips(this.id)")
-                            |Add Trips
 
                     - const dataList = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 800 }]
                     //- - const dataList = currentBookings
                     each data in dataList
-                        +adminRoutecard(data)
+                        +adminTripscard(data)
 
         include includes/footers

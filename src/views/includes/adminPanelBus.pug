@@ -1,4 +1,4 @@
-mixin adminRoutecard(routeData)
+mixin adminActiveBus(routeData)
         .card-group
             h5(class="card-title" style="display:none") 
                 = routeData.bus_id
@@ -9,7 +9,7 @@ mixin adminRoutecard(routeData)
                         p.col-6(class="card-text")
                             = routeData.pickup
                     .row        
-                        p.col-6 START DATE: 
+                        p.col-6 STARTING WEEKDAY: 
                         p.col-6(class="card-text")
                             = routeData.starting_date
                     .row    
@@ -23,7 +23,7 @@ mixin adminRoutecard(routeData)
                         p.col-6(class="card-text")
                             = routeData.destination
                     .row        
-                        p.col-6 ARRIVAL DATE:
+                        p.col-6 ARRIVAL WEEKDAY:
                         p.col-6(class="card-text")
                             = routeData.arrival_date
                     .row    
@@ -37,6 +37,6 @@ mixin adminRoutecard(routeData)
                         p.col-6(class="card-text") 
                             = routeData.total_seat
                     .row        
-                        p.col-6 AVAILABLE SEATS:
+                        p.col-6 SEAT FARE:
                         p.col-6(class="card-text") 
-                            = routeData.available_seat
+                            = routeData.seat_fare

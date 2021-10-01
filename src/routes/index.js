@@ -17,12 +17,11 @@ const { fetchBusRoutes } = require('./busroutes');
 const { showAllBusRoutes } = require('./busroutes');
 const { fetchSeatingArrangement } = require('./busroutes');
 
-const { getRenderedTemplate } = require('./utils');
 const { updateNavbar } = require('./utils');
 
 const router = new Router();
 
-router.use(verifyJWT, updateNavbar, getRenderedTemplate);
+router.use(verifyJWT, updateNavbar);
 
 router.get('/profile', async (request, response, next) => {
     if (!request.decodedToken) {

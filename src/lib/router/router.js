@@ -4,6 +4,7 @@ const { parseRouteToRegex } = require('./helpers');
 const { injectResponseHelpers } = require('./injector');
 const { injectRequestHelpers } = require('./injector');
 const { getStaticResouce } = require('./middleware');
+const { getRenderedTemplate } = require('./middleware');
 const { ignoreReq } = require('./middleware');
 
 function Router() {
@@ -45,14 +46,14 @@ function Router() {
         this.routeTable.use.push(layer);
     };
 
-    this.use(getStaticResouce);
-
     this.processRequest = async (request, response) => {
         injectResponseHelpers(response);
         await injectRequestHelpers(request);
         const routes = this.routeTable[request.method.toLowerCase()];
         this.processRoute(request, response, this.routeTable.use)
             .then(() => this.processRoute(request, response, routes))
+            .then(() => this.processRoute(request, response, [{ route: '', routeRegex: new RegExp(''), requestProcessors: [getStaticResouce] }]))
+            .then(() => this.processRoute(request, response, [{ route: '', routeRegex: new RegExp(''), requestProcessors: [getRenderedTemplate] }]))
             .then(() => this.processRoute(request, response, [{ route: '', routeRegex: new RegExp(''), requestProcessors: [ignoreReq] }]))
             .catch((reason) => {
                 console.log(reason);

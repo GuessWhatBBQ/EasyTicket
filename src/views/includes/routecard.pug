@@ -57,7 +57,7 @@ mixin routeCard(routeData)
                     li
                         img(src="./img/steering-wheel.svg" style="height:30px; width:30px")
                         |Driver seat
-            .passengers
+            .passengers(id=`seats-${routeData.bus_id}`)
                 each val in [1,2,0,3,4]
                     ul
                         if(val!=0)

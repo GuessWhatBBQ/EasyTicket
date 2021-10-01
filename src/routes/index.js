@@ -15,6 +15,7 @@ const { getBookings } = require('./bookticket');
 
 const { fetchBusRoutes } = require('./busroutes');
 const { showAllBusRoutes } = require('./busroutes');
+const { fetchSeatingArrangement } = require('./busroutes');
 
 const { getRenderedTemplate } = require('./utils');
 const { updateNavbar } = require('./utils');
@@ -36,6 +37,7 @@ router.get('/profile', async (request, response, next) => {
 router.post('/api/login', verifyPassword, sendJWT);
 router.post('/api/register', verifyAvailable, registerNewUser, sendJWT);
 router.post('/api/updateprofile', verifyPassword, updateProfile, sendJWT);
+router.post('/api/fetchseats', fetchSeatingArrangement);
 
 router.get('/routes', showAllBusRoutes);
 router.post('/routesearch', fetchBusRoutes);

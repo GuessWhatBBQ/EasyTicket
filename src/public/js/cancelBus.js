@@ -1,10 +1,13 @@
-function deleteTrips(buttonID) {
-    const bus = document.getElementById(buttonID.split("-")[1]);
-    // console.log(buttonID.split("-")[1]);
-    console.log(bus);
+function cancelBus(busID) {
+    const bus = document.getElementById(busID);
+
+    //date input by admin
+    const modalID = `j-${busID}`;
+    var date = document.getElementById(modalID).querySelector('input').value;
+    // console.log(date);
     
     swal({
-        text: 'Are you sure to remove this trip?',
+        text: 'Are you sure to remove this Bus?',
         buttons:{
             cancel: {
               text: "Cancel",
@@ -24,11 +27,19 @@ function deleteTrips(buttonID) {
     })
     .then((response) => {
         if (response){
-            bus.style.display = 'none';
-            //query to delete trip from database
+            //to show that it works
+            bus.style.backgroundColor = 'red';
+
+            //function to delete bus from database
         }
         else{
-            document.getElementById(buttonID).checked= false;
-        }        
+            //does nothing
+        } 
+        turnSliderGreen(`${busID}`);       
     });
+}
+
+function turnSliderGreen(busID){
+    const sliderID = (`i-${busID}`);    
+    document.getElementById(sliderID).checked= false;
 }

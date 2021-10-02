@@ -1,5 +1,6 @@
+include cancelBusMixin
 mixin adminBusCard(routeData)
-        .card-group
+        .card-group(id=`${routeData.bus_id}`)
             h5(class="card-title" style="display:none") 
                 = routeData.bus_id
             .card
@@ -44,5 +45,6 @@ mixin adminBusCard(routeData)
                         p.col-6 SUPERVISOR: 
                         p.col-6 Undefined   
             label.switch
-                input(type="checkbox" id=`i-${routeData.bus_id}` onclick="deleteTrips(this.id)")
+                input(type="checkbox" id=`i-${routeData.bus_id}` data-bs-toggle="modal" data-bs-target=`#j-${routeData.bus_id}`)
                 span(class="slider round")
+            +cancelBusMixin(routeData.bus_id)

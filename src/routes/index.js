@@ -19,6 +19,9 @@ const { fetchSeatingArrangement } = require('./busroutes');
 
 const { updateNavbar } = require('./utils');
 
+const { addBusRoute } = require('./admin/busroutes');
+const { cancelTripForSpecifcDate } = require('./admin/trip');
+
 const router = new Router();
 
 router.use(verifyJWT, updateNavbar);
@@ -41,5 +44,8 @@ router.post('/api/fetchseats', fetchSeatingArrangement);
 router.get('/routes', showAllBusRoutes);
 router.post('/routesearch', fetchBusRoutes);
 router.post('/api/bookticket', bookTicket);
+
+router.post('/api/admin/addbusroute', addBusRoute);
+router.post('/api/admin/canceltrip', cancelTripForSpecifcDate);
 
 exports.router = router;

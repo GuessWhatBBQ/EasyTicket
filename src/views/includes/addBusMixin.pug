@@ -3,16 +3,24 @@ mixin addBusMixin()
         div(class="modal-dialog modal-dialog modal-dialog-scrollable")
             div(class="modal-content")
                 div(class="modal-header")
-                    h5(class="modal-title") Modal title
+                    h5(class="modal-title") Add Bus info
                     button(class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close")
                 div(class="modal-body")
-                    form
+                    form.addBusFrom
                         input(placeholder="Pickup")
                         input(placeholder="Destination")
                         input(placeholder="Starting weekday")
                         input(placeholder="Number of Seats")
                         input(placeholder="Seat Fare")
-                
+                        input(placeholder="supervisor ID" id="supervisorInput" list="supervisor-list")
+
+
+                - const supervisorList = [ { supervisor_id: 1, first_name: "Moshiur", last_name: "Khan"},{ supervisor_id: 2, first_name: "Abdur", last_name: "Rahman"},{ supervisor_id: 3, first_name: "Sabir", last_name: "Ahmad"},{ supervisor_id: 4, first_name: "Saber", last_name: "Ahmed"},{ supervisor_id: 5, first_name:  "Mohammadan", last_name: "Sporting"},{ supervisor_id: 6, first_name:  "Rakib", last_name: "Salim"},{ supervisor_id: 7, first_name:  "Rakeb", last_name: "Selim"},{ supervisor_id: 8, first_name:  "Samin", last_name: "Yasar"},{ supervisor_id: 9, first_name:  "Samir", last_name: "Yasir"},{ supervisor_id: 10, first_name:  "Kabir", last_name: "Khan"},{ supervisor_id: 11, first_name:  "Kabin", last_name: "Khayer"}];
+               
+                        datalist#supervisor-list
+                            each supervisor in supervisorList
+                                option(value=supervisor.supervisor_id)= supervisor.first_name
+
                 div(class="modal-footer")
                     button(class="btn btn-secondary" type="button" data-bs-dismiss="modal") Close
                     button(class="btn btn-primary" type="submit" onclick="addBus()") Add Bus

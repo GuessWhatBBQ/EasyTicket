@@ -28,4 +28,26 @@ async function addBus(busInfo) {
             ],
         );
 }
+
+async function getBusRoutes(weekday, date) {
+    const querystr = `
+    SELECT * FROM bus
+        WHERE
+            starting_weekday = $1
+            AND
+            bus.bus_id NOT IN (
+                SELECT bus_id FROM cancelled_trip
+                    WHERE
+                        cancelled_trip.bus_id = bus.bus_id
+                        AND
+                        cancelled_trip.cancelled_trip_date = $2
+            );
+    `;
+
+    const busRoutes = await dbclient.query(querystr, [weekday, date]).then((result) => result.rows);
+
+    return busRoutes;
+}
+
+exports.getBusRoutes = getBusRoutes;
 exports.addBus = addBus;

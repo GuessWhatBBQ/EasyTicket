@@ -23,4 +23,11 @@ async function addBusRoute(request, response) {
     }
 }
 
+async function showBusPanel(request, response) {
+    const activeBus = await Bus.getBusRoutes('sunday', new Date());
+    response.renderAppend({ activeBus });
+    response.render('adminPanelBus.pug');
+}
+
+exports.showBusPanel = showBusPanel;
 exports.addBusRoute = addBusRoute;

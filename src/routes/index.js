@@ -21,7 +21,7 @@ const { updateNavbar } = require('./utils');
 
 const { addBusRoute } = require('./admin/busroutes');
 const { cancelTripForSpecifcDate } = require('./admin/trip');
-const { fetchSupervisors } = require('./admin/supervisor');
+const { addSupervisorOptions } = require('./admin/supervisor');
 const { showBusPanel } = require('./admin/busroutes');
 
 const router = new Router();
@@ -49,8 +49,7 @@ router.post('/api/bookticket', bookTicket);
 
 router.post('/api/admin/addbusroute', addBusRoute);
 router.post('/api/admin/canceltrip', cancelTripForSpecifcDate);
-router.post('/api/admin/fetchsupervisors', fetchSupervisors);
 
-router.get('/adminPanelBus', showBusPanel);
+router.get('/admin/bus', addSupervisorOptions, showBusPanel);
 
 exports.router = router;

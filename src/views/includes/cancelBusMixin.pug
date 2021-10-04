@@ -9,4 +9,4 @@ mixin cancelBusMixin(busID)
                         input(type="Date" style="margin-left:30%;")
                 div(class="modal-footer")
                     button(class="btn btn-secondary" type="button" data-bs-dismiss="modal" onclick=`turnSliderGreen('${busID}')`) Close 
-                    button(class="btn btn-primary" type="submit" data-bs-dismiss="modal" onclick=`cancelBus('${busID}')`) Cancel Bus
+                    button(class="btn btn-primary" type="submit" data-bs-dismiss="modal" onsubmit=`cancelBus('${busID}')`) Cancel Bus

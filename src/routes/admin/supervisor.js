@@ -1,8 +1,9 @@
 const Supervisor = require.main.require('./models/admin/supervisor');
 
-async function fetchSupervisors(request, response) {
-    const supervisors = await Supervisor.getSupervisors();
-    response.json(supervisors);
+async function addSupervisorOptions(request, response, next) {
+    const supervisorList = await Supervisor.getSupervisors();
+    response.renderAppend({ supervisorList });
+    next();
 }
 
-exports.fetchSupervisors = fetchSupervisors;
+exports.addSupervisorOptions = addSupervisorOptions;

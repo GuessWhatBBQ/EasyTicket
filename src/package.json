@@ -14,7 +14,7 @@
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mime-types": "^2.1.32",
+    "mime-types": "^2.1.33",
     "pg": "^8.7.1",
     "pug": "^3.0.2"
   },
@@ -22,6 +22,6 @@
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.24.2",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.13"
   }
 }

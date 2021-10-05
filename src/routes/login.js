@@ -5,6 +5,14 @@ require('dotenv').config();
 
 const User = require('../models/user');
 
+function failedLogin(response) {
+    const payload = {
+        status: 'CREDSFAIL',
+        statusMsg: 'Credentials don\'t match',
+    };
+    response.json(payload);
+}
+
 async function verifyPassword(request, response, next) {
     const email = request.body.email || request.decodedToken.email;
     const userInfo = await User.getInfo(email);
@@ -13,13 +21,11 @@ async function verifyPassword(request, response, next) {
         if (match) {
             response.dbQueryUserInfo = userInfo;
             next();
+        } else {
+            failedLogin(response);
         }
     } catch {
-        const payload = {
-            status: 'CREDSFAIL',
-            statusMsg: 'Credentials don\'t match',
-        };
-        response.json(payload);
+        failedLogin(response);
     }
 }
 

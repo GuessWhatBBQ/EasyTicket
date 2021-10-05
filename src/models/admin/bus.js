@@ -31,7 +31,7 @@ async function addBus(busInfo) {
 
 async function getBusRoutes(weekday, date) {
     const querystr = `
-    SELECT * FROM bus
+    SELECT * FROM bus INNER JOIN supervisor ON bus.supervisor_id = supervisor.supervisor_id
         WHERE
             starting_weekday = $1
             AND
@@ -45,7 +45,6 @@ async function getBusRoutes(weekday, date) {
     `;
 
     const busRoutes = await dbclient.query(querystr, [weekday, date]).then((result) => result.rows);
-
     return busRoutes;
 }
 

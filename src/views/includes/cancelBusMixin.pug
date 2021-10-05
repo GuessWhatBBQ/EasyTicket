@@ -5,8 +5,9 @@ mixin cancelBusMixin(busID)
                 div(class="modal-header")
                     h5(class="modal-title") Enter the Date on which the bus will be unavailable
                 div(class="modal-body")
-                    form
-                        input(type="Date" style="margin-left:30%;")
-                div(class="modal-footer")
-                    button(class="btn btn-secondary" type="button" data-bs-dismiss="modal" onclick=`turnSliderGreen('${busID}')`) Close 
-                    button(class="btn btn-primary" type="submit" data-bs-dismiss="modal" onsubmit=`cancelBus('${busID}')`) Cancel Bus
+                    form(id=`cancelBusForm${busID}`)
+                        input(type="Date" required style="margin-left:30%;")
+                        div(class="modal-footer")
+                            button(class="btn btn-secondary" type="button" data-bs-dismiss="modal" onclick=`turnSliderGreen('${busID}')`) Close
+                            button(class="btn btn-primary" id="cancelBusFormSubmitBtn" type="submit" onclick=`cancelBus('${busID}')`) Cancel Bus
+                            

@@ -12,7 +12,7 @@ mixin adminBusCard(routeData)
                     .row        
                         p.col-6 STARTING WEEKDAY: 
                         p.col-6(class="card-text")
-                            = routeData.starting_date
+                            = routeData.starting_weekday
                     .row    
                         p.col-6 START TIME: 
                         p.col-6(class="card-text")
@@ -26,7 +26,7 @@ mixin adminBusCard(routeData)
                     .row        
                         p.col-6 ARRIVAL WEEKDAY:
                         p.col-6(class="card-text")
-                            = routeData.arrival_date
+                            = routeData.arrival_weekday
                     .row    
                         p.col-6 ARRIVAL TIME:
                         p.col-6(class="card-text")
@@ -43,7 +43,8 @@ mixin adminBusCard(routeData)
                             = routeData.seat_fare
                     .row
                         p.col-6 SUPERVISOR: 
-                        p.col-6 Undefined   
+                        p.col-6(class="card-text") 
+                            = routeData.supervisor_id   
             label.switch
                 input(type="checkbox" id=`i-${routeData.bus_id}` data-bs-toggle="modal" data-bs-target=`#j-${routeData.bus_id}`)
                 span(class="slider round")

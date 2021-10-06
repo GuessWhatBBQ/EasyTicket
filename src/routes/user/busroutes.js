@@ -1,6 +1,6 @@
-const Bus = require('../models/bus');
-const Booking = require('../models/booking');
-const Trip = require('../models/trip');
+const Bus = require.main.require('./models/bus');
+const Booking = require.main.require('./models/booking');
+const Trip = require.main.require('./models/trip');
 
 async function fetchBusRoutes(request, response) {
     const routes = {};

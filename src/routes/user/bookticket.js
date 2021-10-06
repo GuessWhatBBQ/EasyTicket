@@ -1,4 +1,4 @@
-const Booking = require('../models/booking');
+const Booking = require.main.require('./models/booking');
 
 async function bookTicket(request, response) {
     const payload = {
@@ -8,7 +8,7 @@ async function bookTicket(request, response) {
     const bookingCompleted = seats.reduce(async (bookingPromise, seat) => {
         await bookingPromise;
         await Booking.insertBookingData(
-            request.decodedToken.email,
+            response.locals.decodedToken.email,
             request.body.bus_id,
             seat,
             request.body.starting_date,
@@ -24,7 +24,7 @@ async function bookTicket(request, response) {
 }
 
 async function getBookings(request, response, next) {
-    let currentBookings = await Booking.getBookingInfo(request.decodedToken.email);
+    let currentBookings = await Booking.getBookingInfo(response.locals.decodedToken.email);
     const options = {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     };

@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const User = require('../models/user');
+const User = require.main.require('./models/user');
 
 async function verifyAvailable(request, response, next) {
     const status = await User.exists(request.body.email);
@@ -25,7 +25,7 @@ async function registerNewUser(request, response, next) {
         formdata.lastname,
         formdata.phoneno,
     );
-    response.dbQueryUserInfo = await User.getInfo(request.body.email);
+    response.locals.dbQueryUserInfo = await User.getInfo(request.body.email);
     next();
 }
 

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 
-const User = require('../models/user');
+const User = require.main.require('./models/user');
 
 function failedLogin(response) {
     const payload = {
@@ -14,12 +14,12 @@ function failedLogin(response) {
 }
 
 async function verifyPassword(request, response, next) {
-    const email = request.body.email || request.decodedToken.email;
+    const email = request.body.email || response.locals.decodedToken.email;
     const userInfo = await User.getInfo(email);
     try {
         const match = await bcrypt.compare(request.body.password, userInfo.password);
         if (match) {
-            response.dbQueryUserInfo = userInfo;
+            response.locals.dbQueryUserInfo = userInfo;
             next();
         } else {
             failedLogin(response);
@@ -32,8 +32,8 @@ async function verifyPassword(request, response, next) {
 async function sendJWT(request, response) {
     const tokenSecret = process.env.JWT_SECRET;
     const tokenPayload = {
-        firstname: response.dbQueryUserInfo.first_name,
-        email: response.dbQueryUserInfo.email,
+        firstname: response.locals.dbQueryUserInfo.first_name,
+        email: response.locals.dbQueryUserInfo.email,
     };
     const token = await jwt.sign(tokenPayload, tokenSecret, { expiresIn: 60 * 60 * 24 * 7 });
     const payload = {
@@ -49,7 +49,7 @@ async function verifyJWT(request, response, next) {
             if (error) {
                 response.redirect('/login');
             } else {
-                request.decodedToken = decoded;
+                response.locals.decodedToken = decoded;
                 next();
             }
         });

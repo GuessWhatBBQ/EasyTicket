@@ -1,7 +1,7 @@
 async function updateNavbar(request, response, next) {
-    if (request.decodedToken) {
+    if (response.locals.decodedToken) {
         response.renderAppend({
-            FirstName: request.decodedToken.firstname,
+            FirstName: response.locals.decodedToken.firstname,
             loggedIn: true,
         });
     }

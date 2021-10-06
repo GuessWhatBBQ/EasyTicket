@@ -10,4 +10,4 @@ mixin cancelBusMixin(busID)
                         div(class="modal-footer")
                             button(class="btn btn-secondary" type="button" data-bs-dismiss="modal" onclick=`turnSliderGreen('${busID}')`) Close
                             button(class="btn btn-primary" id="cancelBusFormSubmitBtn" type="submit" onclick=`cancelBus('${busID}')`) Cancel Bus
-                            
+                            div(id=`errorPara-${busID}`)

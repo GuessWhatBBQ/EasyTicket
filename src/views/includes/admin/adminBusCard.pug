@@ -46,6 +46,6 @@ mixin adminBusCard(routeData)
                         p.col-6(class="card-text") 
                             = routeData.supervisor_id   
             label.switch
-                input(type="checkbox" id=`i-${routeData.bus_id}` data-bs-toggle="modal" data-bs-target=`#j-${routeData.bus_id}`)
+                input(type="checkbox" id=`i-${routeData.bus_id}` onclick=`createModal('j-${routeData.bus_id}')`)
                 span(class="slider round")
             +cancelBusMixin(routeData.bus_id)

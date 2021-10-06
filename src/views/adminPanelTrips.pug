@@ -1,6 +1,6 @@
 include includes/locationsDropdown
 include includes/accordion
-include includes/adminPanelTripscard
+include includes/admin/adminTripscard
 
 
 doctype html
@@ -14,7 +14,7 @@ html
         include css/accordionCSS
         include css/routesCSS
     body
-        include includes/adminNav
+        include includes/admin/adminNav
         - const locations = ['Dhaka', 'Sylhet', 'Cox\'s Bazaar', 'Rajshahi', 'Rangpur', 'Chittagong', 'Madaripur', 'Khulna', 'Chandpur'];
         .container    
             form(action="/trips" method="POST")

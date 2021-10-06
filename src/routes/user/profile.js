@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require.main.require('./models/user');
 
 async function getProfile(request, response, next) {
     const dbQueryUserInfo = await User.getInfo(request.decodedToken.email);
@@ -19,16 +19,16 @@ async function updateProfile(request, response, next) {
         request.body.firstname,
         request.body.lastname,
         request.body.phoneno,
-    )
+    ).catch(() => {
+        const payload = {};
+        payload.status = 'UPDATEFAIL';
+        payload.statusMsg = 'Your account could not be updated at this time';
+        const statusCode = 500;
+        response.json(payload, statusCode);
+    });
+    request.dbQueryUserInfo = await User.getInfo(request.decodedToken.email)
         .then(() => {
             next();
-        })
-        .catch(() => {
-            const payload = {};
-            payload.status = 'UPDATEFAIL';
-            payload.statusMsg = 'Your account could not be updated at this time';
-            const statusCode = 500;
-            response.json(payload, statusCode);
         });
 }
 

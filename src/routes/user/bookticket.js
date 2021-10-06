@@ -1,4 +1,4 @@
-const Booking = require('../models/booking');
+const Booking = require.main.require('./models/booking');
 
 async function bookTicket(request, response) {
     const payload = {

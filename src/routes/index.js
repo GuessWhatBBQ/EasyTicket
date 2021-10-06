@@ -1,21 +1,21 @@
 const { Router } = require('../lib/router/router');
 
-const { verifyAvailable } = require('./register');
-const { registerNewUser } = require('./register');
+const { verifyAvailable } = require('./user/register');
+const { registerNewUser } = require('./user/register');
 
-const { verifyPassword } = require('./login');
-const { sendJWT } = require('./login');
-const { verifyJWT } = require('./login');
+const { verifyPassword } = require('./user/login');
+const { sendJWT } = require('./user/login');
+const { verifyJWT } = require('./user/login');
 
-const { getProfile } = require('./profile');
-const { updateProfile } = require('./profile');
+const { getProfile } = require('./user/profile');
+const { updateProfile } = require('./user/profile');
 
-const { bookTicket } = require('./bookticket');
-const { getBookings } = require('./bookticket');
+const { bookTicket } = require('./user/bookticket');
+const { getBookings } = require('./user/bookticket');
 
-const { fetchBusRoutes } = require('./busroutes');
-const { showAllBusRoutes } = require('./busroutes');
-const { fetchSeatingArrangement } = require('./busroutes');
+const { fetchBusRoutes } = require('./user/busroutes');
+const { showAllBusRoutes } = require('./user/busroutes');
+const { fetchSeatingArrangement } = require('./user/busroutes');
 
 const { updateNavbar } = require('./utils');
 

@@ -1,8 +1,8 @@
 include includes/locationsDropdown
 include includes/accordion
-include includes/adminBusCard
-include includes/addBusMixin
-include includes/cancelBusMixin
+include includes/admin/adminBusCard
+include includes/admin/addBusMixin
+include includes/admin/cancelBusMixin
 
 
 doctype html
@@ -15,12 +15,12 @@ html
         include css/profileCSS
         include css/accordionCSS
         include css/routesCSS
-        script(src="../../public/js/addBus.js" defer)
-        script(src="../../public/js/cancelBus.js" defer)
+        script(src="./js/addBus.js" defer)
+        script(src="./js/cancelBus.js" defer)
         script(src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" defer)
 
     body
-        include includes/adminNav
+        include includes/admin/adminNav
         - const locations = ['Dhaka', 'Sylhet', 'Cox\'s Bazaar', 'Rajshahi', 'Rangpur', 'Chittagong', 'Madaripur', 'Khulna', 'Chandpur'];
         .container    
             form(action="/trips" method="POST")

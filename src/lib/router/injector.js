@@ -34,6 +34,7 @@ function injectResponseHelpers(response) {
         response.send(htmlcontent, httpcode, 'text/html', headers);
     };
 
+    response.locals = {};
     response.renderlocals = {};
 
     response.renderAppend = (object) => {

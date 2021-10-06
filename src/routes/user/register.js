@@ -25,7 +25,7 @@ async function registerNewUser(request, response, next) {
         formdata.lastname,
         formdata.phoneno,
     );
-    response.dbQueryUserInfo = await User.getInfo(request.body.email);
+    response.locals.dbQueryUserInfo = await User.getInfo(request.body.email);
     next();
 }
 

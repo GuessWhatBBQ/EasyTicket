@@ -1,7 +1,7 @@
 const User = require.main.require('./models/user');
 
 async function getProfile(request, response, next) {
-    const dbQueryUserInfo = await User.getInfo(request.decodedToken.email);
+    const dbQueryUserInfo = await User.getInfo(response.locals.decodedToken.email);
     if (dbQueryUserInfo) {
         response.renderAppend({
             FirstName: dbQueryUserInfo.first_name,
@@ -15,7 +15,7 @@ async function getProfile(request, response, next) {
 
 async function updateProfile(request, response, next) {
     await User.updateInfo(
-        request.decodedToken.email,
+        response.locals.decodedToken.email,
         request.body.firstname,
         request.body.lastname,
         request.body.phoneno,
@@ -26,10 +26,8 @@ async function updateProfile(request, response, next) {
         const statusCode = 500;
         response.json(payload, statusCode);
     });
-    request.dbQueryUserInfo = await User.getInfo(request.decodedToken.email)
-        .then(() => {
-            next();
-        });
+    response.locals.dbQueryUserInfo = await User.getInfo(response.locals.decodedToken.email);
+    next();
 }
 
 exports.getProfile = getProfile;

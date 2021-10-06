@@ -29,7 +29,7 @@ const router = new Router();
 router.use(verifyJWT, updateNavbar);
 
 router.get('/profile', async (request, response, next) => {
-    if (!request.decodedToken) {
+    if (!response.locals.decodedToken) {
         response.redirect('/signin');
     } else {
         next();

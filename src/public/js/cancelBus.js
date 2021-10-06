@@ -3,25 +3,32 @@ function matchWeekDay(date,busDay){
     //getting the day of input date by admin
     const day = new Date(date).getDay(); //sunday is 0
 
-    // busDay = busDay.toLowerCase();
-    // switch(busDay){
-    //     case sunday:
-    //         busDay = 0;
-    //     case monday:
-    //         busDay = 1;
-    //     case tuesday:
-    //         busDay = 2; 
-    //     case wednesday:
-    //         busDay = 3;  
-    //     case thursday:
-    //         busDay = 4;
-    //     case friday:
-    //         busDay = 5;
-    //     case saturday:
-    //         busDay = 6;  
-    // }
+    busDay = busDay.toLowerCase();
+    switch(busDay){
+        case 'sunday':
+            busDay = 0;
+            break;
+        case 'monday':
+            busDay = 1;
+            break;
+        case 'tuesday':
+            busDay = 2; 
+            break;
+        case 'wednesday':
+            busDay = 3;  
+            break;
+        case 'thursday':
+            busDay = 4;
+            break;
+        case 'friday':
+            busDay = 5;
+            break;
+        case 'saturday':
+            busDay = 6;  
+            break;
+    }
     
-    if(day == busDay) return true;
+    if(day === busDay) return true;
     else return false;
 }
 function addDOM(ID,message) {
@@ -59,8 +66,8 @@ function cancelBus(busID) {
     var date = document.getElementById(modalID).querySelector('input').value;
     if(date){
         //gives the starting weekday of the bus
-        // var busDay = document.getElementById(busID).querySelectorAll('.card-text')[1];
-        var busDay = 0;
+        var busDay = document.getElementById(busID).querySelectorAll('.card-text')[1].innerText;
+        // var busDay = 0;
         
         if(!matchWeekDay(date,busDay)){
             //when weekdays don't match show error
@@ -89,11 +96,27 @@ function cancelBus(busID) {
             })
             .then((response) => {
                 if (response){
-                    //to show that it works
-                    bus.style.backgroundColor = 'red';
-                    turnSliderGreen(`${busID}`);
-                    mdl.hide();
-                    //function to delete bus from database
+                turnSliderGreen(`${busID}`);
+                mdl.hide();
+                //sending busData to backend
+                const BusData = { 
+                                busID: busID,
+                                cancelledTripDate: date
+                            };
+                fetch('https://example.com/profile', {
+                        method: 'POST', // or 'PUT'
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(BusData),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
                 }
                 else{
                     //do nothing when swal cancel button is clicked

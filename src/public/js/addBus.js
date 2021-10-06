@@ -2,9 +2,10 @@ document.querySelector('.addBusFrom').addEventListener('submit',function addBus(
     event.preventDefault();
  
     //getting info of new bus to be added
-    const busInfo = {pickup :"", destination :"", startingWeekday :"",startingTime :"", arrivalWeekday :"",arrivalTime :"",seatFare :"",supervisorID :""};
-    
     let adminBusInput = document.querySelector('.addBusFrom').querySelectorAll("input");
+
+    const busInfo = {pickup :"", destination :"", startingWeekday :"",startingTime :"", arrivalWeekday :"",arrivalTime :"",seatFare :"",supervisorID :""};   
+
     busInfo.pickup = adminBusInput[0].value;
     busInfo.destination = adminBusInput[1].value;
     busInfo.startingWeekday = adminBusInput[2].value;
@@ -18,5 +19,20 @@ document.querySelector('.addBusFrom').addEventListener('submit',function addBus(
 
     //clears the previously inputted bus info
     adminBusInput.forEach(element => element.value = '');
+
+    fetch('/api/admin/addbusroute', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(busInfo),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     
 },false);

@@ -1,0 +1,42 @@
+mixin supervisorBusCard(routeData)
+        .card-group(id=`${routeData.bus_id}`)
+            h5(class="card-title" style="display:none") 
+                = routeData.bus_id
+            .card
+                .card-body
+                    .row
+                        p.col-6 PICKUP:
+                        p.col-6(class="card-text")
+                            = routeData.pickup
+                    .row        
+                        p.col-6 STARTING WEEKDAY: 
+                        p.col-6(class="card-text")
+                            = routeData.starting_weekday
+                    .row    
+                        p.col-6 START TIME: 
+                        p.col-6(class="card-text")
+                            = routeData.starting_time
+            .card
+                .card-body
+                    .row
+                        p.col-6 DESTINATION:
+                        p.col-6(class="card-text")
+                            = routeData.destination
+                    .row        
+                        p.col-6 ARRIVAL WEEKDAY:
+                        p.col-6(class="card-text")
+                            = routeData.arrival_weekday
+                    .row    
+                        p.col-6 ARRIVAL TIME:
+                        p.col-6(class="card-text")
+                            = routeData.arrival_time
+            .card 
+                .card-body
+                    .row
+                        p.col-6 TOTAL SEATS:
+                        p.col-6(class="card-text") 
+                            = routeData.total_seat
+                    .row        
+                        p.col-6 SEAT FARE:
+                        p.col-6(class="card-text") 
+                            = routeData.seat_fare

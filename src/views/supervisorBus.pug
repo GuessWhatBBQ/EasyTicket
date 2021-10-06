@@ -1,0 +1,17 @@
+html
+    head
+        title Admin Panel
+        include includes/headers
+        include css/adminPanelCSS
+        include css/profileCSS
+        include css/accordionCSS
+        include css/routesCSS
+        script(src="../../public/js/addBus.js" defer)
+        script(src="../../public/js/cancelBus.js" defer)
+        script(src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" defer)
+
+    body
+        include includes/supervisor/superNav
+        .container
+            h1 Buses you are currently connected to:
+        include includes/footers

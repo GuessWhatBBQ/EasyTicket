@@ -29,33 +29,8 @@ function resetGreenSeats() { // clears all selected seats
     // console.log('All greenSeats are reset');
 }
 
-async function fetchBookedSeats(busID, startingDate) {
-    const payload = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: { bus_id: busID, starting_date: startingDate },
-    };
-    payload.body = JSON.stringify(payload.body);
-    const seatingArrangement = await fetch('/api/fetchseats', payload)
-        .then((res) => res.json());
-
-    if (seatingArrangement.seating_arrangement) {
-        const seats = document.querySelector(`#seats-${busID}`);
-        seats.childNodes.forEach((column) => {
-            column.childNodes.forEach((element) => {
-                if (seatingArrangement.seating_arrangement[element.innerText]) {
-                    element.classList.add('seat-booked');
-                }
-            });
-        });
-    }
-}
-
 async function viewSeats(buttonID) {
     const viewLayoutButton = document.getElementById(`${buttonID}`); // this is the button that is clicked to view/hide seats
-
     // const busID = buttonID.split('').slice(1).join('');
 
     if (viewLayoutButton.innerText === 'View Seats') {
@@ -74,5 +49,3 @@ async function viewSeats(buttonID) {
     const card = document.getElementById(`layout-${buttonID}`); // default display of bus layout is set to 'none'
     card.classList.toggle('displayCard'); // displayCard will have display:block
 }
-
-window.viewSeats = viewSeats;

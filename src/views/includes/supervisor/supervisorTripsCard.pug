@@ -1,5 +1,5 @@
 mixin supervisorTripscard(routeData)
-        .card-group(id=`trip-${routeData.bus_id}`)
+    .card-group(id=`trip-${routeData.bus_id}`)
             h5(class="card-title" style="display:none") 
                 = routeData.bus_id
             .card
@@ -41,7 +41,8 @@ mixin supervisorTripscard(routeData)
                         p.col-6(class="card-text") 
                             = routeData.available_seat
             button.btn.btn-styles.viewOrhide(type="button" id=`b${routeData.bus_id}` onclick='viewSeats(this.id)') View Seats
-        .bus-layout.toBeHidden(id=`layout-b${routeData.bus_id}`)
+
+    .bus-layout.toBeHidden(id=`layout-b${routeData.bus_id}`)
         .bus-seats.col-sm-6.col-md-4.offset-md-1
             .driver
                 ul 

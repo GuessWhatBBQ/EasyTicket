@@ -47,6 +47,25 @@ async function getBookings(request, response, next) {
         formattedBooking.arrival_date = date.toLocaleDateString('en-US', options);
         return formattedBooking;
     });
+    function findMatch(alreadyAddedBooking, bookingToCheck) {
+        if (alreadyAddedBooking.bus_id === bookingToCheck.bus_id) {
+            if (alreadyAddedBooking.starting_date === bookingToCheck.starting_date) {
+                return true;
+            }
+        }
+        return false;
+    }
+    const filteredBookings = [];
+    currentBookings.forEach((booking) => {
+        const index = filteredBookings.findIndex((bk) => findMatch(bk, booking));
+        if (index === -1) {
+            booking.seats = [booking.seat_number];
+            filteredBookings.push(booking);
+        } else {
+            filteredBookings[index].seats.push(booking.seat_number);
+        }
+    });
+    currentBookings = filteredBookings;
     response.renderAppend({ currentBookings });
     next();
 }

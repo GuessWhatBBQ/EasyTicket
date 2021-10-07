@@ -14,6 +14,7 @@ async function addBusRoute(request, response) {
         busInfo.arrivalTime = request.body.arrivalTime;
         busInfo.seatFare = request.body.seatFare;
         busInfo.supervisorID = request.body.supervisorID;
+
         Bus.addBus(busInfo);
         response.json(payload);
     } catch {

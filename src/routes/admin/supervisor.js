@@ -1,9 +1,31 @@
-const Supervisor = require.main.require('./models/admin/supervisor');
+const bcrypt = require('bcrypt');
 
-async function addSupervisorOptions(request, response, next) {
+const Supervisor = require.main.require('./models/admin/supervisor');
+const User = require.main.require('./models/user');
+
+async function addSupervisorInfo(request, response, next) {
     const supervisorList = await Supervisor.getSupervisors();
     response.renderAppend({ supervisorList });
     next();
 }
 
-exports.addSupervisorOptions = addSupervisorOptions;
+async function registerNewSupervisor(request, response) {
+    const formdata = request.body;
+    formdata.password = await bcrypt.hash(formdata.password, 10);
+    await User.create(
+        formdata.email,
+        formdata.password,
+        formdata.firstName,
+        formdata.lastName,
+        formdata.phoneNumber,
+    );
+    await Supervisor.addSupervisor(formdata.email);
+    const payload = {
+        status: 'ok',
+        statusMsg: 'Supervisor added successfully',
+    };
+    response.json(payload);
+}
+
+exports.addSupervisorInfo = addSupervisorInfo;
+exports.registerNewSupervisor = registerNewSupervisor;

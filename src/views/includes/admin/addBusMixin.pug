@@ -6,17 +6,17 @@ mixin addBusMixin()
                     h5(class="modal-title") Add Bus info
                     button(class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close")
                 div(class="modal-body")
-                    form.addBusFrom
-                        input(placeholder="Pickup" type="text" required)
-                        input(placeholder="Destination" type="text" required)
-                        input(placeholder="Starting weekday" type="text" required)
-                        input(placeholder="Starting time" type="time" required)
+                    form(action="/api/admin/addbusroute" method="POST" id="bus-form").addBusFrom
+                        input(placeholder="Pickup" type="text" name="pickup" required)
+                        input(placeholder="Destination" type="text" name="destination" required)
+                        input(placeholder="Starting weekday" type="text" name="startingWeekday" required)
+                        input(placeholder="Starting time" type="time" name="startingTime" required)
                         <small style= "padding-left:3%;">Starting time</small>
-                        input(placeholder="Arrival weekday" type="text" required)
-                        input(placeholder="Arrival time" type="time" required)
+                        input(placeholder="Arrival weekday" type="text" name="arrivalWeekday" required)
+                        input(placeholder="Arrival time" type="time" name="arrivalTime" required)
                         <small style= "padding-left:3%;">Arrival time</small>
-                        input(placeholder="Seat Fare" type="number" required)
-                        input(placeholder="Supervisor ID" id="supervisorInput" list="supervisor-list" required)
+                        input(placeholder="Seat Fare" type="number" name="seatFare" required)
+                        input(placeholder="Supervisor ID" id="supervisorInput" list="supervisor-list" name="supervisorID" required)
                         div(class="modal-footer")
                             button(class="btn btn-secondary" type="button" data-bs-dismiss="modal") Close
                             button(id="addBusInfoBtn" class="btn btn-primary" type="submit") Add Bus

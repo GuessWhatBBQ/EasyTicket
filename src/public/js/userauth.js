@@ -31,17 +31,7 @@ async function fetchJWT(event) {
     const inputs = form.getElementsByTagName('input');
     const path = form.getAttribute('action');
 
-    const payload = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: {},
-    };
-    Array.from(inputs).forEach((input) => {
-        payload.body = { ...payload.body, [input.name]: input.value };
-    });
-    payload.body = JSON.stringify(payload.body);
+    const payload = createPayloadFromInput(inputs);
 
     const response = await fetch(path, payload)
         .then((res) => res.json());

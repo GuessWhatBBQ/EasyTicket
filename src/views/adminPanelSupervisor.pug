@@ -1,3 +1,9 @@
+include includes/locationsDropdown
+include includes/accordion
+include includes/admin/adminSupervisorCard
+include includes/admin/addSupervisorMixin
+
+
 doctype html
 
 html
@@ -8,10 +14,22 @@ html
         include css/profileCSS
         include css/accordionCSS
         include css/routesCSS
-        script(src="../../public/js/addBus.js" defer)
-        script(src="../../public/js/cancelBus.js" defer)
+        script(src="/js/addSupervisor.js" defer)
         script(src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" defer)
 
     body
         include includes/admin/adminNav
+
+        #trip-container
+            .row
+                .col-lg-10.offset-lg-1
+                    #TripHeading
+                        h3 All your Supervisors:
+                        button(class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2") Add Supervisor
+
+                    //- - const supervisor = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 800 }]
+                    each supervisor in supervisorList
+                        +adminSupervisorCard(supervisor)
+        +addSupervisorMixin()
+
         include includes/footers

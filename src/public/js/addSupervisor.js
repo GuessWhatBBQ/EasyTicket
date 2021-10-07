@@ -1,8 +1,8 @@
-document.querySelector('.addBusFrom').addEventListener('submit', (event) => {
+document.querySelector('.addSupervisorForm').addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const inputs = document.querySelector('.addBusFrom').getElementsByTagName('input');
-    const path = document.querySelector('.addBusFrom').getAttribute('action');
+    const inputs = document.querySelector('.addSupervisorForm').getElementsByTagName('input');
+    const path = document.querySelector('.addSupervisorForm').getAttribute('action');
 
     const payload = createPayloadFromInput(inputs);
 

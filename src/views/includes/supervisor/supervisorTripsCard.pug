@@ -64,6 +64,5 @@ mixin supervisorTripscard(routeData)
 
         .bus-seat-description
             div
-                div(class ="commonNumberClass" id=`numberof-selected-seats-${routeData.bus_id}`) Number of seats Selected:
-                div(class = "commonFareClass" id=`total-fare-${routeData.bus_id}`) Total Fare:
-            button.btn.btn-primary(id=`${routeData.bus_id}` type="button" onclick='confirmBookingMessage(this.id)') Book Ticket
+                div(class ="commonNumberClass" id=`passengerName-${routeData.bus_id}`)
+                div(class = "commonFareClass" id=`phoneNumber-${routeData.bus_id}`)

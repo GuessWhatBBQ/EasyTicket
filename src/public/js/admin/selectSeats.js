@@ -1,17 +1,23 @@
 function numberOfSelectedSeats(ID) {
     const number = document.querySelectorAll('.filter-green').length;
-    document.querySelector(`#numberof-selected-seats-${ID}`).innerText = `Number of seats Selected: ${number}`;
-    document.querySelector(`#total-fare-${ID}`).innerText = `Total Fare: ${400 * number}`;
+    document.querySelector(`#passengerName-${ID}`).innerText = `Name of passenger: ${number}`;
+    document.querySelector(`#phoneNumber-${ID}`).innerText = `Phone Number ${400 * number}`;
 }
 
 function selectSeat(element) {
-    element.classList.toggle('filter-green'); // why it appears green
-
-    // class of the img tag obtained from bus ID
-    const desiredClass = element.classList[0].toString();
-    // extracting the bus ID
-    const classArray = desiredClass.split('-');
-    numberOfSelectedSeats(classArray[1]);
+    const number = document.querySelectorAll('.filter-green').length;
+    if(number == 0){
+        element.classList.toggle('filter-green'); // why it appears green
+        // class of the img tag obtained from bus ID
+        const imgID = element.classList[0].toString();
+        // extracting the bus ID
+        const busID = imgID.split('-')[1];
+        numberOfSelectedSeats(busID);
+    }
+    else{
+        document.querySelector('.filter-green').classList.toggle('filter-green');
+        element.classList.toggle('filter-green'); // why it appears green
+    }
 }
 
 window.selectSeat = selectSeat;

@@ -32,12 +32,12 @@ function matchWeekDay(date,busDay){
     else return false;
 }
 function addDOM(ID,message) {
-    if (document.getElementById('errorParaSet')){
+    if (document.getElementById(`errorPara-${ID}`)){
         errorParagraph.style.display = 'block';
         return;
     }
     
-    errorParagraph.setAttribute('id', 'errorParaSet');
+    errorParagraph.setAttribute('id', `errorPara-${ID}`);
     errorParagraph.innerText = message;
     errorParagraph.style.color = 'red';
     errorParagraph.style.textAlign = 'center';
@@ -59,7 +59,6 @@ function createModal(ID){
 
 function cancelBus(busID) {
     document.getElementById(`cancelBusForm${busID}`).addEventListener('submit',e=>e.preventDefault(),false);
-    const bus = document.getElementById(busID);    
     const modalID = `j-${busID}`;
 
     //date input by admin

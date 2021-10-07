@@ -24,6 +24,7 @@ const { cancelTripForSpecifcDate } = require('./admin/trip');
 const { addSupervisorInfo } = require('./admin/supervisor');
 const { registerNewSupervisor } = require('./admin/supervisor');
 const { showBusPanel } = require('./admin/busroutes');
+const { checkIfAdmin } = require('./admin/utils');
 
 const router = new Router();
 
@@ -52,9 +53,11 @@ router.post('/api/admin/addbusroute', addBusRoute);
 router.post('/api/admin/canceltrip', cancelTripForSpecifcDate);
 router.post('/api/admin/addsupervisor', verifyAvailable, registerNewSupervisor);
 
+router.use('/admin', checkIfAdmin);
 router.get('/admin/bus', addSupervisorInfo, showBusPanel);
 router.get('/admin/supervisor', addSupervisorInfo, async (request, response) => {
     response.render('adminPanelSupervisor.pug');
 });
+router.get('/admin/trips');
 
 exports.router = router;

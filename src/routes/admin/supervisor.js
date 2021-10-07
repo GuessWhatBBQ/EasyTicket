@@ -11,7 +11,6 @@ async function addSupervisorInfo(request, response, next) {
 
 async function registerNewSupervisor(request, response) {
     const formdata = request.body;
-    console.log(formdata);
     formdata.password = await bcrypt.hash(formdata.password, 10);
     await User.create(
         formdata.email,

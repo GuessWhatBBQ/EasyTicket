@@ -1,0 +1,22 @@
+mixin adminSupervisorCard(supData)
+        .card-group(id=`${supData.supervisor_id}`)
+            h5(class="card-title" style="display:none") 
+                = supData.supervisor_id
+            .card
+                .card-body
+                    .row
+                        p.col-6 Name:
+                        p.col-6(class="card-text")
+                            = supData.first_name + " " + supData.last_name
+            .card
+                .card-body
+                    .row
+                        p.col-6 Phone number:
+                        p.col-6(class="card-text")
+                            = supData.phone_number
+            .card 
+                .card-body
+                    .row
+                        p.col-6 Email:
+                        p.col-6(class="card-text")
+                            = supData.email

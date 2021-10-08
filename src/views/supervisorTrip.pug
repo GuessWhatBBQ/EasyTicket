@@ -1,0 +1,39 @@
+include includes/supervisor/supervisorTripsCard
+include includes/locationsDropdown
+html
+    head
+        title Supervisor Panel
+        include includes/headers
+        include css/adminPanelCSS
+        include css/supervisorCSS
+        script(src="/js/admin/viewSeats.js")
+        script(src="/js/admin/selectSeats.js")
+        script(src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" defer)
+
+    body
+        include includes/supervisor/superNav
+        - const locations = ['Dhaka', 'Sylhet', 'Cox\'s Bazaar', 'Rajshahi', 'Rangpur', 'Chittagong', 'Madaripur', 'Khulna', 'Chandpur'];
+        .container    
+            form(action="/trips" method="POST")
+                .row.justify-content-center.g-1
+                    .col-6.col-md-4
+                        select(class="form-control" name="pickup")
+                            option(value="" disabled selected hidden) Choose pickup location
+                            +dropdown(locations)
+                    .col-6.col-md-4
+                        select(class="form-control" name="destination")
+                            option(value="" disabled selected hidden) Choose destination
+                            +dropdown(locations)
+                .row.justify-content-center.g-1
+                    .row.justify-content-center.col-6.col-md-3(style="margin-top:2%")
+                        label(for="start" style="padding:0") Date of Journey:
+                        input(type="date" id="start" name="starting_date")
+                .row.justify-content-center
+                    button.btn.btn-styles#searchRouteButton(type="submit") Search Trip
+        .container
+            h3 Trips for this week:
+            //- - const dataList = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 800 }]
+            - const dataList = currentSupervisorTrips
+            each data in dataList
+                +supervisorTripscard(data)
+        include includes/footers

@@ -18,17 +18,24 @@ const { showAllBusRoutes } = require('./user/busroutes');
 const { fetchSeatingArrangement } = require('./user/busroutes');
 
 const { updateNavbar } = require('./utils');
+const { fetchLocationList } = require('./utils');
 
 const { addBusRoute } = require('./admin/busroutes');
 const { cancelTripForSpecifcDate } = require('./admin/trip');
+const { fetchAllTrips } = require('./admin/trip');
 const { addSupervisorInfo } = require('./admin/supervisor');
 const { registerNewSupervisor } = require('./admin/supervisor');
 const { showBusPanel } = require('./admin/busroutes');
 const { checkIfAdmin } = require('./admin/utils');
 
+const { fetchPassengerInfo } = require('./supervisor/tripinfo');
+const { fetchTrips } = require('./supervisor/tripinfo');
+const { fetchSupervisorBusRoutes } = require('./supervisor/busroutes');
+const { checkIfSupervisor } = require('./supervisor/utils');
+
 const router = new Router();
 
-router.use(verifyJWT, updateNavbar);
+router.use(verifyJWT, updateNavbar, fetchLocationList);
 
 router.get('/profile', async (request, response, next) => {
     if (!response.locals.decodedToken) {
@@ -55,9 +62,14 @@ router.post('/api/admin/addsupervisor', verifyAvailable, registerNewSupervisor);
 
 router.use('/admin', checkIfAdmin);
 router.get('/admin/bus', addSupervisorInfo, showBusPanel);
+router.get('/admin/trips', fetchAllTrips);
 router.get('/admin/supervisor', addSupervisorInfo, async (request, response) => {
     response.render('adminPanelSupervisor.pug');
 });
-router.get('/admin/trips');
+
+router.post('/api/supervisor/fetchseats', fetchPassengerInfo);
+router.use('/supervisor', checkIfSupervisor);
+router.get('/supervisor/trips', fetchTrips);
+router.get('/supervisor/bus', fetchSupervisorBusRoutes);
 
 exports.router = router;

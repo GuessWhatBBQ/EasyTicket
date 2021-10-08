@@ -14,4 +14,14 @@ async function cancelTripForSpecifcDate(request, response) {
     }
 }
 
+async function fetchAllTrips(request, response) {
+    let supervisorTrips = await Trip.getAllTrips();
+    supervisorTrips = supervisorTrips.map((trip) => {
+        trip.total_seat = 40;
+        return trip;
+    });
+    response.render('adminPanelTrips.pug', { supervisorTrips });
+}
+
 exports.cancelTripForSpecifcDate = cancelTripForSpecifcDate;
+exports.fetchAllTrips = fetchAllTrips;

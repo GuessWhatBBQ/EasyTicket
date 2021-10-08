@@ -5,7 +5,7 @@ html
         title Update Profile
         include includes/headers
         include css/signin_signupCSS
-        script(defer type="text/javascript" src="js/userauth.js")
+        script(defer type="text/javascript" src="/js/userauth.js")
     body
         include includes/navbar
 
@@ -28,7 +28,7 @@ html
                                     .form-label.row
                                         label(for="phoneno" class="col-md-4 col-form-label text-md-end") Phone Number
                                         .col-md-6
-                                            input(type="text" id="phoneno" class="form-control" name="phoneno")
+                                            input(placeholder="Phone (01XXXXXXXXX)" type="tel" pattern="[0-9]{11}" id="phoneno" class="form-control" name="phoneno")
                                     .form-label.row
                                         label(for="password" class="col-md-4 col-form-label text-md-end") Password
                                         .col-md-6

@@ -1,5 +1,4 @@
-include cancelBusMixin
-mixin adminBusCard(routeData)
+mixin supervisorBusCard(routeData)
         .card-group(id=`${routeData.bus_id}`)
             h5(class="card-title" style="display:none") 
                 = routeData.bus_id
@@ -41,11 +40,3 @@ mixin adminBusCard(routeData)
                         p.col-6 SEAT FARE:
                         p.col-6(class="card-text") 
                             = routeData.seat_fare
-                    .row
-                        p.col-6 SUPERVISOR: 
-                        p.col-6(class="card-text") 
-                            = routeData.first_name + ' ' + routeData.last_name
-            label.switch
-                input(type="checkbox" id=`i-${routeData.bus_id}` onclick=`createModal('j-${routeData.bus_id}')`)
-                span(class="slider round")
-            +cancelBusMixin(routeData.bus_id)

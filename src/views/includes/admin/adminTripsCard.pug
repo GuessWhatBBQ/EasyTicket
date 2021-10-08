@@ -39,8 +39,8 @@ mixin adminTripscard(routeData)
                     .row        
                         p.col-6 AVAILABLE SEATS:
                         p.col-6(class="card-text") 
-                            = routeData.available_seat
+                            = routeData.available_seats
                     .row        
                         p.col-6 SUPERVISOR:
                         p.col-6(class="card-text") 
-                            = routeData.supervisor_name
+                            = routeData.first_name + ' ' + routeData.last_name

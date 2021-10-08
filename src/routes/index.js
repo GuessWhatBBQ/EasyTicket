@@ -22,6 +22,7 @@ const { fetchLocationList } = require('./utils');
 
 const { addBusRoute } = require('./admin/busroutes');
 const { cancelTripForSpecifcDate } = require('./admin/trip');
+const { fetchAllTrips } = require('./admin/trip');
 const { addSupervisorInfo } = require('./admin/supervisor');
 const { registerNewSupervisor } = require('./admin/supervisor');
 const { showBusPanel } = require('./admin/busroutes');
@@ -60,6 +61,7 @@ router.post('/api/admin/addsupervisor', verifyAvailable, registerNewSupervisor);
 
 router.use('/admin', checkIfAdmin);
 router.get('/admin/bus', addSupervisorInfo, showBusPanel);
+router.get('/admin/trips', fetchAllTrips);
 router.get('/admin/supervisor', addSupervisorInfo, async (request, response) => {
     response.render('adminPanelSupervisor.pug');
 });
@@ -67,7 +69,5 @@ router.get('/admin/supervisor', addSupervisorInfo, async (request, response) => 
 router.use('/supervisor', checkIfSupervisor);
 router.post('/api/supervisor/fetchseats', fetchPassengerInfo);
 router.get('/supervisor/trips', fetchTrips);
-
-router.get('/admin/trips');
 
 exports.router = router;

@@ -44,7 +44,7 @@ mixin adminBusCard(routeData)
                     .row
                         p.col-6 SUPERVISOR: 
                         p.col-6(class="card-text") 
-                            = routeData.supervisor_id   
+                            = routeData.first_name + ' ' + routeData.last_name
             label.switch
                 input(type="checkbox" id=`i-${routeData.bus_id}` onclick=`createModal('j-${routeData.bus_id}')`)
                 span(class="slider round")

@@ -39,6 +39,16 @@ async function getAllBusRoutes() {
     return routes;
 }
 
+async function getLocationList() {
+    const querystr = `
+        (SELECT pickup AS locations FROM bus)
+            UNION
+                (SELECT destination AS locations FROM bus);
+    `;
+    const locations = await dbclient.query(querystr).then((result) => result.rows);
+    return locations;
+}
+
 async function getPickupAndDestination() {
     const querystr = `
     SELECT DISTINCT pickup, destination
@@ -53,3 +63,4 @@ async function getPickupAndDestination() {
 exports.getBusRoutes = getBusRoutes;
 exports.getAllBusRoutes = getAllBusRoutes;
 exports.getPickupAndDestination = getPickupAndDestination;
+exports.getLocationList = getLocationList;

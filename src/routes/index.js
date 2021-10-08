@@ -18,6 +18,7 @@ const { showAllBusRoutes } = require('./user/busroutes');
 const { fetchSeatingArrangement } = require('./user/busroutes');
 
 const { updateNavbar } = require('./utils');
+const { fetchLocationList } = require('./utils');
 
 const { addBusRoute } = require('./admin/busroutes');
 const { cancelTripForSpecifcDate } = require('./admin/trip');
@@ -32,7 +33,7 @@ const { checkIfSupervisor } = require('./supervisor/utils');
 
 const router = new Router();
 
-router.use(verifyJWT, updateNavbar);
+router.use(verifyJWT, updateNavbar, fetchLocationList);
 
 router.get('/profile', async (request, response, next) => {
     if (!response.locals.decodedToken) {

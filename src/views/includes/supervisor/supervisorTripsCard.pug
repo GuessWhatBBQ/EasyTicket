@@ -39,7 +39,7 @@ mixin supervisorTripscard(routeData)
                     .row        
                         p.col-6 AVAILABLE SEATS:
                         p.col-6(class="card-text") 
-                            = routeData.available_seat
+                            = routeData.available_seats
             button.btn.btn-styles.viewOrhide(type="button" id=`b${routeData.trip_id}` onclick='viewSeats(this.id)') View Seats
 
     .bus-layout.toBeHidden(id=`layout-b${routeData.trip_id}`)

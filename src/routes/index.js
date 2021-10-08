@@ -66,8 +66,8 @@ router.get('/admin/supervisor', addSupervisorInfo, async (request, response) => 
     response.render('adminPanelSupervisor.pug');
 });
 
-router.use('/supervisor', checkIfSupervisor);
 router.post('/api/supervisor/fetchseats', fetchPassengerInfo);
+router.use('/supervisor', checkIfSupervisor);
 router.get('/supervisor/trips', fetchTrips);
 
 exports.router = router;

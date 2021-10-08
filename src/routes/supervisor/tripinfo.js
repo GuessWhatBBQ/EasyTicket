@@ -11,7 +11,11 @@ async function fetchPassengerInfo(request, response) {
 
 async function fetchTrips(request, response) {
     const { email } = response.locals.decodedToken;
-    const currentSupervisorTrips = await Trip.getTrips(email);
+    let currentSupervisorTrips = await Trip.getTrips(email);
+    currentSupervisorTrips = currentSupervisorTrips.map((trip) => {
+        trip.total_seat = 40;
+        return trip;
+    });
     response.renderAppend({ currentSupervisorTrips });
     response.render('supervisorTrip.pug');
 }

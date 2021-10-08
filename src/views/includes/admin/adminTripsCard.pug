@@ -1,46 +1,69 @@
 mixin adminTripscard(routeData)
-        .card-group(id=`${routeData.bus_id}`)
-            h5(class="card-title" style="display:none") 
-                = routeData.bus_id
-            .card
-                .card-body
-                    .row
-                        p.col-6 PICKUP:
-                        p.col-6(class="card-text")
-                            = routeData.pickup
-                    .row        
-                        p.col-6 START DATE: 
-                        p.col-6(class="card-text")
-                            = routeData.starting_date
-                    .row    
-                        p.col-6 START TIME: 
-                        p.col-6(class="card-text")
-                            = routeData.starting_time
-            .card
-                .card-body
-                    .row
-                        p.col-6 DESTINATION:
-                        p.col-6(class="card-text")
-                            = routeData.destination
-                    .row        
-                        p.col-6 ARRIVAL DATE:
-                        p.col-6(class="card-text")
-                            = routeData.arrival_date
-                    .row    
-                        p.col-6 ARRIVAL TIME:
-                        p.col-6(class="card-text")
-                            = routeData.arrival_time
-            .card 
-                .card-body
-                    .row
-                        p.col-6 TOTAL SEATS:
-                        p.col-6(class="card-text") 
-                            = routeData.total_seat
-                    .row        
-                        p.col-6 AVAILABLE SEATS:
-                        p.col-6(class="card-text") 
-                            = routeData.available_seats
-                    .row        
-                        p.col-6 SUPERVISOR:
-                        p.col-6(class="card-text") 
-                            = routeData.first_name + ' ' + routeData.last_name
+    .card-group(id=`trip-${routeData.trip_id}`)
+        h5(class="card-title" style="display:none") 
+            = routeData.trip_id
+        .card
+            .card-body
+                .row
+                    p.col-6 PICKUP:
+                    p.col-6(class="card-text")
+                        = routeData.pickup
+                .row        
+                    p.col-6 START DATE: 
+                    p.col-6(class="card-text")
+                        = routeData.starting_date
+                .row    
+                    p.col-6 START TIME: 
+                    p.col-6(class="card-text")
+                        = routeData.starting_time
+        .card
+            .card-body
+                .row
+                    p.col-6 DESTINATION:
+                    p.col-6(class="card-text")
+                        = routeData.destination
+                .row        
+                    p.col-6 ARRIVAL DATE:
+                    p.col-6(class="card-text")
+                        = routeData.arrival_date
+                .row    
+                    p.col-6 ARRIVAL TIME:
+                    p.col-6(class="card-text")
+                        = routeData.arrival_time
+        .card 
+            .card-body
+                .row
+                    p.col-6 TOTAL SEATS:
+                    p.col-6(class="card-text") 
+                        = routeData.total_seat
+                .row        
+                    p.col-6 AVAILABLE SEATS:
+                    p.col-6(class="card-text") 
+                        = routeData.available_seat
+        button.btn.btn-styles.viewOrhide(type="button" id=`b${routeData.trip_id}` onclick='viewSeats(this.id)') View Seats
+
+    .bus-layout.toBeHidden(id=`layout-b${routeData.trip_id}`)
+        .bus-seats.col-sm-6.col-md-4.offset-md-1
+            .driver
+                ul 
+                ul
+                ul
+                ul 
+                ul
+                    li
+                        img(src="/img/steering-wheel.svg" style="height:30px; width:30px")
+                        |Driver seat
+            .passengers(id=`seats-${routeData.trip_id}`)
+                each val in [1,2,0,3,4]
+                    ul
+                        if(val!=0)
+                            each index in ['A','B','C','D','E','F','G','H','I','J']
+                                li
+                                    img(src="/img/seat.svg" class=`img-${routeData.trip_id}` onclick='selectSeat(this)')
+                                    =index + val
+
+        .bus-seat-description
+            div
+                div(class ="commonNumberClass" id=`passengerName-${routeData.trip_id}`)
+                    | Click a seat to know the passenger's details
+                div(class = "commonFareClass" id=`phoneNumber-${routeData.trip_id}`)

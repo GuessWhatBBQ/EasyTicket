@@ -1,27 +1,39 @@
 const { dbclient } = require('../dbconnect');
 
-async function getSupervisorBusRoutes(weekday, date, email) {
+async function getSupervisorBusRoutes(pickup, destination, weekday, email) {
     const querystr = `
     SELECT * FROM bus INNER JOIN supervisor ON bus.supervisor_id = supervisor.supervisor_id
         INNER JOIN user_account ON user_account.user_id = supervisor.user_id
             WHERE
-                starting_weekday = $1
+                bus.pickup = $1
                 AND
-                user_account.email = $2
+                bus.destination = $2
                 AND
-                bus.bus_id NOT IN (
-                    SELECT bus_id FROM cancelled_trip
-                        WHERE
-                            cancelled_trip.bus_id = bus.bus_id
-                            AND
-                            cancelled_trip.cancelled_trip_date = $3
-                );
+                bus.starting_weekday = $3
+                AND
+                user_account.email = $4;
     `;
 
-    const busRoutes = await dbclient.query(querystr, [weekday, email, date])
+    const busRoutes = await dbclient.query(querystr, [pickup, destination, weekday, email])
+        .then((result) => result.rows);
+
+    return busRoutes;
+}
+
+async function getAllSupervisorBusRoutes(email) {
+    const querystr = `
+    SELECT * FROM bus INNER JOIN supervisor ON bus.supervisor_id = supervisor.supervisor_id
+        INNER JOIN user_account ON user_account.user_id = supervisor.user_id
+            WHERE
+                user_account.email = $1
+    ORDER BY bus.starting_weekday ASC;
+    `;
+
+    const busRoutes = await dbclient.query(querystr, [email])
         .then((result) => result.rows);
 
     return busRoutes;
 }
 
 exports.getSupervisorBusRoutes = getSupervisorBusRoutes;
+exports.getAllSupervisorBusRoutes = getAllSupervisorBusRoutes;

@@ -29,25 +29,34 @@ async function addBus(busInfo) {
         );
 }
 
-async function getBusRoutes(weekday, date) {
+async function getBusRoutes(pickup, destination, weekday) {
     const querystr = `
     SELECT * FROM bus INNER JOIN supervisor ON bus.supervisor_id = supervisor.supervisor_id
         INNER JOIN user_account ON user_account.user_id = supervisor.user_id
             WHERE
-                starting_weekday = $1
+                pickup = $1
                 AND
-                bus.bus_id NOT IN (
-                    SELECT bus_id FROM cancelled_trip
-                        WHERE
-                            cancelled_trip.bus_id = bus.bus_id
-                            AND
-                            cancelled_trip.cancelled_trip_date = $2
-                );
+                destination = $2
+                AND
+                starting_weekday = $3;
     `;
 
-    const busRoutes = await dbclient.query(querystr, [weekday, date]).then((result) => result.rows);
+    const busRoutes = await dbclient
+        .query(querystr, [pickup, destination, weekday])
+        .then((result) => result.rows);
+    return busRoutes;
+}
+
+async function getAllBusRoutes() {
+    const querystr = `
+    SELECT * FROM bus INNER JOIN supervisor ON bus.supervisor_id = supervisor.supervisor_id
+        INNER JOIN user_account ON user_account.user_id = supervisor.user_id ORDER BY bus.starting_weekday;
+    `;
+
+    const busRoutes = await dbclient.query(querystr).then((result) => result.rows);
     return busRoutes;
 }
 
 exports.getBusRoutes = getBusRoutes;
+exports.getAllBusRoutes = getAllBusRoutes;
 exports.addBus = addBus;

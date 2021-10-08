@@ -2,7 +2,11 @@ const Trip = require.main.require('./models/supervisor/trip');
 
 async function fetchPassengerInfo(request, response) {
     const passengerInfo = await Trip.getPassengerInfo(request.body.tripID, request.body.seatNumber);
-    response.json(passengerInfo);
+    if (passengerInfo.length !== 0) {
+        response.json({ ...passengerInfo[0], found: true });
+    } else {
+        response.json({ found: false });
+    }
 }
 
 async function fetchTrips(request, response) {

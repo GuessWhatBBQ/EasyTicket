@@ -1,7 +1,7 @@
 mixin supervisorTripscard(routeData)
-    .card-group(id=`trip-${routeData.bus_id}`)
+    .card-group(id=`trip-${routeData.trip_id}`)
             h5(class="card-title" style="display:none") 
-                = routeData.bus_id
+                = routeData.trip_id
             .card
                 .card-body
                     .row
@@ -40,9 +40,9 @@ mixin supervisorTripscard(routeData)
                         p.col-6 AVAILABLE SEATS:
                         p.col-6(class="card-text") 
                             = routeData.available_seat
-            button.btn.btn-styles.viewOrhide(type="button" id=`b${routeData.bus_id}` onclick='viewSeats(this.id)') View Seats
+            button.btn.btn-styles.viewOrhide(type="button" id=`b${routeData.trip_id}` onclick='viewSeats(this.id)') View Seats
 
-    .bus-layout.toBeHidden(id=`layout-b${routeData.bus_id}`)
+    .bus-layout.toBeHidden(id=`layout-b${routeData.trip_id}`)
         .bus-seats.col-sm-6.col-md-4.offset-md-1
             .driver
                 ul 
@@ -53,16 +53,17 @@ mixin supervisorTripscard(routeData)
                     li
                         img(src="/img/steering-wheel.svg" style="height:30px; width:30px")
                         |Driver seat
-            .passengers(id=`seats-${routeData.bus_id}`)
+            .passengers(id=`seats-${routeData.trip_id}`)
                 each val in [1,2,0,3,4]
                     ul
                         if(val!=0)
                             each index in ['A','B','C','D','E','F','G','H','I','J']
                                 li
-                                    img(src="/img/seat.svg" class=`img-${routeData.bus_id}` onclick='selectSeat(this)')
+                                    img(src="/img/seat.svg" class=`img-${routeData.trip_id}` onclick='selectSeat(this)')
                                     =index + val
 
         .bus-seat-description
             div
-                div(class ="commonNumberClass" id=`passengerName-${routeData.bus_id}`)
-                div(class = "commonFareClass" id=`phoneNumber-${routeData.bus_id}`)
+                div(class ="commonNumberClass" id=`passengerName-${routeData.trip_id}`)
+                    | Click a seat to know the passenger's details
+                div(class = "commonFareClass" id=`phoneNumber-${routeData.trip_id}`)

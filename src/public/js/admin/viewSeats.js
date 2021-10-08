@@ -16,8 +16,8 @@ function resetNumberOfSelectedSeats() { // sets default innerText of
     const commonNumberClass = document.getElementsByClassName('commonNumberClass');
     const commonFareClass = document.getElementsByClassName('commonFareClass');
     for (let i = 0; i < commonNumberClass.length; i += 1) {
-        commonNumberClass[i].innerText = 'Number of seats Selected: 0'; // 'number of seats selected' div
-        commonFareClass[i].innerText = 'Total Fare: 0'; // and 'total fare' div
+        commonNumberClass[i].innerText = 'Click a seat to know the passenger\'s details'; // 'number of seats selected' div
+        commonFareClass[i].innerText = ''; // and 'total fare' div
     }
 }
 
@@ -49,3 +49,5 @@ async function viewSeats(buttonID) {
     const card = document.getElementById(`layout-${buttonID}`); // default display of bus layout is set to 'none'
     card.classList.toggle('displayCard'); // displayCard will have display:block
 }
+
+window.viewSeats = viewSeats;

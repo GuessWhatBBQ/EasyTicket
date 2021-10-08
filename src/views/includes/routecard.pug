@@ -55,7 +55,7 @@ mixin routeCard(routeData)
                 ul 
                 ul
                     li
-                        img(src="./img/steering-wheel.svg" style="height:30px; width:30px")
+                        img(src="/img/steering-wheel.svg" style="height:30px; width:30px")
                         |Driver seat
             .passengers(id=`seats-${routeData.bus_id}`)
                 each val in [1,2,0,3,4]
@@ -63,7 +63,7 @@ mixin routeCard(routeData)
                         if(val!=0)
                             each index in ['A','B','C','D','E','F','G','H','I','J']
                                 li
-                                    img(src="./img/seat.svg" class=`img-${routeData.bus_id}` onclick='selectSeat(this)')
+                                    img(src="/img/seat.svg" class=`img-${routeData.bus_id}` onclick='selectSeat(this)')
                                     =index + val
 
         .bus-seat-description

@@ -1,4 +1,4 @@
-include includes/supervisor/supervisorbusCard
+include includes/supervisor/supervisorBusCard
 include includes/locationsDropdown
 html
     head
@@ -10,7 +10,7 @@ html
 
     body
         include includes/supervisor/superNav
-        - const locations = ['Dhaka', 'Sylhet', 'Cox\'s Bazaar', 'Rajshahi', 'Rangpur', 'Chittagong', 'Madaripur', 'Khulna', 'Chandpur'];
+        //- - const locations = ['Dhaka', 'Sylhet', 'Cox\'s Bazaar', 'Rajshahi', 'Rangpur', 'Chittagong', 'Madaripur', 'Khulna', 'Chandpur'];
         .container    
             form(action="/trips" method="POST")
                 .row.justify-content-center.g-1
@@ -30,7 +30,7 @@ html
                     button.btn.btn-styles#searchRouteButton(type="submit") Search Bus
         .container
             h3 Buses you are currently connected with:
-            - const activeBus = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 800 }]
+            //- - const activeBus = [{ bus_id: 10, pickup: 'Dhaka', destination: 'Sylhet', starting_date: "July 4, 2021", starting_time: "20:00", arrival_date: "July 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 12, pickup: 'Dhaka', destination: 'Chattogram', starting_date: "August 4, 2021", starting_time: "20:00", arrival_date: "August 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 400 }, { bus_id: 14, pickup: 'Khulna', destination: 'Rangpur', starting_date: "September 4, 2021", starting_time: "20:00", arrival_date: "September 5, 2021", arrival_time: "04:00", total_seat: 40, available_seat: 12, seat_fare: 800 }]
             each bus in activeBus
                 +supervisorBusCard(bus)
             

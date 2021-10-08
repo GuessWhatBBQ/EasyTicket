@@ -30,6 +30,7 @@ const { checkIfAdmin } = require('./admin/utils');
 
 const { fetchPassengerInfo } = require('./supervisor/tripinfo');
 const { fetchTrips } = require('./supervisor/tripinfo');
+const { fetchSupervisorBusRoutes } = require('./supervisor/busroutes');
 const { checkIfSupervisor } = require('./supervisor/utils');
 
 const router = new Router();
@@ -69,5 +70,6 @@ router.get('/admin/supervisor', addSupervisorInfo, async (request, response) => 
 router.post('/api/supervisor/fetchseats', fetchPassengerInfo);
 router.use('/supervisor', checkIfSupervisor);
 router.get('/supervisor/trips', fetchTrips);
+router.get('/supervisor/bus', fetchSupervisorBusRoutes);
 
 exports.router = router;

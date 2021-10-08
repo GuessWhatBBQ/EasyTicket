@@ -38,7 +38,12 @@ async function getRenderedTemplate(request, response, next) {
 }
 
 async function ignoreReq(request, response) {
-    response.redirect('/pagenotfound', 307);
+    const headers = {
+        'Cache-Control': 'no-cache, no-store, must-revalidate', // HTTP 1.1.
+        Pragma: 'no-cache', // HTTP 1.0.
+        Expires: '0', // Proxies.
+    };
+    response.render('/pagenotfound.pug', {}, 404, headers);
 }
 
 exports.getStaticResouce = getStaticResouce;

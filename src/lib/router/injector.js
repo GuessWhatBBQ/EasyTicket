@@ -5,7 +5,7 @@ const { processRequestBody } = require('./helpers');
 const { parseCookie } = require('./helpers');
 
 function injectResponseHelpers(response) {
-    response.redirect = (route, statuscode = 301) => {
+    response.redirect = (route, statuscode = 302) => {
         response.writeHead(statuscode, { Location: route });
         response.end();
     };

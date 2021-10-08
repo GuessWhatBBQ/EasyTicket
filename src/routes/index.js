@@ -28,6 +28,7 @@ const { checkIfAdmin } = require('./admin/utils');
 
 const { fetchPassengerInfo } = require('./supervisor/tripinfo');
 const { fetchTrips } = require('./supervisor/tripinfo');
+const { checkIfSupervisor } = require('./supervisor/utils');
 
 const router = new Router();
 
@@ -61,6 +62,8 @@ router.get('/admin/bus', addSupervisorInfo, showBusPanel);
 router.get('/admin/supervisor', addSupervisorInfo, async (request, response) => {
     response.render('adminPanelSupervisor.pug');
 });
+
+router.use('/supervisor', checkIfSupervisor);
 router.post('/api/supervisor/fetchseats', fetchPassengerInfo);
 router.get('/supervisor/trips', fetchTrips);
 

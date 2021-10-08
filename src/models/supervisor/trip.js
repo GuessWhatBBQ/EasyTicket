@@ -11,7 +11,7 @@ async function getPassengerInfo(tripID, seatNumber) {
     return passengerInfo;
 }
 
-async function getTrips(email) {
+async function getAllTrips(email) {
     const querystr = `
         SELECT * FROM bus NATURAL JOIN trip
             WHERE supervisor_id = (
@@ -26,5 +26,28 @@ async function getTrips(email) {
     return trips;
 }
 
+async function getTrips(pickup, destination, date, email) {
+    const querystr = `
+        SELECT * FROM bus NATURAL JOIN trip
+            WHERE supervisor_id = (
+                    SELECT supervisor_id FROM supervisor NATURAL JOIN user_account
+                        WHERE
+                            email = $1
+                            AND
+                            pickup = $2
+                            AND
+                            destination = $3
+                            AND
+                            starting_date = $4
+                );
+    `;
+
+    const trips = dbclient.query(querystr, [email, pickup, destination, date])
+        .then((results) => results.rows);
+
+    return trips;
+}
+
 exports.getPassengerInfo = getPassengerInfo;
 exports.getTrips = getTrips;
+exports.getAllTrips = getAllTrips;

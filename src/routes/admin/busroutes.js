@@ -24,8 +24,13 @@ async function addBusRoute(request, response) {
     }
 }
 
-async function showBusPanel(request, response) {
-    let activeBus = await Bus.getBusRoutes('sunday', new Date());
+async function fetchAdminBusRoutes(request, response) {
+    const { weekday, pickup, destination } = request.body;
+    let activeBus = await Bus.getBusRoutes(
+        pickup,
+        destination,
+        weekday.toLowerCase(),
+    );
     activeBus = activeBus.map((bus) => {
         bus.total_seat = 40;
         return bus;
@@ -34,5 +39,16 @@ async function showBusPanel(request, response) {
     response.render('adminPanelBus.pug');
 }
 
-exports.showBusPanel = showBusPanel;
+async function fetchAllAdminBusRoutes(request, response) {
+    let activeBus = await Bus.getAllBusRoutes();
+    activeBus = activeBus.map((bus) => {
+        bus.total_seat = 40;
+        return bus;
+    });
+    response.renderAppend({ activeBus });
+    response.render('adminPanelBus.pug');
+}
+
+exports.fetchAdminBusRoutes = fetchAdminBusRoutes;
 exports.addBusRoute = addBusRoute;
+exports.fetchAllAdminBusRoutes = fetchAllAdminBusRoutes;

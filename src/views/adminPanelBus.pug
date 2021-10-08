@@ -24,7 +24,7 @@ html
         //- - const locations = ['Dhaka', 'Sylhet', 'Cox\'s Bazaar', 'Rajshahi', 'Rangpur', 'Chittagong', 'Madaripur', 'Khulna', 'Chandpur'];
         - const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         .container
-            form(action="/trips" method="POST")
+            form(action="/admin/bus/search" method="POST")
                 .row.justify-content-center.g-1
                     .col-6.col-md-4
                         select(class="form-control" name="pickup")
@@ -36,7 +36,7 @@ html
                             +dropdown(locations)
                 .row.justify-content-center.g-1
                     .row.justify-content-center.col-6.col-md-3(style="margin-top:2%")
-                        select(class="form-control" name="destination")
+                        select(class="form-control" name="weekday")
                             option(value="" disabled selected hidden) Choose weekday
                             +dropdown(weekdays)
                 .row.justify-content-center

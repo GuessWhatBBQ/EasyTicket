@@ -22,15 +22,19 @@ const { fetchLocationList } = require('./utils');
 
 const { addBusRoute } = require('./admin/busroutes');
 const { cancelTripForSpecifcDate } = require('./admin/trip');
-const { fetchAllTrips } = require('./admin/trip');
+const { fetchAdminTrips } = require('./admin/trip');
+const { fetchAllAdminTrips } = require('./admin/trip');
 const { addSupervisorInfo } = require('./admin/supervisor');
 const { registerNewSupervisor } = require('./admin/supervisor');
-const { showBusPanel } = require('./admin/busroutes');
+const { fetchAdminBusRoutes } = require('./admin/busroutes');
+const { fetchAllAdminBusRoutes } = require('./admin/busroutes');
 const { checkIfAdmin } = require('./admin/utils');
 
 const { fetchPassengerInfo } = require('./supervisor/tripinfo');
-const { fetchTrips } = require('./supervisor/tripinfo');
+const { fetchSupervisorTrips } = require('./supervisor/tripinfo');
+const { fetchAllSupervisorTrips } = require('./supervisor/tripinfo');
 const { fetchSupervisorBusRoutes } = require('./supervisor/busroutes');
+const { fetchAllSupervisorBusRoutes } = require('./supervisor/busroutes');
 const { checkIfSupervisor } = require('./supervisor/utils');
 
 const router = new Router();
@@ -61,15 +65,19 @@ router.post('/api/admin/canceltrip', cancelTripForSpecifcDate);
 router.post('/api/admin/addsupervisor', verifyAvailable, registerNewSupervisor);
 
 router.use('/admin', checkIfAdmin);
-router.get('/admin/bus', addSupervisorInfo, showBusPanel);
-router.get('/admin/trips', fetchAllTrips);
+router.get('/admin/bus', addSupervisorInfo, fetchAllAdminBusRoutes);
+router.get('/admin/trips', fetchAllAdminTrips);
 router.get('/admin/supervisor', addSupervisorInfo, async (request, response) => {
     response.render('adminPanelSupervisor.pug');
 });
+router.post('/admin/bus/search', addSupervisorInfo, fetchAdminBusRoutes);
+router.post('/admin/trips/search', fetchAdminTrips);
 
 router.post('/api/supervisor/fetchseats', fetchPassengerInfo);
 router.use('/supervisor', checkIfSupervisor);
-router.get('/supervisor/trips', fetchTrips);
-router.get('/supervisor/bus', fetchSupervisorBusRoutes);
+router.get('/supervisor/trips', fetchAllSupervisorTrips);
+router.get('/supervisor/bus', fetchAllSupervisorBusRoutes);
+router.post('/supervisor/bus/search', fetchSupervisorBusRoutes);
+router.post('/supervisor/trips/search', fetchSupervisorTrips);
 
 exports.router = router;

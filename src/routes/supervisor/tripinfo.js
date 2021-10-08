@@ -9,9 +9,21 @@ async function fetchPassengerInfo(request, response) {
     }
 }
 
-async function fetchTrips(request, response) {
+async function fetchSupervisorTrips(request, response) {
     const { email } = response.locals.decodedToken;
-    let currentSupervisorTrips = await Trip.getTrips(email);
+    const { pickup, destination, starting_date } = request.body;
+    let currentSupervisorTrips = await Trip.getTrips(pickup, destination, starting_date, email);
+    currentSupervisorTrips = currentSupervisorTrips.map((trip) => {
+        trip.total_seat = 40;
+        return trip;
+    });
+    response.renderAppend({ currentSupervisorTrips });
+    response.render('supervisorTrip.pug');
+}
+
+async function fetchAllSupervisorTrips(request, response) {
+    const { email } = response.locals.decodedToken;
+    let currentSupervisorTrips = await Trip.getAllTrips(email);
     currentSupervisorTrips = currentSupervisorTrips.map((trip) => {
         trip.total_seat = 40;
         return trip;
@@ -21,4 +33,5 @@ async function fetchTrips(request, response) {
 }
 
 exports.fetchPassengerInfo = fetchPassengerInfo;
-exports.fetchTrips = fetchTrips;
+exports.fetchAllSupervisorTrips = fetchAllSupervisorTrips;
+exports.fetchSupervisorTrips = fetchSupervisorTrips;

@@ -26,6 +26,7 @@ const { addBusRoute } = require('./admin/busroutes');
 const { cancelTripForSpecifcDate } = require('./admin/trip');
 const { fetchAdminTrips } = require('./admin/trip');
 const { fetchAllAdminTrips } = require('./admin/trip');
+const { fetchAdminSeatingArrangement } = require('./admin/trip');
 const { addSupervisorInfo } = require('./admin/supervisor');
 const { registerNewSupervisor } = require('./admin/supervisor');
 const { fetchAdminBusRoutes } = require('./admin/busroutes');
@@ -67,6 +68,7 @@ router.post('/api/bookticket', bookTicket);
 router.post('/api/admin/addbusroute', addBusRoute);
 router.post('/api/admin/canceltrip', cancelTripForSpecifcDate);
 router.post('/api/admin/addsupervisor', verifyAvailable, registerNewSupervisor);
+router.post('/api/admin/fetchseats', fetchAdminSeatingArrangement);
 
 router.use('/admin', checkIfAdmin);
 router.get('/admin/bus', addSupervisorInfo, fetchAllAdminBusRoutes);

@@ -1,4 +1,5 @@
 const Trip = require.main.require('./models/admin/trip');
+const UserTrip = require.main.require('./models/trip');
 
 async function cancelTripForSpecifcDate(request, response) {
     const payload = {
@@ -33,6 +34,14 @@ async function fetchAdminTrips(request, response) {
     });
     response.render('adminPanelTrips.pug', { supervisorTrips });
 }
+
+async function fetchAdminSeatingArrangement(request, response) {
+    const seatingArrangement = await UserTrip.getTripSeatingArrangement(request.body.tripID)
+        .then((result) => result.rows[0]);
+    response.json(seatingArrangement);
+}
+
+exports.fetchAdminSeatingArrangement = fetchAdminSeatingArrangement;
 
 exports.cancelTripForSpecifcDate = cancelTripForSpecifcDate;
 exports.fetchAllAdminTrips = fetchAllAdminTrips;

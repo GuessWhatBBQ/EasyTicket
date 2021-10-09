@@ -11,8 +11,9 @@ async function fetchPassengerInfo(request, response) {
 
 async function fetchSupervisorTrips(request, response) {
     const { email } = response.locals.decodedToken;
-    const { pickup, destination, starting_date } = request.body;
-    let currentSupervisorTrips = await Trip.getTrips(pickup, destination, starting_date, email);
+    const { pickup, destination } = request.body;
+    const startingDate = request.body.starting_date;
+    let currentSupervisorTrips = await Trip.getTrips(pickup, destination, startingDate, email);
     currentSupervisorTrips = currentSupervisorTrips.map((trip) => {
         trip.total_seat = 40;
         return trip;

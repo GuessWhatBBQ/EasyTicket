@@ -24,8 +24,9 @@ async function fetchAllAdminTrips(request, response) {
 }
 
 async function fetchAdminTrips(request, response) {
-    const { pickup, destination, starting_date } = request.body;
-    let supervisorTrips = await Trip.getTrips(pickup, destination, starting_date);
+    const { pickup, destination } = request.body;
+    const startingDate = request.body.starting_date;
+    let supervisorTrips = await Trip.getTrips(pickup, destination, startingDate);
     supervisorTrips = supervisorTrips.map((trip) => {
         trip.total_seat = 40;
         return trip;

@@ -1,8 +1,8 @@
+/* global html2pdf */
+
 function printTicket(ID) {
     const tripID = document.getElementById(ID).childNodes[0].innerText;
     const seats = document.getElementById(ID).childNodes[3].innerText.split('\n')[2];
-    console.log(tripID);
-    console.log(seats);
     const payload = {
         method: 'POST',
         headers: {
@@ -10,7 +10,21 @@ function printTicket(ID) {
         },
         body: JSON.stringify({ tripID, seats }),
     };
-    console.log(payload);
     fetch('/api/user/printticket', payload)
-        .then((res) => console.log(res));
+        .then((result) => result.text())
+        .then((html) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const ticketDiv = doc.querySelector('#ticketPDF');
+            const opt = {
+                margin: 0.1,
+                filename: 'ticket.pdf',
+                image: { type: 'png' },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+            };
+            html2pdf().set(opt).from(ticketDiv).save();
+        });
 }
+
+window.printTicket = printTicket;

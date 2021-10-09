@@ -1,8 +1,7 @@
 const Trip = require.main.require('./models/supervisor/trip');
 async function fetchUserTicket(request, response) {
-    console.log(request.body.seats.split(',')[0]);
     let passengerInfo = await Trip.getPassengerInfo(request.body.tripID, request.body.seats.split(',')[0]);
-    passengerInfo = passengerInfo[0];
+    [passengerInfo] = passengerInfo;
     passengerInfo.seats = request.body.seats;
     if (passengerInfo.length !== 0) {
         response.render('ticket.pug', { passengerInfo });

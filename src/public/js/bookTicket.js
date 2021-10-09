@@ -24,7 +24,7 @@ async function bookTicket(busID, startingDate) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: { seats: selectedSeats, bus_id: busID, starting_date: startingDate },
+        body: { seats: selectedSeats, bus_id: busID, starting_date: startingDate.toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }) },
     };
     payload.body = JSON.stringify(payload.body);
     const response = await fetch('/api/bookticket', payload).then((res) => res.json());

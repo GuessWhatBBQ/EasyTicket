@@ -62,6 +62,15 @@ async function getTripSeatingArrangement(tripID) {
     return seatingArrangement;
 }
 
+async function getTripAvailableSeats(tripID) {
+    const querystr = `
+        SELECT available_seats FROM trip
+            WHERE trip_id = $1;
+    `;
+    const seatingArrangement = await dbclient.query(querystr, [tripID]);
+    return seatingArrangement;
+}
+
 async function getSeatsOfTrip(email, tripID) {
     const querystr = `
         SELECT seat_number AS seat FROM booking
@@ -97,8 +106,18 @@ async function removeBookingInfo(tripID, seatNumber) {
     await incrementAvailSeat(tripID);
 }
 
+async function removeTrip(tripID) {
+    const querystr = `
+        DELETE FROM trip
+            WHERE trip_id = $1;
+    `;
+    await dbclient.query(querystr, [tripID]);
+}
+
 exports.removeBookingInfo = removeBookingInfo;
+exports.removeTrip = removeTrip;
 exports.getSeatsOfTrip = getSeatsOfTrip;
 exports.createNewTrip = createNewTrip;
 exports.updateTrip = updateTrip;
 exports.getTripSeatingArrangement = getTripSeatingArrangement;
+exports.getTripAvailableSeats = getTripAvailableSeats;

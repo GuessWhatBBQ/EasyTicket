@@ -5,8 +5,9 @@ async function getBusRoutes(pickup, destination, startingDate) {
     if (!pickup || !destination || !startingDate) {
         return routes;
     }
+
     const querystr = `
-    SELECT * FROM bus INNER JOIN trip ON bus.bus_id = trip.bus_id
+    SELECT * FROM bus
         WHERE
             pickup = $1
             AND
@@ -22,6 +23,7 @@ async function getBusRoutes(pickup, destination, startingDate) {
                         cancelled_trip.cancelled_trip_date = $4
             );
     `;
+
     startingDate = new Date(startingDate);
     const weekday = startingDate.toLocaleDateString('default', { weekday: 'long' }).toLowerCase();
     routes = await dbclient.query(querystr, [pickup, destination, weekday, startingDate])

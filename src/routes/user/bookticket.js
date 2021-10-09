@@ -13,7 +13,7 @@ async function bookTicket(request, response) {
             response.locals.decodedToken.email,
             request.body.bus_id,
             seat,
-            request.body.starting_date,
+            request.body.starting_date.split(',')[0],
         );
     }, Promise.resolve());
     bookingCompleted
@@ -50,10 +50,8 @@ async function getBookings(request, response, next) {
         return formattedBooking;
     });
     function findMatch(alreadyAddedBooking, bookingToCheck) {
-        if (alreadyAddedBooking.bus_id === bookingToCheck.bus_id) {
-            if (alreadyAddedBooking.starting_date === bookingToCheck.starting_date) {
-                return true;
-            }
+        if (alreadyAddedBooking.trip_id === bookingToCheck.trip_id) {
+            return true;
         }
         return false;
     }
@@ -86,6 +84,7 @@ async function cancelUserBooking(request, response) {
         await Trip.removeBookingInfo(tripID, seat);
     }, Promise.resolve());
     bookingCanceled
+        .then(() => Trip.removeTrip(tripID))
         .catch(() => {
             payload.status = 'failed';
         })

@@ -8,7 +8,7 @@ function splitDateToBeforeAndAfter(tripDate) {
         return false;
     });
     tripDateFormatted.afterToday = tripDate.filter((trip) => {
-        if (new Date(trip.starting_date) > today) {
+        if (new Date(trip.starting_date) >= today) {
             return true;
         }
         return false;

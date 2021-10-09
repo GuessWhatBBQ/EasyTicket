@@ -35,11 +35,29 @@ async function fetchBusRoutes(request, response) {
         formattedRoute.arrival_date = date.toLocaleDateString('en-US', options);
         return formattedRoute;
     });
-    routes.searchRoutes = routes.searchRoutes.map((bus) => {
+    routes.searchRoutes = routes.searchRoutes.map(async (bus) => {
+        const tripID = await Booking.getTripID(bus.bus_id, request.body.starting_date)
+            .then((booking) => {
+                if (booking.rowCount) {
+                    return booking.rows[0].trip_id;
+                }
+                return -1;
+            });
+        if (tripID !== -1) {
+            bus.available_seats = await Trip.getTripAvailableSeats(tripID)
+                .then((result) => result.rows[0].available_seats);
+        }
+        if (!bus.available_seats) {
+            bus.available_seats = 40;
+        }
         bus.total_seat = 40;
         return bus;
     });
-    response.render('routes.pug', routes);
+
+    Promise.all(routes.searchRoutes).then((route) => {
+        routes.searchRoutes = route;
+        response.render('routes.pug', routes);
+    });
 }
 
 async function showAllBusRoutes(request, response) {
@@ -50,7 +68,7 @@ async function showAllBusRoutes(request, response) {
 
 async function fetchSeatingArrangement(request, response) {
     const date = new Date(request.body.starting_date);
-    const tripID = await Booking.getTripID(request.body.bus_id, date.toISOString())
+    const tripID = await Booking.getTripID(request.body.bus_id, date)
         .then((booking) => {
             if (booking.rowCount) {
                 return booking.rows[0].trip_id;

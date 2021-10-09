@@ -1,0 +1,17 @@
+mixin removeSupervisorMixin()
+    div(class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true")
+        div(class="modal-dialog modal-dialog modal-dialog-scrollable")
+            div(class="modal-content")
+                div(class="modal-header")
+                    h5(class="modal-title") Enter supervisor IDs to replace the first supervisor with the second
+                    button(class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close")
+                div(class="modal-body")
+                    form(action="/api/admin/removesupervisor" method="POST" id="supervisor-form").removeSupervisorForm
+                        input(placeholder="First supervisor" type="text" name="firstName" required)
+                        input(placeholder="Second supervisor" type="text" name="lastName" required)
+                        div(class="modal-footer")
+                            button(class="btn btn-secondary" type="button" data-bs-dismiss="modal") Close
+                            button(class="btn btn-danger" type="submit") Remove Supervisor
+                        datalist#supervisor-list
+                            each supervisor in supervisorList
+                                option(value=supervisor.supervisor_id)= supervisor.first_name

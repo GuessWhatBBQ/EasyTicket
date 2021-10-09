@@ -3,10 +3,10 @@ mixin addSupervisorMixin()
         div(class="modal-dialog modal-dialog modal-dialog-scrollable")
             div(class="modal-content")
                 div(class="modal-header")
-                    h5(class="modal-title") Add Bus info
+                    h5(class="modal-title") Enter Supervisor info
                     button(class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close")
                 div(class="modal-body")
-                    form(action="/api/admin/addsupervisor" method="POST" id="supervisor-form").addSupervisorForm
+                    form(action="/api/admin/addsupervisor" method="POST").addSupervisorForm
                         input(placeholder="First name" type="text" name="firstName" required)
                         input(placeholder="Last name" type="text" name="lastName" required)
                         input(placeholder="Phone (01XXXXXXXXX)" type="tel" pattern="[0-9]{11}" name="phoneNumber" required)
@@ -14,4 +14,4 @@ mixin addSupervisorMixin()
                         input(placeholder="Password" type="password" name="password" required)
                         div(class="modal-footer")
                             button(class="btn btn-secondary" type="button" data-bs-dismiss="modal") Close
-                            button(id="addBusInfoBtn" class="btn btn-primary" type="submit") Add Supervisor
+                            button(class="btn btn-primary" type="submit") Add Supervisor

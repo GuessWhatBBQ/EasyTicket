@@ -11,13 +11,13 @@ function changeOthersInnerText() { // changes the innerText of all other 'Hide s
         button.innerText = 'View Seats';
     });
 }
-
-function resetNumberOfSelectedSeats() { // sets default innerText of
-    const commonNumberClass = document.getElementsByClassName('commonNumberClass');
-    const commonFareClass = document.getElementsByClassName('commonFareClass');
-    for (let i = 0; i < commonNumberClass.length; i += 1) {
-        commonNumberClass[i].innerText = 'Click a seat to know the passenger\'s details'; // 'number of seats selected' div
-        commonFareClass[i].innerText = ''; // and 'total fare' div
+//basically resets all innerTexts to default
+function resetNumberOfSelectedSeats() {
+    const commonPassengerNameClass = document.getElementsByClassName('commonPassengerNameClass');
+    const commonPhoneNumberClass = document.getElementsByClassName('commonPhoneNumberClass');
+    for (let i = 0; i < commonPassengerNameClass.length; i += 1) {
+        commonPassengerNameClass[i].innerText = 'Click a seat to know the passenger\'s details'; 
+        commonPhoneNumberClass[i].innerText = '';
     }
 }
 
@@ -26,7 +26,6 @@ function resetGreenSeats() { // clears all selected seats
     greenSeats.forEach((seat) => {
         seat.classList.remove('filter-green');
     });
-    // console.log('All greenSeats are reset');
 }
 
 async function viewSeats(buttonID) {

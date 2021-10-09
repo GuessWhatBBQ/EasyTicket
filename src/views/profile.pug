@@ -49,10 +49,10 @@ html
 
             h3(style= "padding-left: 2%;") Click to view your Current Bookings:
             - const datalistCurrent = currentBookings.afterToday
-            +accordionMaker(datalistCurrent,'flush-collapseTwo')
+            +accordionMaker(datalistCurrent,'flush-collapseTwo',true)
 
             h3(style= "padding-left: 2%;") Click to view your Past Bookings:
             - const datalistPrevious = currentBookings.beforeToday
-            +accordionMaker(datalistPrevious,'flush-collapseThree')
+            +accordionMaker(datalistPrevious,'flush-collapseThree',false)
 
         include includes/footers

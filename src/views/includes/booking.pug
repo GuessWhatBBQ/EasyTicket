@@ -1,4 +1,4 @@
-mixin booking(bookingData)
+mixin booking(bookingData,boolean)
     .card-group(id=bookingData.trip_id)
         h5(class="card-title" style="display:none;")
                 = bookingData.trip_id
@@ -36,8 +36,9 @@ mixin booking(bookingData)
                     p.col-6 SEATS:
                     p.col-6(class="card-text")
                         = bookingData.seats
-        button(id=`btn-${bookingData.trip_id}` onclick=`printTicket('${bookingData.trip_id}')`)
-            |print ticket
-        button(id=`btn-${bookingData.trip_id}` onclick=`cancelTicket('${bookingData.trip_id}')`)
-            |cancel ticket
+        if(boolean === true)
+            button(id=`btn-${bookingData.trip_id}` onclick=`printTicket('${bookingData.trip_id}')`)
+                |print ticket
+            button(id=`btn-${bookingData.trip_id}` onclick=`cancelTicket('${bookingData.trip_id}')`)
+                |cancel ticket
         

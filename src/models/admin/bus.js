@@ -30,20 +30,54 @@ async function addBus(busInfo) {
 }
 
 async function getBusRoutes(pickup, destination, weekday) {
-    const querystr = `
-    SELECT * FROM bus INNER JOIN supervisor ON bus.supervisor_id = supervisor.supervisor_id
-        INNER JOIN user_account ON user_account.user_id = supervisor.user_id
-            WHERE
-                pickup = $1
-                AND
-                destination = $2
-                AND
-                starting_weekday = $3;
-    `;
+    let busRoutes = [];
 
-    const busRoutes = await dbclient
-        .query(querystr, [pickup, destination, weekday])
-        .then((result) => result.rows);
+    if (pickup && destination && weekday) {
+        const querystr = `
+        SELECT * FROM bus INNER JOIN supervisor ON bus.supervisor_id = supervisor.supervisor_id
+        INNER JOIN user_account ON user_account.user_id = supervisor.user_id
+        WHERE
+        pickup = $1
+        AND
+        destination = $2
+        AND
+        starting_weekday = $3;
+        `;
+        busRoutes = await dbclient
+            .query(querystr, [pickup, destination, weekday])
+            .then((result) => result.rows);
+    } else if (pickup && destination) {
+        const querystr = `
+        SELECT * FROM bus INNER JOIN supervisor ON bus.supervisor_id = supervisor.supervisor_id
+        INNER JOIN user_account ON user_account.user_id = supervisor.user_id
+        WHERE
+        pickup = $1
+        AND
+        destination = $2 ORDER BY bus.starting_weekday;
+        `;
+        busRoutes = await dbclient
+            .query(querystr, [pickup, destination])
+            .then((result) => result.rows);
+    } else if (weekday) {
+        const querystr = `
+        SELECT * FROM bus INNER JOIN supervisor ON bus.supervisor_id = supervisor.supervisor_id
+        INNER JOIN user_account ON user_account.user_id = supervisor.user_id
+        WHERE
+        starting_weekday = $1 ORDER BY bus.starting_weekday;
+        `;
+        busRoutes = await dbclient
+            .query(querystr, [weekday])
+            .then((result) => result.rows);
+    } else {
+        const querystr = `
+        SELECT * FROM bus INNER JOIN supervisor ON bus.supervisor_id = supervisor.supervisor_id
+        INNER JOIN user_account ON user_account.user_id = supervisor.user_id ORDER BY bus.starting_weekday;
+        `;
+        busRoutes = await dbclient
+            .query(querystr, [weekday])
+            .then((result) => result.rows);
+    }
+
     return busRoutes;
 }
 

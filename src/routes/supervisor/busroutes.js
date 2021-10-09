@@ -3,12 +3,22 @@ const Bus = require.main.require('./models/supervisor/bus');
 async function fetchSupervisorBusRoutes(request, response) {
     const { email } = response.locals.decodedToken;
     const { weekday, pickup, destination } = request.body;
-    let activeBus = await Bus.getSupervisorBusRoutes(
-        pickup,
-        destination,
-        weekday.toLowerCase(),
-        email,
-    );
+    let activeBus = [];
+    if (weekday) {
+        activeBus = await Bus.getSupervisorBusRoutes(
+            pickup,
+            destination,
+            weekday.toLowerCase(),
+            email,
+        );
+    } else {
+        activeBus = await Bus.getSupervisorBusRoutes(
+            pickup,
+            destination,
+            weekday,
+            email,
+        );
+    }
     activeBus = activeBus.map((bus) => {
         bus.total_seat = 40;
         return bus;

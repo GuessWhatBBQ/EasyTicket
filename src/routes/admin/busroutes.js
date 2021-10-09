@@ -26,11 +26,20 @@ async function addBusRoute(request, response) {
 
 async function fetchAdminBusRoutes(request, response) {
     const { weekday, pickup, destination } = request.body;
-    let activeBus = await Bus.getBusRoutes(
-        pickup,
-        destination,
-        weekday.toLowerCase(),
-    );
+    let activeBus = [];
+    if (weekday) {
+        activeBus = await Bus.getBusRoutes(
+            pickup,
+            destination,
+            weekday.toLowerCase(),
+        );
+    } else {
+        activeBus = await Bus.getBusRoutes(
+            pickup,
+            destination,
+            weekday,
+        );
+    }
     activeBus = activeBus.map((bus) => {
         bus.total_seat = 40;
         return bus;

@@ -31,23 +31,53 @@ async function getAllTrips(email) {
 }
 
 async function getTrips(pickup, destination, date, email) {
-    const querystr = `
+    let trips = [];
+    if (pickup && destination && date && email) {
+        const querystr = `
         SELECT * FROM bus NATURAL JOIN trip
-            WHERE supervisor_id = (
-                    SELECT supervisor_id FROM supervisor NATURAL JOIN user_account
-                        WHERE
-                            email = $1
-                            AND
-                            pickup = $2
-                            AND
-                            destination = $3
-                            AND
-                            starting_date = $4
-                );
-    `;
-
-    const trips = dbclient.query(querystr, [email, pickup, destination, date])
-        .then((results) => results.rows);
+        WHERE supervisor_id = (
+            SELECT supervisor_id FROM supervisor NATURAL JOIN user_account
+            WHERE
+            email = $1
+            AND
+            pickup = $2
+            AND
+            destination = $3
+            AND
+            starting_date = $4
+        );
+        `;
+        trips = dbclient.query(querystr, [email, pickup, destination, date])
+            .then((results) => results.rows);
+    } else if (date && email) {
+        const querystr = `
+        SELECT * FROM bus NATURAL JOIN trip
+        WHERE supervisor_id = (
+            SELECT supervisor_id FROM supervisor NATURAL JOIN user_account
+            WHERE
+            email = $1
+            AND
+            starting_date = $2
+        );
+        `;
+        trips = dbclient.query(querystr, [email, date])
+            .then((results) => results.rows);
+    } else if (pickup && destination && email) {
+        const querystr = `
+        SELECT * FROM bus NATURAL JOIN trip
+        WHERE supervisor_id = (
+            SELECT supervisor_id FROM supervisor NATURAL JOIN user_account
+            WHERE
+            email = $1
+            AND
+            pickup = $2
+            AND
+            destination = $3
+        );
+        `;
+        trips = dbclient.query(querystr, [email, pickup, destination])
+            .then((results) => results.rows);
+    }
 
     return trips;
 }

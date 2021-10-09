@@ -1,4 +1,5 @@
 const Booking = require.main.require('./models/booking');
+const { splitDateToBeforeAndAfter } = require.main.require('./lib/utils/date');
 
 async function bookTicket(request, response) {
     const payload = {
@@ -65,7 +66,7 @@ async function getBookings(request, response, next) {
             filteredBookings[index].seats.push(booking.seat_number);
         }
     });
-    currentBookings = filteredBookings;
+    currentBookings = splitDateToBeforeAndAfter(filteredBookings);
     response.renderAppend({ currentBookings });
     next();
 }

@@ -36,7 +36,7 @@ async function insertBookingData(email, busID, seatNumber, startingDate) {
 
 async function getBookingInfo(email) {
     const querystr = `
-    SELECT bus.bus_id, pickup, destination, starting_date, starting_weekday, starting_time, arrival_weekday, arrival_time, booking.seat_number FROM booking INNER JOIN user_account ON (booking.passenger_id = user_account.user_id) INNER JOIN trip ON (booking.trip_id = trip.trip_id) INNER JOIN bus ON (trip.bus_id = bus.bus_id) WHERE email = $1;
+    SELECT trip.trip_id, pickup, destination, starting_date, starting_weekday, starting_time, arrival_weekday, arrival_time, booking.seat_number FROM booking INNER JOIN user_account ON (booking.passenger_id = user_account.user_id) INNER JOIN trip ON (booking.trip_id = trip.trip_id) INNER JOIN bus ON (trip.bus_id = bus.bus_id) WHERE email = $1;
     `;
 
     const bookingInfo = await dbclient.query(querystr, [email])

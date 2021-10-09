@@ -1,10 +1,9 @@
 include booking
-mixin accordionMaker(datalist,ID)
+mixin accordionMaker(dataList,accordionID)
     .accordion.accordion-flush#accordionFlushExample
         .accordion-item.accordion-item-style
-            button.accordion-button.accordion-button-style.collapsed(type="button" data-bs-toggle="collapse" data-bs-target=`#${ID}` aria-expanded="false" aria-controls="flush-collapseOne")
-            div.accordion-collapse.collapse(id=ID aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample")
+            button.accordion-button.accordion-button-style.collapsed(type="button" data-bs-toggle="collapse" data-bs-target=`#${accordionID}` aria-expanded="false" aria-controls="flush-collapseOne")
+            div.accordion-collapse.collapse(id=accordionID aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample")
                 .accordion-body
                     each data in dataList
                         +booking(data)
-            

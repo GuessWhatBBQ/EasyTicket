@@ -1,4 +1,5 @@
 mixin ticketMaker(tripData)
+    - console.log(tripData);
     div.body
         div(id="upor")
             p(class="lekha")
@@ -11,61 +12,61 @@ mixin ticketMaker(tripData)
         div(class="rTable")
             div(class="rTableRow")
                 div(class="rTableHead") Journey Date
-                div(class="rTableCell")= tripData.time
+                div(class="rTableCell")= tripData.starting_date
 
             div(class="rTableRow")
                 div(class="rTableHead")
                     strong Arrival Date
                 div(class="rTableCell")
-                    span(style="font-weight: bold;")= tripData.time
+                    span(style="font-weight: bold;")= tripData.arrival_date
 
             div(class="rTableRow")
                 div(class="rTableHead") From Station
-                div(class="rTableCell")= tripData.time
+                div(class="rTableCell")= tripData.pickup
             
             div(class="rTableRow")
                 div(class="rTableHead")
                     strong To Station
                 div(class="rTableCell")
-                    span(style="font-weight: bold;") abc
+                    span(style="font-weight: bold;")= tripData.destination
 
             div(class="rTableRow")
                 div(class="rTableHead") Selected Seats
-                div(class="rTableCell")= tripData.time
+                div(class="rTableCell")= tripData.seats
             
             div(class="rTableRow")
                 div(class="rTableHead")
                     strong Bus ID
                 div(class="rTableCell")
-                    span(style="font-weight: bold;") abc
+                    span(style="font-weight: bold;")= tripData.bus_id
             
             
             div(class="rTableRow")
                 div(class="rTableHead") Fare
-                div(class="rTableCell")= tripData.time
+                div(class="rTableCell")= tripData.seat_fare
             
             div(class="rTableRow")
                 div(class="rTableHead")
                     strong Supervisor ID
                 div(class="rTableCell")
-                    span(style="font-weight: bold;") abc
+                    span(style="font-weight: bold;")= tripData.supervisor_id
             
             
         h2(class="holud") Passenger Information
         div(class="rTable")
             div(class="rTableRow")
                 div(class="rTableHead") Name of passenger
-                div(class="rTableCell")= tripData.time
+                div(class="rTableCell")= tripData.first_name
             
             div(class="rTableRow")
                 div(class="rTableHead")
                     strong TripID
                 div(class="rTableCell")
-                    span(style="font-weight: bold;") abc
+                    span(style="font-weight: bold;")= tripData.trip_id
             
             div(class="rTableRow")
                 div(class="rTableHead") Phone Number
-                div(class="rTableCell")= tripData.time
+                div(class="rTableCell")= tripData.phone_number
             
         p(class="lekha")
             |Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>

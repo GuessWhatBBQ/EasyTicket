@@ -1,7 +1,7 @@
 mixin booking(bookingData)
-    .card-group(id=bookingData.bus_id)
+    .card-group(id=bookingData.trip_id)
         h5(class="card-title" style="display:none;")
-                = bookingData.bus_id
+                = bookingData.trip_id
         .card
             .card-body
                     .row
@@ -36,6 +36,6 @@ mixin booking(bookingData)
                     p.col-6 SEATS:
                     p.col-6(class="card-text")
                         = bookingData.seats
-        button(id=`btn-${bookingData.bus_id}` onclick=`printTicket('${bookingData.bus_id}')`)
+        button(id=`btn-${bookingData.trip_id}` onclick=`printTicket('${bookingData.trip_id}')`)
             |print ticket
                 

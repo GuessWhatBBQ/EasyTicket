@@ -2,7 +2,11 @@ const { dbclient } = require('../dbconnect');
 
 async function getPassengerInfo(tripID, seatNumber) {
     const querystr = `
-        SELECT first_name, last_name, phone_number FROM user_account INNER JOIN booking ON booking.passenger_id = user_account.user_id WHERE trip_id = $1 AND seat_number = $2;
+        SELECT * FROM user_account
+            INNER JOIN booking ON booking.passenger_id = user_account.user_id
+            INNER JOIN trip ON booking.trip_id = trip.trip_id
+            INNER JOIN bus ON bus.bus_id = trip.bus_id
+                WHERE booking.trip_id = $1 AND booking.seat_number = $2;
     `;
     const passengerInfo = await dbclient.query(
         querystr, [tripID, seatNumber],

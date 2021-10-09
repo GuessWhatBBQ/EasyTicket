@@ -29,6 +29,7 @@ const { fetchAllAdminTrips } = require('./admin/trip');
 const { fetchAdminSeatingArrangement } = require('./admin/trip');
 const { addSupervisorInfo } = require('./admin/supervisor');
 const { registerNewSupervisor } = require('./admin/supervisor');
+const { removeSupervisor } = require('./admin/supervisor');
 const { fetchAdminBusRoutes } = require('./admin/busroutes');
 const { fetchAllAdminBusRoutes } = require('./admin/busroutes');
 const { checkIfAdmin } = require('./admin/utils');
@@ -68,6 +69,7 @@ router.post('/api/bookticket', bookTicket);
 router.post('/api/admin/addbusroute', addBusRoute);
 router.post('/api/admin/canceltrip', cancelTripForSpecifcDate);
 router.post('/api/admin/addsupervisor', verifyAvailable, registerNewSupervisor);
+router.post('/api/admin/removesupervisor', removeSupervisor);
 router.post('/api/admin/fetchseats', fetchAdminSeatingArrangement);
 
 router.use('/admin', checkIfAdmin);

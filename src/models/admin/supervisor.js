@@ -19,5 +19,14 @@ async function addSupervisor(email) {
     dbclient.query(querystr, [email]);
 }
 
+async function removeSupervisor(formerSup) {
+    const querystr = `
+        DELETE FROM supervisor WHERE supervisor_id = $1;
+    `;
+
+    await dbclient.query(querystr, [formerSup]);
+}
+
 exports.getSupervisors = getSupervisors;
 exports.addSupervisor = addSupervisor;
+exports.removeSupervisor = removeSupervisor;

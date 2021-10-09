@@ -57,6 +57,15 @@ async function getAllBusRoutes() {
     return busRoutes;
 }
 
+async function swapSupervisor(formerSup, replacementSup) {
+    const querystr = `
+    UPDATE bus SET supervisor_id = $2
+        WHERE supervisor_id = $1;
+    `;
+    await dbclient.query(querystr, [formerSup, replacementSup]);
+}
+
 exports.getBusRoutes = getBusRoutes;
 exports.getAllBusRoutes = getAllBusRoutes;
 exports.addBus = addBus;
+exports.swapSupervisor = swapSupervisor;

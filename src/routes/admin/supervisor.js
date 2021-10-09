@@ -27,5 +27,16 @@ async function registerNewSupervisor(request, response) {
     response.json(payload);
 }
 
+async function removeSupervisor(request, response) {
+    const { formerSup, replacementSup } = request.body;
+    await Supervisor.swapSupervisor(formerSup, replacementSup);
+    await Supervisor.removeSupervisor(formerSup);
+    const payload = {
+        status: 'ok',
+    };
+    response.json(payload);
+}
+
 exports.addSupervisorInfo = addSupervisorInfo;
 exports.registerNewSupervisor = registerNewSupervisor;
+exports.removeSupervisor = removeSupervisor;

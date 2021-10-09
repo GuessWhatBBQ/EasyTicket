@@ -12,6 +12,7 @@ const { updateProfile } = require('./user/profile');
 
 const { bookTicket } = require('./user/bookticket');
 const { getBookings } = require('./user/bookticket');
+const { cancelUserBooking } = require('./user/bookticket');
 const { fetchUserTicket } = require('./user/ticket');
 
 const { fetchBusRoutes } = require('./user/busroutes');
@@ -56,6 +57,8 @@ router.post('/api/login', verifyPassword, sendJWT);
 router.post('/api/register', verifyAvailable, registerNewUser, sendJWT);
 router.post('/api/updateprofile', verifyPassword, updateProfile, sendJWT);
 router.post('/api/fetchseats', fetchSeatingArrangement);
+router.post('/api/user/printticket', fetchUserTicket);
+router.post('/api/user/cancelbooking', cancelUserBooking);
 
 router.get('/routes', showAllBusRoutes);
 router.post('/routesearch', fetchBusRoutes);
@@ -80,7 +83,5 @@ router.get('/supervisor/trips', fetchAllSupervisorTrips);
 router.get('/supervisor/bus', fetchAllSupervisorBusRoutes);
 router.post('/supervisor/bus/search', fetchSupervisorBusRoutes);
 router.post('/supervisor/trips/search', fetchSupervisorTrips);
-
-router.post('/api/user/printticket', fetchUserTicket);
 
 exports.router = router;

@@ -45,6 +45,19 @@ async function getBookingInfo(email) {
     return bookingInfo;
 }
 
+async function cancelBooking(tripID, seat) {
+    const querystr = `
+        DELETE FROM booking
+            WHERE
+                trip_id = $1
+                AND
+                seat_number = $2;
+    `;
+
+    await dbclient.query(querystr, [tripID, seat]);
+}
+
 exports.insertBookingData = insertBookingData;
 exports.getBookingInfo = getBookingInfo;
 exports.getTripID = getTripID;
+exports.cancelBooking = cancelBooking;

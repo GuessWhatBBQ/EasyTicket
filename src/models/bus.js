@@ -6,7 +6,7 @@ async function getBusRoutes(pickup, destination, startingDate) {
         return routes;
     }
     const querystr = `
-    SELECT * FROM bus
+    SELECT * FROM bus INNER JOIN trip ON bus.bus_id = trip.bus_id
         WHERE
             pickup = $1
             AND

@@ -1,4 +1,5 @@
 const Booking = require.main.require('./models/booking');
+const Trip = require.main.require('./models/trip');
 const { splitDateToBeforeAndAfter } = require.main.require('./lib/utils/date');
 
 async function bookTicket(request, response) {
@@ -71,5 +72,28 @@ async function getBookings(request, response, next) {
     next();
 }
 
+async function cancelUserBooking(request, response) {
+    const { tripID } = request.body;
+    const { email } = response.locals.decodedToken;
+    let seats = await Trip.getSeatsOfTrip(email, tripID);
+    const payload = {
+        status: 'ok',
+    };
+    seats = seats.map(({ seat }) => seat);
+    const bookingCanceled = seats.reduce(async (bookingPromise, seat) => {
+        await bookingPromise;
+        await Booking.cancelBooking(tripID, seat);
+        await Trip.removeBookingInfo(tripID, seat);
+    }, Promise.resolve());
+    bookingCanceled
+        .catch(() => {
+            payload.status = 'failed';
+        })
+        .finally(() => {
+            response.json(payload);
+        });
+}
+
 exports.bookTicket = bookTicket;
 exports.getBookings = getBookings;
+exports.cancelUserBooking = cancelUserBooking;

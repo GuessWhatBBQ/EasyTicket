@@ -62,6 +62,43 @@ async function getTripSeatingArrangement(tripID) {
     return seatingArrangement;
 }
 
+async function getSeatsOfTrip(email, tripID) {
+    const querystr = `
+        SELECT seat_number AS seat FROM booking
+            INNER JOIN user_account ON user_account.user_id = booking.passenger_id WHERE
+                email = $1
+                AND
+                trip_id = $2;
+    `;
+
+    const seats = await dbclient.query(querystr, [email, tripID])
+        .then((result) => result.rows);
+    return seats;
+}
+
+async function incrementAvailSeat(tripID) {
+    const querystr = `
+    UPDATE trip
+    SET available_seats = available_seats + 1
+    WHERE trip_id = $1
+    `;
+
+    await dbclient.query(querystr, [tripID]);
+}
+
+async function removeBookingInfo(tripID, seatNumber) {
+    seatNumber = `{${seatNumber}}`;
+    const querystr = `
+        UPDATE trip
+            SET seating_arrangement = jsonb_set(seating_arrangement, $2::text[], to_jsonb('false'::boolean), false)
+                WHERE trip_id = $1;
+    `;
+    await dbclient.query(querystr, [tripID, seatNumber]);
+    await incrementAvailSeat(tripID);
+}
+
+exports.removeBookingInfo = removeBookingInfo;
+exports.getSeatsOfTrip = getSeatsOfTrip;
 exports.createNewTrip = createNewTrip;
 exports.updateTrip = updateTrip;
 exports.getTripSeatingArrangement = getTripSeatingArrangement;

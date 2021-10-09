@@ -35,6 +35,10 @@ async function fetchBusRoutes(request, response) {
         formattedRoute.arrival_date = date.toLocaleDateString('en-US', options);
         return formattedRoute;
     });
+    routes.searchRoutes = routes.searchRoutes.map((bus) => {
+        bus.total_seat = 40;
+        return bus;
+    });
     response.render('routes.pug', routes);
 }
 

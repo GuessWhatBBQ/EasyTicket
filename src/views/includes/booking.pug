@@ -38,4 +38,6 @@ mixin booking(bookingData)
                         = bookingData.seats
         button(id=`btn-${bookingData.trip_id}` onclick=`printTicket('${bookingData.trip_id}')`)
             |print ticket
-                
+        button(id=`btn-${bookingData.trip_id}` onclick=`cancelTicket('${bookingData.trip_id}')`)
+            |cancel ticket
+        

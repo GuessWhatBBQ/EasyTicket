@@ -12,6 +12,7 @@ const { updateProfile } = require('./user/profile');
 
 const { bookTicket } = require('./user/bookticket');
 const { getBookings } = require('./user/bookticket');
+const { fetchUserTicket } = require('./user/ticket');
 
 const { fetchBusRoutes } = require('./user/busroutes');
 const { showAllBusRoutes } = require('./user/busroutes');
@@ -79,5 +80,7 @@ router.get('/supervisor/trips', fetchAllSupervisorTrips);
 router.get('/supervisor/bus', fetchAllSupervisorBusRoutes);
 router.post('/supervisor/bus/search', fetchSupervisorBusRoutes);
 router.post('/supervisor/trips/search', fetchSupervisorTrips);
+
+router.post('/api/user/printticket', fetchUserTicket);
 
 exports.router = router;

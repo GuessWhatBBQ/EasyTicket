@@ -15,9 +15,11 @@ function changeOthersInnerText() { // changes the innerText of all other 'Hide s
 function resetNumberOfSelectedSeats() {
     const commonPassengerNameClass = document.getElementsByClassName('commonPassengerNameClass');
     const commonPhoneNumberClass = document.getElementsByClassName('commonPhoneNumberClass');
+    const commonPassengerEmailClass = document.getElementsByClassName('commonPassengerEmailClass');
     for (let i = 0; i < commonPassengerNameClass.length; i += 1) {
         commonPassengerNameClass[i].innerText = 'Click a seat to know the passenger\'s details'; 
         commonPhoneNumberClass[i].innerText = '';
+        commonPassengerEmailClass[i].innerText = '';
     }
 }
 

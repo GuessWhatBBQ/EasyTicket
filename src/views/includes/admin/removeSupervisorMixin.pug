@@ -7,11 +7,11 @@ mixin removeSupervisorMixin()
                     button(class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close")
                 div(class="modal-body")
                     form(action="/api/admin/removesupervisor" method="POST" id="supervisor-form").removeSupervisorForm
-                        input(placeholder="First supervisor" type="text" name="firstName" required)
-                        input(placeholder="Second supervisor" type="text" name="lastName" required)
+                        input(placeholder="First supervisor" type="text" name="firstName" list="supervisor-list" required)
+                        input(placeholder="Second supervisor" type="text" name="lastName" list="supervisor-list" required)
                         div(class="modal-footer")
                             button(class="btn btn-secondary" type="button" data-bs-dismiss="modal") Close
                             button(class="btn btn-danger" type="submit") Remove Supervisor
-                        datalist#supervisor-list
-                            each supervisor in supervisorList
-                                option(value=supervisor.supervisor_id)= supervisor.first_name
+                datalist#supervisor-list
+                    each supervisor in supervisorList
+                        option(value=supervisor.supervisor_id)= supervisor.first_name

@@ -15,15 +15,18 @@ async function getSeatInfo(ID) {
     seatInfo.firstName = data.first_name;
     seatInfo.lastName = data.last_name;
     seatInfo.phoneNumber = data.phone_number;
+    seatInfo.email = data.email;
     seatInfo.found = data.found;
     // const number = document.querySelectorAll('.filter-green').length;
     if (seatInfo.found) {
         document.querySelector(`#passengerName-${ID}`).innerText = `Name of passenger: ${`${seatInfo.firstName} ${seatInfo.lastName}`}`;
-        document.querySelector(`#phoneNumber-${ID}`).innerText = `Phone Number ${seatInfo.phoneNumber}`;
+        document.querySelector(`#phoneNumber-${ID}`).innerText = `Phone Number: ${seatInfo.phoneNumber}`;
+        document.querySelector(`#passengerEmail-${ID}`).innerText = `Email Address: ${seatInfo.email}`;
     }
     else {
         document.querySelector(`#passengerName-${ID}`).innerText = 'Click a seat to know the passenger\'s details';
         document.querySelector(`#phoneNumber-${ID}`).innerText = '';
+        document.querySelector(`#passengerEmail-${ID}`).innerText = '';
     }
 }
 
@@ -42,6 +45,7 @@ function selectSeat(element) {
         element.classList.toggle('filter-green');
         document.querySelector(`#passengerName-${busID}`).innerText = 'Click a seat to know the passenger\'s details';
         document.querySelector(`#phoneNumber-${busID}`).innerText = '';
+        document.querySelector(`#passengerEmail-${ID}`).innerText = '';
 
     } 
     else {

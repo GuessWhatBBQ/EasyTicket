@@ -16,10 +16,12 @@ function resetNumberOfSelectedSeats() {
     const commonPassengerNameClass = document.getElementsByClassName('commonPassengerNameClass');
     const commonPhoneNumberClass = document.getElementsByClassName('commonPhoneNumberClass');
     const commonPassengerEmailClass = document.getElementsByClassName('commonPassengerEmailClass');
+    const commonCancelBookingClass = document.getElementsByClassName('commonCancelBookingClass');
     for (let i = 0; i < commonPassengerNameClass.length; i += 1) {
         commonPassengerNameClass[i].innerText = 'Click a seat to know the passenger\'s details'; 
         commonPhoneNumberClass[i].innerText = '';
         commonPassengerEmailClass[i].innerText = '';
+        commonCancelBookingClass[i].style.display = 'none';
     }
 }
 

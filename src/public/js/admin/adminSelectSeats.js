@@ -22,11 +22,13 @@ async function getSeatInfo(ID) {
         document.querySelector(`#passengerName-${ID}`).innerText = `Name of passenger: ${`${seatInfo.firstName} ${seatInfo.lastName}`}`;
         document.querySelector(`#phoneNumber-${ID}`).innerText = `Phone Number: ${seatInfo.phoneNumber}`;
         document.querySelector(`#passengerEmail-${ID}`).innerText = `Email Address: ${seatInfo.email}`;
+        document.querySelector(`#cancelBooking-${ID}`).style.display = 'block';
     }
     else {
         document.querySelector(`#passengerName-${ID}`).innerText = 'Click a seat to know the passenger\'s details';
         document.querySelector(`#phoneNumber-${ID}`).innerText = '';
         document.querySelector(`#passengerEmail-${ID}`).innerText = '';
+        document.querySelector(`#cancelBooking-${ID}`).style.display = 'none';
     }
 }
 
@@ -45,8 +47,8 @@ function selectSeat(element) {
         element.classList.toggle('filter-green');
         document.querySelector(`#passengerName-${busID}`).innerText = 'Click a seat to know the passenger\'s details';
         document.querySelector(`#phoneNumber-${busID}`).innerText = '';
-        document.querySelector(`#passengerEmail-${ID}`).innerText = '';
-
+        document.querySelector(`#passengerEmail-${busID}`).innerText = '';
+        document.querySelector(`#cancelBooking-${busID}`).style.display = 'none';
     } 
     else {
         document.querySelector('.filter-green').classList.toggle('filter-green');

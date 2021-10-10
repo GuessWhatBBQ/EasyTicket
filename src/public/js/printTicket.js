@@ -14,21 +14,22 @@ function printTicket(ID) {
         .then((result) => result.text())
         .then((html) => {
             const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');           
+            const doc = parser.parseFromString(html, 'text/html');
             return doc;
         })
-        .then((doc)=>{
+        .then((doc) => {
             const ticketDiv = doc.querySelector('#ticketPDF');
             const opt = {
                 margin: 0.1,
                 filename: 'ticket.pdf',
-                image: { type: 'png' },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'px', format: [720,1280], orientation: 'portrait', putOnlyUsedFonts: true },
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, scrollX: 0, scrollY: 0 },
+                jsPDF: {
+                    unit: 'px', format: [720, 880], orientation: 'portrait', putOnlyUsedFonts: true,
+                },
             };
-            html2pdf().set(opt).from(ticketDiv).save();            
+            html2pdf().set(opt).from(ticketDiv).save();
         });
-    
 }
 
 window.printTicket = printTicket;

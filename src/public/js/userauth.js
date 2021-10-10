@@ -1,6 +1,10 @@
 function addDOM(ID, message) {
+    // the ID is required to set a location for the errorParagrapgh to pop up
+    const node = document.getElementById(`${ID}`);
     if (document.getElementById('errorParaSet')) {
-        return;
+        console.log('from checkpa');
+        node.parentNode.removeChild(document.getElementById('errorParaSet'));
+        // return;
     }
     const errorParagraph = document.createElement('p');
     errorParagraph.setAttribute('id', 'errorParaSet');
@@ -10,8 +14,6 @@ function addDOM(ID, message) {
     errorParagraph.style.fontSize = 'smaller';
     errorParagraph.style.fontWeight = '600';
 
-    // the ID is required to set a location for the errorParagrapgh to pop up
-    const node = document.getElementById(`${ID}`);
     node.parentNode.insertBefore(errorParagraph, node);
 }
 
@@ -25,25 +27,39 @@ function checkValidUser(ID, status, message) {
 
 const form = document.getElementById('signup-form') || document.getElementById('signin-form') || document.getElementById('update-form');
 
+
+function checkPassword(ID){
+    var pw1 = document.getElementById('password').value;
+    var pw2 = document.getElementById('password2').value;
+    if(pw1 === pw2) return true;
+    else{
+        addDOM(ID,"Passwords don't match");
+        return false;
+    }
+}
+
 async function fetchJWT(event) {
     event.preventDefault();
 
     const inputs = form.getElementsByTagName('input');
     const path = form.getAttribute('action');
-
-    const payload = createPayloadFromInput(inputs);
-
-    const response = await fetch(path, payload)
-        .then((res) => res.json());
-
     const id = 'errorPara';
-    if (response.token) {
-        localStorage.setItem('auth-token', response.token);
-        window.document.cookie = `auth-token=${response.token}; path=/; + SameSite=Strict`;
-        checkValidUser(id, true);
-    } else {
-        checkValidUser(id, false, response.statusMsg);
-    }
+
+    if(checkPassword(id) === false);
+    else{
+        const payload = createPayloadFromInput(inputs);
+
+        const response = await fetch(path, payload)
+            .then((res) => res.json());
+    
+        if (response.token) {
+            localStorage.setItem('auth-token', response.token);
+            window.document.cookie = `auth-token=${response.token}; path=/; + SameSite=Strict`;
+            checkValidUser(id, true);
+        } else {
+            checkValidUser(id, false, response.statusMsg);
+        }
+    }   
 }
 
 form.addEventListener('submit', fetchJWT);

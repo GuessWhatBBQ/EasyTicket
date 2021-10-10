@@ -1,5 +1,6 @@
 const Trip = require.main.require('./models/admin/trip');
 const UserTrip = require.main.require('./models/trip');
+const { splitDateToBeforeAndAfter } = require.main.require('./lib/utils/date');
 
 async function cancelTripForSpecifcDate(request, response) {
     const payload = {
@@ -21,6 +22,7 @@ async function fetchAllAdminTrips(request, response) {
         trip.total_seat = 40;
         return trip;
     });
+    supervisorTrips = splitDateToBeforeAndAfter(supervisorTrips);
     response.render('adminPanelTrips.pug', { supervisorTrips });
 }
 
@@ -32,6 +34,7 @@ async function fetchAdminTrips(request, response) {
         trip.total_seat = 40;
         return trip;
     });
+    supervisorTrips = splitDateToBeforeAndAfter(supervisorTrips);
     response.render('adminPanelTrips.pug', { supervisorTrips });
 }
 

@@ -1,4 +1,5 @@
 const Trip = require.main.require('./models/supervisor/trip');
+const { splitDateToBeforeAndAfter } = require.main.require('./lib/utils/date');
 
 async function fetchPassengerInfo(request, response) {
     const passengerInfo = await Trip.getPassengerInfo(request.body.tripID, request.body.seatNumber);
@@ -18,6 +19,7 @@ async function fetchSupervisorTrips(request, response) {
         trip.total_seat = 40;
         return trip;
     });
+    currentSupervisorTrips = splitDateToBeforeAndAfter(currentSupervisorTrips);
     response.renderAppend({ currentSupervisorTrips });
     response.render('supervisorTrip.pug');
 }
@@ -29,6 +31,7 @@ async function fetchAllSupervisorTrips(request, response) {
         trip.total_seat = 40;
         return trip;
     });
+    currentSupervisorTrips = splitDateToBeforeAndAfter(currentSupervisorTrips);
     response.renderAppend({ currentSupervisorTrips });
     response.render('supervisorTrip.pug');
 }

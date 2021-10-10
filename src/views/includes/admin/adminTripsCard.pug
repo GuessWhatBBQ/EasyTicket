@@ -72,4 +72,5 @@ mixin adminTripscard(routeData)
                     | Click a seat to know the passenger's details
                 div(class = "commonPhoneNumberClass" id=`phoneNumber-${routeData.trip_id}`)
                 div(class ="commonPassengerEmailClass" id=`passengerEmail-${routeData.trip_id}`)
-                btn(class="btn btn-light commonCancelBookingClass" id=`cancelBooking-${routeData.trip_id}` onclick=`adminCancelTicket(${routeData.trip_id})`) Cancel Booking
+                if(boolean === true)
+                    btn(class="btn btn-light commonCancelBookingClass" id=`cancelBooking-${routeData.trip_id}` onclick=`adminCancelTicket(${routeData.trip_id})`) Cancel Booking

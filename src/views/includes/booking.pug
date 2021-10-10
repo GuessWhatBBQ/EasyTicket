@@ -37,8 +37,8 @@ mixin booking(bookingData,boolean)
                     p.col-6(class="card-text")
                         = bookingData.seats
         if(boolean === true)
-            button(id=`btn-${bookingData.trip_id}` onclick=`printTicket('${bookingData.trip_id}')`)
+            button(class='btn btn-styles' id=`btn-${bookingData.trip_id}` onclick=`printTicket('${bookingData.trip_id}')`)
                 |print ticket
-            button(id=`btn-${bookingData.trip_id}` onclick=`cancelTicket('${bookingData.trip_id}')`)
+            button(class='btn btn-styles' id=`btn-${bookingData.trip_id}` onclick=`cancelTicket('${bookingData.trip_id}')`)
                 |cancel ticket
         

@@ -45,6 +45,10 @@ async function bookTicket(busID, startingDate) {
 }
 
 function confirmBookingMessage(busID) {
+    const selectedSeats = findSeatsSelected();
+    if (selectedSeats.length === 0) {
+        return;
+    }
     const startingDate = document.querySelector(`#trip-${busID}`).children[1].children[0].children[1].textContent.split(' ').slice(9).join(' ');
     swal({
         text: 'Do you want to confirm your booking?',

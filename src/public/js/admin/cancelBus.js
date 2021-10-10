@@ -1,5 +1,30 @@
 /* global swal bootstrap */
 
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.date-picker').forEach((item) => {
+        const id = item.id.split('-')[1];
+        const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        const weekday = document.getElementById(id)
+            .childNodes[1]
+            .childNodes[0]
+            .childNodes[1]
+            .childNodes[2]
+            .innerText;
+        const indexes = [];
+        weekdays.forEach((day, index) => {
+            if (day !== weekday) {
+                indexes.push(index);
+            }
+        });
+        const today = new Date();
+        today.setDate(today.getDate() - 1);
+        $(`#datepicker-${id}`).datepicker({
+            disableDaysOfWeek: indexes,
+            minDate: today,
+        });
+    });
+}, false);
+
 const errorParagraph = document.createElement('p');
 function matchWeekDay(date, busDay) {
     // getting the day of input date by admin
@@ -72,7 +97,10 @@ function cancelBus(busID) {
     const modalID = `j-${busID}`;
 
     // date input by admin
-    const date = document.getElementById(modalID).querySelector('input').value;
+    let date = document.getElementById(modalID).querySelector('input').value;
+    date = new Date(date);
+    date.setDate(date.getDate() + 1);
+    date = date.toISOString().substring(0, 10);
     if (date) {
         // gives the starting weekday of the bus
         const busDay = document.getElementById(busID).querySelectorAll('.card-text')[1].innerText;

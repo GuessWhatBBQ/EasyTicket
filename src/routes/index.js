@@ -68,6 +68,7 @@ router.post('/api/bookticket', bookTicket);
 
 router.post('/api/admin/addbusroute', addBusRoute);
 router.post('/api/admin/canceltrip', cancelTripForSpecifcDate);
+router.post('/api/admin/cancelbooking', cancelUserBooking);
 router.post('/api/admin/addsupervisor', verifyAvailable, registerNewSupervisor);
 router.post('/api/admin/removesupervisor', removeSupervisor);
 router.post('/api/admin/fetchseats', fetchAdminSeatingArrangement);

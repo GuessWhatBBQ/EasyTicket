@@ -1,5 +1,4 @@
 function adminCancelTicket(ID) {
-    
     // const tripID = document.getElementById(ID).childNodes[0].innerText;
     const email = document.getElementById(`passengerEmail-${ID}`).innerText.split(' ')[2];
     // console.log(email);
@@ -8,10 +7,10 @@ function adminCancelTicket(ID) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ID }),
+        body: JSON.stringify({ tripID: ID, email }),
     };
-    fetch('/api/user/cancelbooking', payload)
+    fetch('/api/admin/cancelbooking', payload)
         .then((result) => result.json());
 }
 
-window.cancelTicket = cancelTicket;
+window.adminCancelTicket = adminCancelTicket;

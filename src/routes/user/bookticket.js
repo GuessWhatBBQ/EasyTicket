@@ -72,7 +72,7 @@ async function getBookings(request, response, next) {
 
 async function cancelUserBooking(request, response) {
     const { tripID } = request.body;
-    const { email } = response.locals.decodedToken;
+    const email = request.body.email || response.locals.decodedToken.email;
     let seats = await Trip.getSeatsOfTrip(email, tripID);
     const payload = {
         status: 'ok',

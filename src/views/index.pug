@@ -12,6 +12,7 @@ html
         include includes/navbar
 
         //- - const locations = ['Dhaka', 'Sylhet', 'Cox\'s Bazaar', 'Rajshahi', 'Rangpur', 'Chittagong', 'Madaripur', 'Khulna', 'Chandpur'];
+        - const today = new Date().toISOString().substring(0, 10);
         .container#mainContent
             .row.justify-content-center.center_sentence
                 h1.col-8
@@ -36,7 +37,7 @@ html
                 .row.justify-content-center.g-1
                     .row.justify-content-center.col-6.col-md-3(style="margin-top:2%")
                         label(for="start" style="padding:0") Date of Journey:
-                        input(type="date" id="start" name="starting_date")
+                        input(type="date" id="start" name="starting_date" min=`${today}`)
                 .row.justify-content-center
                     button.btn.btn-styles#searchRouteButton(type="submit") Search routes
         include includes/footers

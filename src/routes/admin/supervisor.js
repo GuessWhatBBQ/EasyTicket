@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 
 const Supervisor = require.main.require('./models/admin/supervisor');
+const Bus = require.main.require('./models/admin/bus');
 const User = require.main.require('./models/user');
 
 async function addSupervisorInfo(request, response, next) {
@@ -29,7 +30,7 @@ async function registerNewSupervisor(request, response) {
 
 async function removeSupervisor(request, response) {
     const { formerSup, replacementSup } = request.body;
-    await Supervisor.swapSupervisor(formerSup, replacementSup);
+    await Bus.swapSupervisor(formerSup, replacementSup);
     await Supervisor.removeSupervisor(formerSup);
     const payload = {
         status: 'ok',

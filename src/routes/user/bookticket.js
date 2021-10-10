@@ -44,7 +44,11 @@ async function getBookings(request, response, next) {
         formattedBooking.starting_date = booking.starting_date.toLocaleDateString('en-US', options);
         const date = new Date(booking.starting_date);
         let arrivalDate = date.getDate();
-        arrivalDate += weekdays[booking.arrival_weekday] - weekdays[booking.starting_weekday];
+        if (weekdays[booking.arrival_weekday] >= weekdays[booking.starting_weekday]) {
+            arrivalDate += weekdays[booking.arrival_weekday] - weekdays[booking.starting_weekday];
+        } else {
+            arrivalDate += weekdays[booking.arrival_weekday] + (weekdays.saturday - weekdays[booking.starting_weekday]);
+        }
         date.setDate(arrivalDate);
         formattedBooking.arrival_date = date.toLocaleDateString('en-US', options);
         return formattedBooking;

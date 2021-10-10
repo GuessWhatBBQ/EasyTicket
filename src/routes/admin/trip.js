@@ -21,6 +21,32 @@ async function fetchAllAdminTrips(request, response) {
         trip.total_seat = 40;
         return trip;
     });
+    const options = {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+    };
+    const weekdays = {
+        sunday: 0,
+        monday: 1,
+        tuesday: 2,
+        wednesday: 3,
+        thursday: 4,
+        friday: 5,
+        saturday: 6,
+    };
+    supervisorTrips = supervisorTrips.map((booking) => {
+        const formattedBooking = booking;
+        formattedBooking.starting_date = booking.starting_date.toLocaleDateString('en-US', options);
+        const date = new Date(booking.starting_date);
+        let arrivalDate = date.getDate();
+        if (weekdays[booking.arrival_weekday] >= weekdays[booking.starting_weekday]) {
+            arrivalDate += weekdays[booking.arrival_weekday] - weekdays[booking.starting_weekday];
+        } else {
+            arrivalDate += weekdays[booking.arrival_weekday] + (weekdays.saturday - weekdays[booking.starting_weekday]);
+        }
+        date.setDate(arrivalDate);
+        formattedBooking.arrival_date = date.toLocaleDateString('en-US', options);
+        return formattedBooking;
+    });
     response.render('adminPanelTrips.pug', { supervisorTrips });
 }
 
@@ -31,6 +57,32 @@ async function fetchAdminTrips(request, response) {
     supervisorTrips = supervisorTrips.map((trip) => {
         trip.total_seat = 40;
         return trip;
+    });
+    const options = {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+    };
+    const weekdays = {
+        sunday: 0,
+        monday: 1,
+        tuesday: 2,
+        wednesday: 3,
+        thursday: 4,
+        friday: 5,
+        saturday: 6,
+    };
+    supervisorTrips = supervisorTrips.map((booking) => {
+        const formattedBooking = booking;
+        formattedBooking.starting_date = booking.starting_date.toLocaleDateString('en-US', options);
+        const date = new Date(booking.starting_date);
+        let arrivalDate = date.getDate();
+        if (weekdays[booking.arrival_weekday] >= weekdays[booking.starting_weekday]) {
+            arrivalDate += weekdays[booking.arrival_weekday] - weekdays[booking.starting_weekday];
+        } else {
+            arrivalDate += weekdays[booking.arrival_weekday] + (weekdays.saturday - weekdays[booking.starting_weekday]);
+        }
+        date.setDate(arrivalDate);
+        formattedBooking.arrival_date = date.toLocaleDateString('en-US', options);
+        return formattedBooking;
     });
     response.render('adminPanelTrips.pug', { supervisorTrips });
 }

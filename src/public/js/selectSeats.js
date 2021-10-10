@@ -1,7 +1,8 @@
 function numberOfSelectedSeats(ID) {
     const number = document.querySelectorAll('.filter-green').length;
     document.querySelector(`#numberof-selected-seats-${ID}`).innerText = `Number of seats Selected: ${number}`;
-    document.querySelector(`#total-fare-${ID}`).innerText = `Total Fare: ${400 * number}`;
+    const fare = parseInt(document.querySelector('#trip-196').childNodes[3].childNodes[1].childNodes[2].childNodes[2].innerText);
+    document.querySelector(`#total-fare-${ID}`).innerText = `Total Fare: ${fare * number}`;
 }
 
 function selectSeat(element) {

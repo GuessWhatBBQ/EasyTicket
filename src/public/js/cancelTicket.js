@@ -8,7 +8,11 @@ function cancelTicket(ID) {
         body: JSON.stringify({ tripID }),
     };
     fetch('/api/user/cancelbooking', payload)
-        .then((result) => result.json());
+        .then((result) => {
+            location.reload();
+            return result.json();
+        });
+    
 }
 
 window.cancelTicket = cancelTicket;
